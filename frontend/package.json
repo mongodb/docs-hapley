@@ -11,6 +11,7 @@
     "develop": "gatsby develop",
     "start": "gatsby develop",
     "build": "gatsby build",
+    "prepare": "cd ../ && husky install ./frontend/.husky",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "test": "jest",
@@ -27,11 +28,6 @@
       "npm run format:fix",
       "npm run lint:fix"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
