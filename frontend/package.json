@@ -1,9 +1,9 @@
 {
   "name": "hapley-frontend",
-  "version": "1.0.0",
+  "version": "0.0.1",
+  "repository": "github:mongodb/docs-hapley",
   "private": true,
   "description": "hapley-frontend",
-  "author": "Drew Beckmen",
   "keywords": [
     "gatsby"
   ],
