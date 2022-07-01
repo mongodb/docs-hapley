@@ -24,7 +24,7 @@
     "format:fix": "npm run prettier -- --write"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": [
+    "**/*.{js,jsx,ts,tsx}": [
       "npm run format:fix",
       "npm run lint:fix"
     ]
