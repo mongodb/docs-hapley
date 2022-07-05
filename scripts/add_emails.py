@@ -62,15 +62,17 @@ def remove_emails(collection: collection.Collection):
 def set_emails(collection: collection.Collection):
     print("Rollback flag not set. Adding email address field to documents")
     numErrors = 0
+    numSuccess = 0
     for doc in collection.find():
         email = find_email(doc['github_username'])
         if email:
             doc['email'] = email
             collection.replace_one({'_id': doc['_id']}, doc)
+            numSuccess += 1
         else:
             print(f"Received non-200 status code for {doc['github_username']}")
             numErrors += 1
-    print(f"Finished adding email address to documents. Encountered {numErrors} errors")
+    print(f"Finished adding email address to documents. Encountered {numErrors} errors, {numSuccess} successes")
 
 def execute() -> bool:
     db = connect().get_database(DATABASE_BY_ENVIRONMENT[args.environment])
