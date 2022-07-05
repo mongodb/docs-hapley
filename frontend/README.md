@@ -1,8 +1,3 @@
-<p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
 <h1 align="center">
   Hapley Frontend
 </h1>
@@ -24,21 +19,17 @@ Instructions on running via Docker are forthcoming.
 
 We leverage [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) to test our frontend code.
 
-### Unit Testing
+To run the entire test suite, run `npm run test`. For just unit tests, run `npm run test:unit`
 
-#### Running Individual Test Suites
-
-#### Running Individual Tests
+Individual tests can be run directly with Jest. For example, `jest ./tests/unit/HelloWorld.test.tsx`
 
 ## Linting and Styling
 
-We use [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to help with linting and style.
+We use [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to help with linting and style. Both ESLint and Prettier run during the pre-commit hook to ensure pushed code maintains clean style and formatting.
 
-### Lint
+Linting and formatting checks also run as part of CI via GitHub Actions to maintain a clean `main` branch.
 
-### Style
-
-### Pre-Commit Hooks
+To run the linter, use `npm run lint`. If you want to automatically fix issues detected by the linter, use `npm run lint:fix`. The analogous commands exist for Prettier, namely `npm run format` and `npm run format:fix`.
 
 ## Gatsby Resources
 
