@@ -1,5 +1,4 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node,react
-# Edit at https://www.toptal.com/developers/gitignore?templates=node,react
 
 ### Node ###
 # Logs
@@ -24,9 +23,6 @@ pids
 node_modules/
 jspm_packages/
 
-# Snowpack dependency directory (https://snowpack.dev/)
-web_modules/
-
 # TypeScript cache
 *.tsbuildinfo
 
@@ -36,23 +32,11 @@ web_modules/
 # Optional eslint cache
 .eslintcache
 
-# Optional stylelint cache
-.stylelintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
 # Optional REPL history
 .node_repl_history
 
 # Output of 'npm pack'
 *.tgz
-
-# Yarn Integrity file
-.yarn-integrity
 
 # dotenv environment variable files
 .env.*
@@ -66,19 +50,8 @@ web_modules/
 public
 src/gatsby-types.d.ts
 
-# Serverless directories
-.serverless/
-
-
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
-
-
-### Node Patch ###
-# Serverless Webpack directories
-.webpack/
-
-# Optional stylelint cache
 
 ### react ###
 .DS_*
@@ -92,5 +65,3 @@ node_modules
 psd
 thumb
 sketch
-
-# End of https://www.toptal.com/developers/gitignore/api/node,react
