@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  hapleyfrontend:
+    image: hapleyfrontend
+    build:
+      context: frontend
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ./frontend/src:/app/src # Links the source files to the running container
+    ports:
+      - 8000:8000
