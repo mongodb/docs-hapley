@@ -27,7 +27,15 @@ python3 -m pipenv install
 uvicorn main:app --reload
 ```
 
-Go to `http://127.0.0.1:8000/` to access routes.
+Go to http://127.0.0.1:8000/ to access routes. If you'd prefer to host the API on a different port, run the above command with the `--port=<int>` flag.
+
+> :bulb: Note: The frontend uses port 3000 for hosting.
+
+### Accessing OpenAPI Docs
+
+FastAPI has a feature that generates an OpenAPI schema. The schema can be found on http://127.0.0.1:8000/openapi.json. Go to http://127.0.0.1:8000/docs if you'd prefer to see the API documentation interactively.
+
+Additional information about FastAPI's OpenAPI generation [here](https://fastapi.tiangolo.com/tutorial/first-steps/#openapi).
 
 ## Testing
 
