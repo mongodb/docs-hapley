@@ -6,7 +6,7 @@
 
 ### Non-Containerized Development
 
-Once inside the `frontend` directory, run `npm run develop`. The site should now be running at `http://localhost:8000`.
+Once inside the `frontend` directory, run `npm run develop`. The site should now be running at `http://localhost:3000`.
 
 To build and serve the site, run:
 
@@ -25,7 +25,7 @@ Once Docker is installed, you can launch the frontend two ways:
 
 ```
 docker build -f Dockerfile.dev -t hapleyfrontend ./
-docker run -p 8000:8000/tcp -v $PWD/src:/app/src hapleyfrontend:latest
+docker run -p 3000:3000/tcp -v $PWD/src:/app/src hapleyfrontend:latest
 ```
 
 2. With `docker compose`: In the project root, you can run:

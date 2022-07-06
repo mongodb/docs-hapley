@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3'
 
 services:
   hapleyfrontend:
@@ -9,4 +9,4 @@ services:
     volumes:
       - ./frontend/src:/app/src # Links the source files to the running container
     ports:
-      - 8000:8000
+      - 3000:3000
