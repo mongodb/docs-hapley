@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'gatsby';
 
 // styles
 const pageStyles = {
@@ -38,6 +39,9 @@ function IndexPage() {
       <p style={paragraphStyles}>
         Edit <code style={codeStyles}>src/pages/index.tsx</code> to see this page update in
         real-time. 😎
+      </p>
+      <p>
+        See the POC for SSR <Link to="/ssr-poc"> here</Link>.
       </p>
     </main>
   );
