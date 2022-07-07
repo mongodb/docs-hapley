@@ -31,6 +31,23 @@ Go to http://127.0.0.1:8000/ to access routes. If you'd prefer to host the API o
 
 > :bulb: Note: The frontend uses port 3000 for hosting.
 
+### Running in a Docker Container
+
+If you'd like to develop locally using Docker, ensure that you have Docker installed on your machine. You can download and install Docker [here](https://docs.docker.com/get-docker/).
+
+Run the following commands from the `backend` directory:
+
+```
+docker build --tag hapley-backend .
+docker run -dp 8000:8000 hapley-backend
+```
+
+The above commands will create and tag an image using the Dockerfile found in the `backend` directory. The image is then ran into a container for local development.
+
+Go to http://127.0.0.1:8000/ to access routes.
+
+(TODO: Update instructions for Docker Compose and consolidate with frontend.)
+
 ### Accessing OpenAPI Docs
 
 FastAPI has a feature that generates an OpenAPI schema. The schema can be found on http://127.0.0.1:8000/openapi.json. Go to http://127.0.0.1:8000/docs if you'd prefer to see the API documentation interactively.
