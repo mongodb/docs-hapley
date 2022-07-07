@@ -5,8 +5,6 @@ services:
     image: hapleyfrontend
     build:
       context: frontend
-      dockerfile: ./Dockerfile.dev
-    volumes:
-      - ./frontend/src:/app/src # Links the source files to the running container
+      dockerfile: ./Dockerfile
     ports:
       - 3000:3000
