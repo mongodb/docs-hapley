@@ -17,7 +17,6 @@ $ npm run serve
 
 You can read more about the Gatsby build process [here](https://www.gatsbyjs.com/docs/conceptual/overview-of-the-gatsby-build-process/).
 
-
 ### Containerized Development with Docker
 
 To take advantage of Gatsby development features such as hot reloading, please use `npm run develop`. Although you can configure hot reloading with Docker development via volumes, we leverage Docker for our production environment. Therefore, you should only use Docker locally when attempting to replicate the production environment.
