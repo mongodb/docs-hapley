@@ -6,7 +6,7 @@
 
 ### Non-Containerized Development
 
-Once inside the `frontend` directory, run `npm run develop`. The site should now be running at `http://localhost:3000`.
+Once inside the `frontend` directory, run `npm install` to install all project dependencies. Then run `npm run develop`. The site should now be running at `http://localhost:3000`.
 
 To build and serve the site, run:
 
@@ -15,27 +15,34 @@ $ npm run build
 $ npm run serve
 ```
 
+You can read more about the Gatsby build process [here](https://www.gatsbyjs.com/docs/conceptual/overview-of-the-gatsby-build-process/).
+
+
 ### Containerized Development with Docker
 
-If you'd like to develop locally using Docker, ensure that you have Docker installed on your machine. You can download and install Docker [here](https://docs.docker.com/get-docker/).
+To take advantage of Gatsby development features such as hot reloading, please use `npm run develop`. Although you can configure hot reloading with Docker development via volumes, we leverage Docker for our production environment. Therefore, you should only use Docker locally when attempting to replicate the production environment.
 
-Once Docker is installed, you can launch the frontend two ways:
+If you'd like to develop locally using Docker, first ensure that you have Docker installed on your machine. You can download and install Docker [here](https://docs.docker.com/get-docker/).
+
+Once Docker is installed, run `npm run clean` to ensure you've removed `.cache` and `public` directories. Building an image without clearing the cache will result in a compilation error at the `npm run build` stage. You can launch the frontend two ways:
 
 1. With `docker build` and `docker run`: In the `frontend` directory, you can run:
 
 ```
-docker build -f Dockerfile.dev -t hapleyfrontend ./
-docker run -p 3000:3000/tcp -v $PWD/src:/app/src hapleyfrontend:latest
+docker build -t hapleyfrontend ./
+docker run -p 3000:3000/tcp hapleyfrontend:latest
 ```
 
 2. With `docker compose`: In the project root, you can run:
 
 ```
-docker compose -f docker-compose.yml build
-docker compose -f docker-compose.yml up
+docker compose build
+docker compose up
 ```
 
 `docker compose` allows you to launch multiple services simultaneously (i.e. both `frontend` and `backend`).
+
+TODO: conslidate Docker compose instructions once implemented for backend service
 
 ## Testing
 
@@ -52,6 +59,12 @@ We use [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to help 
 Linting and formatting checks also run as part of CI via GitHub Actions to maintain a clean `main` branch.
 
 To run the linter, use `npm run lint`. If you want to automatically fix issues detected by the linter, use `npm run lint:fix`. The analogous commands exist for Prettier, namely `npm run format` and `npm run format:fix`.
+
+## Environment Variables
+
+Gatsby has support for automatic loading of environment variables into the browser. In development, Gatsby looks for `.env.development`. Similarly, it looks for `.env.production` during builds.
+
+To expose a non-secretive environment variable in the browser, preface its name with `GATSBY_`. To load environment variables into Node.js, follow instructions [here](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/).
 
 ## Gatsby Resources
 
