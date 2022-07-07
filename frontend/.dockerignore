@@ -1,0 +1,14 @@
+**/.dockerignore
+**/.env*
+**/.gitignore
+**/docker-compose*
+**/Dockerfile*
+**/node_modules
+**/README.md
+**/tests
+.eslintrc.json
+.prettierrc.json
+jest*
+package-lock.json
+**/.cache
+**/public
