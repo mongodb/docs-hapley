@@ -52,7 +52,7 @@ Go to http://127.0.0.1:8000/ to access routes.
 
 FastAPI has a feature that generates an OpenAPI schema. The schema can be found on http://127.0.0.1:8000/openapi.json. Go to http://127.0.0.1:8000/docs if you'd prefer to see the API documentation interactively.
 
-Additional information about FastAPI's OpenAPI generation [here](https://fastapi.tiangolo.com/tutorial/first-steps/#openapi).
+Additional information about FastAPI's OpenAPI generation can be found [here](https://fastapi.tiangolo.com/tutorial/first-steps/#openapi).
 
 ## Testing
 
