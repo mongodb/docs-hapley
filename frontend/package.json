@@ -25,7 +25,7 @@
     "lint-frontend": "lint-staged"
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
+    "**/*.{js,jsx,ts,tsx,json,md}": [
       "npm run format:fix",
       "npm run lint:fix"
     ]
