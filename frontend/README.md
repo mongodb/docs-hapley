@@ -25,14 +25,7 @@ If you'd like to develop locally using Docker, first ensure that you have Docker
 
 Once Docker is installed, run `npm run clean` to ensure you've removed `.cache` and `public` directories. Building an image without clearing the cache will result in a compilation error at the `npm run build` stage. You can launch the frontend two ways:
 
-1. With `docker build` and `docker run`: In the `frontend` directory, you can run:
-
-```
-docker build -t hapleyfrontend ./
-docker run -p 3000:3000/tcp hapleyfrontend:latest
-```
-
-2. With `docker compose`: In the project root, you can run:
+1. With `docker compose`: In the project root, you can run:
 
 ```
 docker compose build
@@ -42,6 +35,13 @@ docker compose up
 `docker compose` allows you to launch multiple services simultaneously (i.e. both `frontend` and `backend`).
 
 TODO: conslidate Docker compose instructions once implemented for backend service
+
+2. With `docker build` and `docker run`: In the `frontend` directory, you can run:
+
+```
+docker build -t hapleyfrontend ./
+docker run -p 3000:3000/tcp hapleyfrontend:latest
+```
 
 ## Testing
 
