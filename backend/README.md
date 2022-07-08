@@ -12,14 +12,16 @@ Make sure to have the following installed:
 Run the following command from the `backend/` directory to install all current dependencies.
 
 ```
-pipenv install
+pipenv install --dev
 ```
 
 If you have `pipenv` installed but your local machine can't run the command, try running:
 
 ```
-python3 -m pipenv install
+python3 -m pipenv install --dev
 ```
+
+The `--dev` option allows both production and dev packages to be installed.
 
 ### Running Locally
 
