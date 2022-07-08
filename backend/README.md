@@ -73,8 +73,7 @@ Additional information about FastAPI's OpenAPI generation can be found
 ## Testing
 
 All tests are located in the `tests/` directory and can be run with `pipenv` and 
-`pytest`. The benefit of using `pipenv` is that we can test from a virtual 
-environment. 
+`pytest`.
 
 From the `backend/` directory, use the following to run all tests:
 
