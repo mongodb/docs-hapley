@@ -1,0 +1,148 @@
+---
+depends_on: null
+kind: pipeline
+type: docker
+name: test-backend
+
+steps:
+  - name: backend-test
+    image: alpine
+    commands:
+    - echo "To be added later"
+    when:
+      event:
+        - push
+
+trigger:
+  branch:
+    - main
+    - dop-3115-kanopy-staging
+  event:
+    - push
+
+---
+depends_on: null
+kind: pipeline
+type: docker
+name: test-frontend
+
+steps:
+  - name: frontend-test
+    image: node:16-alpine
+    commands:
+    - cd frontend
+    - npm install
+    - npm run test
+    when:
+      event:
+        - push
+
+trigger:
+  branch:
+    - main
+    - dop-3115-kanopy-staging
+  event:
+    - push
+
+---
+depends_on: ['test-frontend', 'test-backend']
+kind: pipeline
+type: kubernetes
+name: build-hapley-staging
+
+steps:
+  - name: publish-staging-frontend-image
+    image: plugins/kaniko-ecr
+    settings:
+      create_repository: true
+      enable_cache: true
+      dockerfile: ./frontend/Dockerfile
+      registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
+      repo: docs/${DRONE_REPO_NAME}/frontend
+      tags:
+      - git-${DRONE_COMMIT_SHA:0:7}
+      - latest
+      access_key:
+        from_secret: ecr_access_key
+      secret_key:
+        from_secret: ecr_secret_key
+    when:
+      event:
+      - push
+    
+  - name: publish-staging-backend-image
+    image: plugins/kaniko-ecr
+    settings:
+      create_repository: true
+      enable_cache: true
+      dockerfile: ./backend/Dockerfile
+      registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
+      repo: docs/${DRONE_REPO_NAME}/backend
+      tags:
+      - git-${DRONE_COMMIT_SHA:0:7}
+      - latest
+      access_key:
+        from_secret: ecr_access_key
+      secret_key:
+        from_secret: ecr_secret_key
+    when:
+      event:
+      - push
+
+  - name: promote-staging
+    image: drone/cli:1.4.0-alpine
+    commands:
+    - drone build promote mongodb/docs-hapley ${DRONE_BUILD_NUMBER} staging
+    environment:
+      DRONE_SERVER: ${DRONE_SYSTEM_PROTO}://${DRONE_SYSTEM_HOST}
+      DRONE_TOKEN:
+        from_secret: drone_token
+    when:
+      event:
+      - push
+
+trigger:
+  branch:
+    - main
+    - dop-3115-kanopy-staging
+  event:
+    - push
+
+---
+depends_on: null
+kind: pipeline
+type: kubernetes
+name: deploy-hapley-staging
+
+steps:
+  - name: deploy-staging-frontend
+    image: quay.io/mongodb/drone-helm:v3
+    settings:
+      chart: mongodb/web-app
+      chart_version: 4.7.3
+      add_repos: [mongodb=https://10gen.github.io/helm-charts]
+      namespace: docs
+      release: hapley
+      values: image.tag=git-${DRONE_COMMIT_SHA:0:7},image.repository=795250896452.dkr.ecr.us-east-1.amazonaws.com/docs/${DRONE_REPO_NAME}/frontend,ingress.enabled=true,ingress.hosts[0]=hapley.docs.staging.corp.mongodb.com
+      api_server: https://api.staging.corp.mongodb.com
+      kubernetes_token:
+        from_secret: staging_kubernetes_token
+  
+  - name: deploy-staging-backend
+    image: quay.io/mongodb/drone-helm:v3
+    settings:
+      chart: mongodb/web-app
+      chart_version: 4.7.3
+      add_repos: [mongodb=https://10gen.github.io/helm-charts]
+      namespace: docs
+      release: hapley-api
+      values: image.tag=git-${DRONE_COMMIT_SHA:0:7},image.repository=795250896452.dkr.ecr.us-east-1.amazonaws.com/docs/${DRONE_REPO_NAME}/backend,ingress.enabled=true,ingress.hosts[0]=hapley-api.docs.staging.corp.mongodb.com
+      api_server: https://api.staging.corp.mongodb.com
+      kubernetes_token:
+        from_secret: staging_kubernetes_token
+
+trigger:
+  event:
+    - promote
+  target:
+    - staging
