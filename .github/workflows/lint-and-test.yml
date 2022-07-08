@@ -6,8 +6,11 @@ on:
       - main
 
 jobs:
-  lint_and_test:
+  frontend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -16,20 +19,18 @@ jobs:
         with:
           node-version: '16.x'
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: package-lock.json
       - name: Install frontend dependencies
-        run: cd frontend && npm ci
+        run: npm ci
       - uses: dorny/paths-filter@v2
         id: changes
         with:
           filters: |
             frontend:
               - 'frontend/**'
-            backend:
-              - 'backend/**'
-    - name: Lint Frontend
-      if: ${{ steps.changes.outputs.frontend == 'true' }}
-      run: cd frontend && npm run lint && npm run format
-    - name: Test Frontend
-      if: ${{ steps.changes.outputs.frontend == 'true' }}
-      run: cd frontend && npm test
+      - name: Lint Frontend
+        if: ${{ steps.changes.outputs.frontend == 'true' }}
+        run: npm run lint && npm run format
+      - name: Test Frontend
+        if: ${{ steps.changes.outputs.frontend == 'true' }}
+        run: npm test
