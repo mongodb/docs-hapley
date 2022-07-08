@@ -1,5 +1,8 @@
 __pycache__/
 .env
+.pytest_cache
 .venv
+.vscode
 Dockerfile
 README.md
+pytest.ini
