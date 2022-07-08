@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '16.x'
           cache: 'npm'
-          cache-dependency-path: package-lock.json
+          cache-dependency-path: '**/package-lock.json'
       - name: Install frontend dependencies
         run: npm ci
       - uses: dorny/paths-filter@v2
