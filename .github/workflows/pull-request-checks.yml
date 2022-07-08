@@ -1,0 +1,36 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Install frontend dependencies
+        run: npm ci
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+      - name: Lint Frontend
+        if: ${{ steps.changes.outputs.frontend == 'true' }}
+        run: npm run lint && npm run format
+      - name: Test Frontend
+        if: ${{ steps.changes.outputs.frontend == 'true' }}
+        run: npm test
