@@ -125,7 +125,8 @@ steps:
       add_repos: [mongodb=https://10gen.github.io/helm-charts]
       namespace: docs
       release: hapley
-      values: image.tag=git-${DRONE_COMMIT_SHA:0:7},image.repository=795250896452.dkr.ecr.us-east-1.amazonaws.com/docs/${DRONE_REPO_NAME}/frontend,ingress.enabled=true,ingress.hosts[0]=hapley.docs.staging.corp.mongodb.com
+      values: image.tag=git-${DRONE_COMMIT_SHA:0:7},image.repository=795250896452.dkr.ecr.us-east-1.amazonaws.com/docs/${DRONE_REPO_NAME}/frontend
+      values_files: ["environments/frontend-staging.yaml"]
       api_server: https://api.staging.corp.mongodb.com
       kubernetes_token:
         from_secret: staging_kubernetes_token
@@ -138,7 +139,8 @@ steps:
       add_repos: [mongodb=https://10gen.github.io/helm-charts]
       namespace: docs
       release: hapley-api
-      values: image.tag=git-${DRONE_COMMIT_SHA:0:7},image.repository=795250896452.dkr.ecr.us-east-1.amazonaws.com/docs/${DRONE_REPO_NAME}/backend,ingress.enabled=true,ingress.hosts[0]=hapley-api.docs.staging.corp.mongodb.com
+      values: image.tag=git-${DRONE_COMMIT_SHA:0:7},image.repository=795250896452.dkr.ecr.us-east-1.amazonaws.com/docs/${DRONE_REPO_NAME}/backend
+      values_files: ["environments/backend-staging.yaml"]
       api_server: https://api.staging.corp.mongodb.com
       kubernetes_token:
         from_secret: staging_kubernetes_token
