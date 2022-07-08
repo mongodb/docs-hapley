@@ -29,11 +29,15 @@ The `--dev` option allows both production and dev packages to be installed.
 ### Running Locally
 
 ```
-uvicorn main:app --reload
+pipenv run app
 ```
 
-Go to http://127.0.0.1:8000/ to access routes. If you'd prefer to host the API 
-on a different port, run the above command with the `--port=<int>` flag.
+Go to http://127.0.0.1:8000/ to access routes. To host the API on a different 
+port, run:
+
+```
+pipenv run -- app --port=<int>
+```
 
 > :bulb: Note: The frontend uses port 3000 for hosting.
 
@@ -68,23 +72,26 @@ Additional information about FastAPI's OpenAPI generation can be found
 
 ## Testing
 
-All tests are located in the `tests/` directory and can be run with `pytest`. 
+All tests are located in the `tests/` directory and can be run with `pipenv` and 
+`pytest`. The benefit of using `pipenv` is that we can test from a virtual 
+environment. 
+
 From the `backend/` directory, use the following to run all tests:
 
 ```
-pytest
+pipenv run test
 ```
 
 To run all tests within a specific file:
 
 ```
-pytest tests/path/to/test.py
+pipenv run test -- tests/path/to/test.py
 ```
 
 To run a specific test:
 
 ```
-pytest tests/path/to/test.py::test_name
+pipenv run test -- tests/path/to/test.py::test_name
 ```
 
 See the [pytest docs](https://docs.pytest.org/en/7.1.x/how-to/usage.html) for 
