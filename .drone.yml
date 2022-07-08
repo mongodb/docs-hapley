@@ -57,6 +57,7 @@ steps:
       create_repository: true
       enable_cache: true
       dockerfile: ./frontend/Dockerfile
+      context: ./frontend
       registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
       repo: docs/${DRONE_REPO_NAME}/frontend
       tags:
@@ -76,6 +77,7 @@ steps:
       create_repository: true
       enable_cache: true
       dockerfile: ./backend/Dockerfile
+      context: ./backend
       registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
       repo: docs/${DRONE_REPO_NAME}/backend
       tags:
