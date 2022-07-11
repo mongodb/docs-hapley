@@ -63,12 +63,6 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
       - name: Install frontend dependencies
         run: npm ci
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          filters: |
-            frontend:
-              - 'frontend/**'
       - name: Lint Frontend
         if: ${{ steps.changes.outputs.frontend == 'true' }}
         run: npm run lint && npm run format

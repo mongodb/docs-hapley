@@ -55,7 +55,7 @@ docker run -dp 8000:8000 hapley-backend
 ```
 
 The above commands will create and tag an image using the Dockerfile found in 
-the `backend` directory. The image is then ran into a container for local development.
+the `backend` directory. The image is then ran within a container for local development.
 
 Go to http://127.0.0.1:8000/ to access routes.
 
