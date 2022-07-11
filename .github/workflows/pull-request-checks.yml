@@ -1,0 +1,63 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10.x'
+      - name: Install pipenv
+        run: |
+          pip install pipenv
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+      - name: Run tests
+        if: ${{ steps.changes.outputs.backend == 'true' }}
+        run: |
+          pipenv install --dev
+          pipenv run test
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Install frontend dependencies
+        run: npm ci
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+      - name: Lint Frontend
+        if: ${{ steps.changes.outputs.frontend == 'true' }}
+        run: npm run lint && npm run format
+      - name: Test Frontend
+        if: ${{ steps.changes.outputs.frontend == 'true' }}
+        run: npm test
