@@ -6,7 +6,26 @@ on:
       - main
 
 jobs:
+  # Checks for changes to the backend and frontend directories.
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      # For pull requests it's not necessary to checkout the code
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+            frontend:
+              - 'frontend/**'
+
   backend:
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -21,19 +40,14 @@ jobs:
       - name: Install pipenv
         run: |
           pip install pipenv
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          filters: |
-            backend:
-              - 'backend/**'
       - name: Run tests
-        if: ${{ steps.changes.outputs.backend == 'true' }}
         run: |
           pipenv install --dev
           pipenv run test
 
   frontend:
+    needs: changes
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
