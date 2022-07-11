@@ -3,5 +3,6 @@ service:
 
 ingress:
   enabled: true
+  path: /api/v1
   hosts:
-    - hapley-api.docs.staging.corp.mongodb.com
+    - hapley.docs.staging.corp.mongodb.com
