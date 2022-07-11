@@ -6,7 +6,11 @@
 
 ### Non-Containerized Development
 
-Once inside the `frontend` directory, run `npm install` to install all project dependencies. Then run `npm run develop`. The site should now be running at `http://localhost:3000`.
+Once inside the `frontend` directory, run `npm install` to install all project dependencies.
+
+Create a `.env.development` file with the same format as `.env.example`, but with values populated. `GATSBY_API_URL` should equal `http://localhost:8000/api/v1`. Please ensure you have the backend running locally by following the instructions in the backend [README](../backend/README.md)
+
+Then run `npm run develop`. The site should now be running at `http://localhost:3000`.
 
 To build and serve the site, run:
 
@@ -64,6 +68,8 @@ To run the linter, use `npm run lint`. If you want to automatically fix issues d
 Gatsby has support for automatic loading of environment variables into the browser. In development, Gatsby looks for `.env.development`. Similarly, it looks for `.env.production` during builds.
 
 To expose a non-secretive environment variable in the browser, preface its name with `GATSBY_`. To load environment variables into Node.js, follow instructions [here](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/).
+
+If you add a new environment variable, add it to the `.env.example` file for future reference. Also update the build args for the Docker image in our Drone pipeline. If the environment variable is a secret, add it to Drone's secret store. You can read more about secrets [here](https://docs.drone.io/secret/repository/).
 
 ## Gatsby Resources
 

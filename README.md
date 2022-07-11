@@ -24,7 +24,7 @@ When you are ready to contribute your changes, open a pull request against `main
 
 Hapley is deployed on the Kanopy platform. A merge into `main` triggers the Drone pipelines setup in `.drone.yml`. Once the build is completed, it is promoted to staging automatically.
 
-- Backend staging link: https://hapley-api.docs.staging.corp.mongodb.com/
+- Backend staging link: https://hapley.docs.staging.corp.mongodb.com/api/v1
 - Frontend staging link: https://hapley.docs.staging.corp.mongodb.com/
 
 ### Production Release
