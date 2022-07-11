@@ -64,8 +64,6 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
       - name: Lint Frontend
-        if: ${{ steps.changes.outputs.frontend == 'true' }}
         run: npm run lint && npm run format
       - name: Test Frontend
-        if: ${{ steps.changes.outputs.frontend == 'true' }}
         run: npm test
