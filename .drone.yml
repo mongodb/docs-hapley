@@ -19,7 +19,6 @@ steps:
 trigger:
   branch:
     - main
-    - dop-3115-kanopy-staging
   event:
     - push
 
@@ -43,7 +42,6 @@ steps:
 trigger:
   branch:
     - main
-    - dop-3115-kanopy-staging
   event:
     - push
 
@@ -113,7 +111,6 @@ steps:
 trigger:
   branch:
     - main
-    - dop-3115-kanopy-staging
   event:
     - push
 
