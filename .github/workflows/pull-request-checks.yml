@@ -6,7 +6,48 @@ on:
       - main
 
 jobs:
+  # Checks for changes to the backend and frontend directories.
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      # For pull requests it's not necessary to checkout the code
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+            frontend:
+              - 'frontend/**'
+
+  backend:
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10.x'
+      - name: Install pipenv
+        run: |
+          pip install pipenv
+      - name: Run tests
+        run: |
+          pipenv install --dev
+          pipenv run test
+
   frontend:
+    needs: changes
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -22,15 +63,7 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
       - name: Install frontend dependencies
         run: npm ci
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          filters: |
-            frontend:
-              - 'frontend/**'
       - name: Lint Frontend
-        if: ${{ steps.changes.outputs.frontend == 'true' }}
         run: npm run lint && npm run format
       - name: Test Frontend
-        if: ${{ steps.changes.outputs.frontend == 'true' }}
         run: npm test

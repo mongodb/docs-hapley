@@ -7,33 +7,45 @@
 Make sure to have the following installed:
 
 - python v3.10+
-- [pipenv](https://pipenv.pypa.io/en/stable/#install-pipenv-today) - for dependency management
+- [pipenv](https://pipenv.pypa.io/en/stable/#install-pipenv-today) - for 
+dependency management
 
-Run the following command from the `backend/` directory to install all current dependencies.
-
-```
-pipenv install
-```
-
-If you have `pipenv` installed but your local machine can't run the command, try running:
+Run the following command from the `backend/` directory to install all current 
+dependencies.
 
 ```
-python3 -m pipenv install
+pipenv install --dev
 ```
+
+If you have `pipenv` installed but your local machine can't run the command, try 
+running:
+
+```
+python3 -m pipenv install --dev
+```
+
+The `--dev` option allows both production and dev packages to be installed.
 
 ### Running Locally
 
 ```
-uvicorn main:app --reload
+pipenv run app
 ```
 
-Go to http://127.0.0.1:8000/ to access routes. If you'd prefer to host the API on a different port, run the above command with the `--port=<int>` flag.
+Go to http://127.0.0.1:8000/ to access routes. To host the API on a different 
+port, run:
+
+```
+pipenv run -- app --port=<int>
+```
 
 > :bulb: Note: The frontend uses port 3000 for hosting.
 
 ### Running in a Docker Container
 
-If you'd like to develop locally using Docker, ensure that you have Docker installed on your machine. You can download and install Docker [here](https://docs.docker.com/get-docker/).
+If you'd like to develop locally using Docker, ensure that you have Docker 
+installed on your machine. You can download and install Docker 
+[here](https://docs.docker.com/get-docker/).
 
 Run the following commands from the `backend` directory:
 
@@ -42,7 +54,8 @@ docker build --tag hapley-backend .
 docker run -dp 8000:8000 hapley-backend
 ```
 
-The above commands will create and tag an image using the Dockerfile found in the `backend` directory. The image is then ran into a container for local development.
+The above commands will create and tag an image using the Dockerfile found in 
+the `backend` directory. The image is then ran within a container for local development.
 
 Go to http://127.0.0.1:8000/ to access routes.
 
@@ -50,13 +63,38 @@ Go to http://127.0.0.1:8000/ to access routes.
 
 ### Accessing OpenAPI Docs
 
-FastAPI has a feature that generates an OpenAPI schema. The schema can be found on http://127.0.0.1:8000/openapi.json. Go to http://127.0.0.1:8000/docs if you'd prefer to see the API documentation interactively.
+FastAPI has a feature that generates an OpenAPI schema. The schema can be found 
+on http://127.0.0.1:8000/openapi.json. Go to http://127.0.0.1:8000/docs if you'd 
+prefer to see the API documentation interactively.
 
-Additional information about FastAPI's OpenAPI generation can be found [here](https://fastapi.tiangolo.com/tutorial/first-steps/#openapi).
+Additional information about FastAPI's OpenAPI generation can be found 
+[here](https://fastapi.tiangolo.com/tutorial/first-steps/#openapi).
 
 ## Testing
 
-To be added in future PR.
+All tests are located in the `tests/` directory and can be run with `pipenv` and 
+`pytest`.
+
+From the `backend/` directory, use the following to run all tests:
+
+```
+pipenv run test
+```
+
+To run all tests within a specific file:
+
+```
+pipenv run test -- tests/path/to/test.py
+```
+
+To run a specific test:
+
+```
+pipenv run test -- tests/path/to/test.py::test_name
+```
+
+See the [pytest docs](https://docs.pytest.org/en/7.1.x/how-to/usage.html) for 
+more information on usage.
 
 ## Linting and Styling
 
