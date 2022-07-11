@@ -1,11 +1,9 @@
-from fastapi.testclient import TestClient
+from ..base import FastApiTest
 
-from main import app
-
-client = TestClient(app)
+client = FastApiTest().client
 
 def test_hello_world():
-  response = client.get("/hello")
+  response = client.get("hello")
 
   assert response.status_code == 200
   assert response.json() == {
