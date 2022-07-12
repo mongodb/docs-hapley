@@ -41,6 +41,8 @@ jobs:
         run: |
           pip install pipenv
       - name: Run tests
+        env:
+          ENVIRONMENT: 'test'
         run: |
           pipenv install --dev
           pipenv run test
