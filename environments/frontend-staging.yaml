@@ -1,0 +1,7 @@
+service:
+  targetPort: 3000
+
+ingress:
+  enabled: true
+  hosts:
+    - hapley.docs.staging.corp.mongodb.com

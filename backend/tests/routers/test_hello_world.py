@@ -1,8 +1,6 @@
-from fastapi.testclient import TestClient
+from ..base import FastApiTest
 
-from main import app
-
-client = TestClient(app)
+client = FastApiTest()
 
 def test_hello_world():
   response = client.get("/hello")
