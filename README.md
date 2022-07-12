@@ -30,3 +30,25 @@ Hapley is deployed on the Kanopy platform. A merge into `main` triggers the Dron
 ### Production Release
 
 TBD. Need to determine production release workflow once we've finished application development. Perhaps take inspiration from the [Dev Center setup](https://github.com/mongodb/devcenter#production-release).
+## Development
+
+### Pre-commit hooks
+
+This monorepo uses [pre-commit](https://github.com/pre-commit/pre-commit) to 
+help lint and format both backend and frontend files before they are committed 
+through git.
+
+With python 3.10, install and set up `pre-commit` for this repo by doing the 
+following:
+
+```
+pip install pre-commit
+pre-commit install
+```
+
+This will allow `pre-commit` to be run when doing `git commit`. To test pre-commit 
+hooks locally, run:
+
+```
+pre-commit run
+```

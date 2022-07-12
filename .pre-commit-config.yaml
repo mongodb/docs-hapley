@@ -13,7 +13,8 @@ repos:
     entry: flake8
     language: python
     files: '^backend/.*\.py'
-# Calls lint-frontend command in place of husky
+# Use local command for linting instead of eslint mirror for convenient usage of 
+# configuration file (.eslintrc.json)
 - repo: local
   hooks:
   - id: frontend-pre-commit
