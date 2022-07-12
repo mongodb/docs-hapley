@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // Sample component that renders simple text.
 const HelloWorld: React.FC<{}> = () => (
