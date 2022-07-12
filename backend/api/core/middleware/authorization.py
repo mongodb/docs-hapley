@@ -1,4 +1,4 @@
-from fastapi import Request, HTTPException, status
+from fastapi import Request, status
 from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi.responses import JSONResponse
 from ..util import TokenData, parse_jwt 
@@ -12,9 +12,11 @@ class Authorization(BaseHTTPMiddleware):
         if request.headers.get("Authorization"):
             token = request.headers.get("Authorization").split(" ")[1]
             token_data: TokenData = parse_jwt(token)
-        if token_data is None or not bool(self.AUTHORIZED_OKTA_GROUPS & set(token_data.groups)):
+        
+        try:
+            if bool(self.AUTHORIZED_OKTA_GROUPS & set(token_data.groups)):
+                request.state.user = token_data
+                response = await call_next(request)
+        except UnboundLocalError:
             response = JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"message": "Unauthorized"})
-        else:
-            request.state.user = token_data
-            response = await call_next(request)
         return response
