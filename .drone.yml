@@ -66,8 +66,9 @@ steps:
       build_args:
         - GATSBY_API_URL
       tags:
-      - git-${DRONE_COMMIT_SHA:0:7}
-      - latest
+      - ${DRONE_SOURCE_BRANCH}
+      - drone-build-${DRONE_BUILD_NUMBER}
+      - ${DRONE_SOURCE_BRANCH}-${DRONE_COMMIT_SHA:0:7}
       access_key:
         from_secret: ecr_access_key
       secret_key:
@@ -86,8 +87,9 @@ steps:
       registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
       repo: docs/${DRONE_REPO_NAME}/backend
       tags:
-      - git-${DRONE_COMMIT_SHA:0:7}
-      - latest
+      - ${DRONE_SOURCE_BRANCH}
+      - drone-build-${DRONE_BUILD_NUMBER}
+      - ${DRONE_SOURCE_BRANCH}-${DRONE_COMMIT_SHA:0:7}
       access_key:
         from_secret: ecr_access_key
       secret_key:
@@ -129,7 +131,7 @@ steps:
       add_repos: [mongodb=https://10gen.github.io/helm-charts]
       namespace: docs
       release: hapley
-      values: image.tag=git-${DRONE_COMMIT_SHA:0:7},image.repository=795250896452.dkr.ecr.us-east-1.amazonaws.com/docs/${DRONE_REPO_NAME}/frontend
+      values: image.tag=${DRONE_SOURCE_BRANCH}-${DRONE_COMMIT_SHA:0:7},image.repository=795250896452.dkr.ecr.us-east-1.amazonaws.com/docs/${DRONE_REPO_NAME}/frontend
       values_files: ["environments/frontend-staging.yaml"]
       api_server: https://api.staging.corp.mongodb.com
       kubernetes_token:
@@ -143,7 +145,7 @@ steps:
       add_repos: [mongodb=https://10gen.github.io/helm-charts]
       namespace: docs
       release: hapley-api
-      values: image.tag=git-${DRONE_COMMIT_SHA:0:7},image.repository=795250896452.dkr.ecr.us-east-1.amazonaws.com/docs/${DRONE_REPO_NAME}/backend
+      values: image.tag=${DRONE_SOURCE_BRANCH}-${DRONE_COMMIT_SHA:0:7},image.repository=795250896452.dkr.ecr.us-east-1.amazonaws.com/docs/${DRONE_REPO_NAME}/backend
       values_files: ["environments/backend-staging.yaml"]
       api_server: https://api.staging.corp.mongodb.com
       kubernetes_token:
