@@ -11,7 +11,6 @@
     "develop": "gatsby develop -p 3000",
     "start": "gatsby develop -H 0.0.0.0 -p 3000",
     "build": "gatsby build",
-    "prepare": "cd ../ && husky install ./frontend/.husky",
     "serve": "gatsby serve -H 0.0.0.0 -p 3000",
     "clean": "gatsby clean",
     "test": "jest",
