@@ -28,6 +28,10 @@ The `--dev` option allows both production and dev packages to be installed.
 
 ### Running Locally
 
+Create a `.env` file within the backend directory. While developing locally, `ENVIRONMENT` should be equal to `development`. This ensures the API middleware does not block your requests because of a missing Okta JWT token. 
+
+Then, run:
+
 ```
 pipenv run app
 ```
