@@ -98,7 +98,14 @@ more information on usage.
 
 ## Linting and Styling
 
-To be added in future PR.
+The backend uses [black](https://black.readthedocs.io/en/stable/) for formatting 
+and [flake8](https://flake8.pycqa.org/en/latest/) for linting. Run the following 
+commands to format and lint locally.
+
+```
+pipenv run format
+pipenv run lint
+```
 
 ## FastAPI Resources
 

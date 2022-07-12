@@ -8,11 +8,11 @@ app = FastAPI()
 # Prevent CORS errors in local development
 origins = ["http://localhost:3000"]
 app.add_middleware(
-    CORSMiddleware, 
+    CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=True, 
+    allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
 )
 
 app.include_router(hello_world.router)

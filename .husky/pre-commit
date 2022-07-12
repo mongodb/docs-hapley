@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname "$0")/_/husky.sh"
-
-cd frontend
-npm run lint-frontend
-
-# TODO: we can invoke backend linting here
-# See example: https://stackoverflow.com/questions/64001471/pylint-with-pre-commit-and-esllint-with-husky
