@@ -21,5 +21,6 @@ repos:
     name: Lint and format frontend
     language: system
     entry: npm --prefix ./frontend run lint-frontend
+    # lint-staged has its own set of files to process
     pass_filenames: false
-    always_run: true
+    verbose: true
