@@ -46,10 +46,17 @@ trigger:
     - push
 
 ---
-depends_on: ['test-frontend', 'test-backend']
+#depends_on: ['test-frontend', 'test-backend']
 kind: pipeline
 type: kubernetes
 name: build-hapley-staging
+
+trigger:
+  branch:
+    - main
+    - rk/test-drone-cache
+  event:
+    - push
 
 steps:
   # - name: publish-staging-frontend-image
@@ -117,13 +124,6 @@ steps:
   #   when:
   #     event:
   #     - push
-
-trigger:
-  branch:
-    - main
-    - dop-3124-pipeline-caching
-  event:
-    - push
 
 ---
 depends_on: null
