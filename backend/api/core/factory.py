@@ -10,12 +10,10 @@ def create_app(settings: Settings, environment: str = getenv("ENVIRONMENT")) -> 
     app: FastAPI = FastAPI(settings=settings)
     app.include_router(api_router, prefix="/api")
 
-    # Attach necessary middleware depending on the environment
-    # Require authorization by default for safety
-    if environment in ["development", "test"]:
-        cors_middleware(app)
-    else:
-        authorization_middleware(app)
+    # Attach custom middleware
+    cors_middleware(app)
+    authorization_middleware(app)
+
     return app
 
 
