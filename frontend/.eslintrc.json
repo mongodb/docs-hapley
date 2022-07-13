@@ -16,5 +16,10 @@
   "plugins": ["react", "@typescript-eslint", "@emotion"],
   "rules": {
     "@emotion/pkg-renaming": "error"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

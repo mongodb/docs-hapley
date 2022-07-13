@@ -16,6 +16,29 @@ To read more about the application backend, see the [README](./backend/README.md
 
 ## Development and Deployment Workflow
 
+### Pre-commit Hooks
+
+This monorepo uses [pre-commit](https://github.com/pre-commit/pre-commit) to 
+help lint and format both backend and frontend files before they are committed 
+through git.
+
+With python 3.10, install and set up `pre-commit` for this repo by doing the 
+following:
+
+```
+pip install pre-commit
+pre-commit install
+```
+
+This will allow `pre-commit` to be run when doing `git commit`. To test pre-commit 
+hooks locally, run:
+
+```
+pre-commit run
+```
+
+### Pull Requests
+
 Create a new branch off of `main` with your changes for a given feature or bug fix. Please include the JIRA ticket within the branch name. For example, `dop-1234-test`.
 
 When you are ready to contribute your changes, open a pull request against `main` with the ticket name in the title. You should also link to the Jira ticket within the pull request description. Once a PR is opened, tests will be run via GitHub Actions. You can read more about the linting and testing tools we use in the READMEs for `backend` and `frontend`. All PRs must pass the pull request checks prior to merging. Additionally, you must receive at least one PR approval prior to merging. Pull requests gets squashed into a single commit upon merging into `main`.

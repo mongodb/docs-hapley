@@ -1,0 +1,26 @@
+repos:
+- repo: https://github.com/psf/black
+  rev: 22.6.0
+  hooks:
+  - id: black
+    name: Format backend
+    files: ^backend/.*\.py
+- repo: https://github.com/PyCQA/flake8
+  rev: 4.0.1
+  hooks:
+  - id: flake8
+    name: Lint backend
+    entry: flake8
+    language: python
+    files: '^backend/.*\.py'
+# Use local command for linting instead of eslint mirror for convenient usage of 
+# configuration file (.eslintrc.json)
+- repo: local
+  hooks:
+  - id: frontend-pre-commit
+    name: Lint and format frontend
+    language: system
+    entry: npm --prefix ./frontend run lint-frontend
+    # lint-staged has its own set of files to process
+    pass_filenames: false
+    verbose: true
