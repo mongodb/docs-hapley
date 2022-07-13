@@ -1,5 +1,6 @@
 from fastapi import APIRouter as DefaultRouter
 
+
 class APIRouter(DefaultRouter):
     def api_route(self, *args, **kwargs):
         parent_decorator = super().api_route(*args, **kwargs)

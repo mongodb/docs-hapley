@@ -5,9 +5,10 @@ from ..router import router as api_router
 from os import getenv
 from .middleware.authorization import Authorization
 
+
 def create_app(settings: Settings, environment: str = getenv("ENVIRONMENT")) -> FastAPI:
     app: FastAPI = FastAPI(settings=settings)
-    app.include_router(api_router, prefix='/api')
+    app.include_router(api_router, prefix="/api")
 
     # Attach necessary middleware depending on the environment
     # Require authorization by default for safety
@@ -17,6 +18,7 @@ def create_app(settings: Settings, environment: str = getenv("ENVIRONMENT")) -> 
         authorization_middleware(app)
     return app
 
+
 def cors_middleware(app: FastAPI) -> None:
     origins: list[str] = ["http://localhost:3000"]
     app.add_middleware(
@@ -24,8 +26,9 @@ def cors_middleware(app: FastAPI) -> None:
         allow_origins=origins,
         allow_credentials=True,
         allow_methods=["*"],
-        allow_headers=["*"]
+        allow_headers=["*"],
     )
+
 
 def authorization_middleware(app) -> None:
     app.add_middleware(Authorization)
