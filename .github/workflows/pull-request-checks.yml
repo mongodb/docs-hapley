@@ -44,8 +44,6 @@ jobs:
       - name: Format and lint
         run: pipenv run format && pipenv run lint
       - name: Run tests
-        env:
-          ENVIRONMENT: 'test'
         run: |
           pipenv run test
 
