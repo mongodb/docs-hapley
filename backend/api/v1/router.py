@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from .routes import hello_world
+from .routes import root
 
 router = APIRouter()
-router.include_router(hello_world.router)
+router.include_router(root.router)

@@ -1,10 +1,12 @@
 from fastapi.testclient import TestClient
+from fastapi import FastAPI
+
 from main import app
 
 
 class FastApiTest(TestClient):
-    def __init__(self):
-        super().__init__(app)
+    def __init__(self, fastapi_app: FastAPI = app):
+        super().__init__(fastapi_app)
         self.base_url += "/api/v1/"
 
     # TestClient uses urljoin, which requires a trailing slash on base_url

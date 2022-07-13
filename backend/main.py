@@ -1,5 +1,5 @@
-from api.core.config import Settings
+from api.core.config import get_settings
 from api.core.factory import create_app
 
-settings = Settings()
+settings = get_settings()
 app = create_app(settings)
