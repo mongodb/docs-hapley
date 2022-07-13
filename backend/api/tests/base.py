@@ -1,13 +1,17 @@
 from fastapi.testclient import TestClient
-from fastapi import FastAPI
-
+from ..core.middleware.authorization import Authorization
 from main import app
 
 
 class FastApiTest(TestClient):
-    def __init__(self, fastapi_app: FastAPI = app):
-        super().__init__(fastapi_app)
+    def __init__(self, with_auth: bool = True):
+        super().__init__(app)
         self.base_url += "/api/v1/"
+        if with_auth:
+            token = Authorization.build_sample_token(
+                email="foo@gmail.com", username="foo"
+            )
+            self.headers = {"Authorization": "Bearer " + token}
 
     # TestClient uses urljoin, which requires a trailing slash on base_url
     # and no leading slash on the second arg. https://stackoverflow.com/questions/69166262/fastapi-adding-route-prefix-to-testclient

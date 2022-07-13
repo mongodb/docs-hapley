@@ -2,11 +2,10 @@ from fastapi import FastAPI
 from .config import Settings
 from starlette.middleware.cors import CORSMiddleware
 from ..router import router as api_router
-from os import getenv
 from .middleware.authorization import Authorization
 
 
-def create_app(settings: Settings, environment: str = getenv("ENVIRONMENT")) -> FastAPI:
+def create_app(settings: Settings) -> FastAPI:
     app: FastAPI = FastAPI(settings=settings)
     app.include_router(api_router, prefix="/api")
 
