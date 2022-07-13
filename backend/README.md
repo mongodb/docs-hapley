@@ -28,10 +28,17 @@ The `--dev` option allows both production and dev packages to be installed.
 
 ### Running Locally
 
-Create a `.env` file within the backend directory. While developing locally, `ENVIRONMENT` should be equal to `development`. This ensures the API middleware does not block your requests because of a missing Okta JWT token. 
+**Generating a JWT Token**:
+The API implements middleware that validates incoming JWT tokens are associated with users who belong to authorized Okta groups. Follow these steps to generate a fake JWT token that can be used for local development:
 
-Then, run:
+1. Create a `.env` file within the backend directory.
+2. Start the local development server with `pipenv run app`
+3. Using Postman, `cURL`, or a similar tool, send a request to the `/api/v1/login` endpoint with `username` and `email` query parameters. For example: `http://localhost:8000/api/v1/login?email=foo@mongodb.com&username=foo`
+4. Create a `JWT_TOKEN` environment variable in `.env`. Set this equal to the token received in the JSON response.
+5. Shut down the development server with Ctrl + C
 
+
+Now, restart the development server with:
 ```
 pipenv run app
 ```
