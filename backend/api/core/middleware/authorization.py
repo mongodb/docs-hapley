@@ -7,6 +7,17 @@ from time import time
 from os import getenv
 
 
+class UnauthorizedOktaGroup(HTTPException):
+    def __init__(self) -> None:
+        super().__init__(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User is not authorized to access this resource.",
+        )
+
+    def __str__(self):
+        return self.detail
+
+
 # Implement custom middleware by overriding BaseHTTPMiddleware.dispatch
 class Authorization(BaseHTTPMiddleware):
 
@@ -30,12 +41,12 @@ class Authorization(BaseHTTPMiddleware):
                 request.state.user = token_data
                 response = await call_next(request)
             else:
-                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
-        except (AttributeError, HTTPException, JWTError):
+                raise UnauthorizedOktaGroup()
+        except (UnauthorizedOktaGroup, JWTError) as e:
             response = JSONResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 content={
-                    "message": "Unauthorized. If developing locally, see the README for instructions on creating a JWT token."
+                    "message": f"Unauthorized. If developing locally, see the README for instructions on creating a JWT token. Error message: {e}"
                 },
             )
         return response
@@ -44,13 +55,16 @@ class Authorization(BaseHTTPMiddleware):
         return auth_headers.split(" ")[1]
 
     @classmethod
-    def build_sample_token(cls, email: str, username: str) -> str:
+    def build_sample_token(
+        cls, email: str, username: str, is_authorized: bool = True
+    ) -> str:
         SECONDS_PER_WEEK = 60 * 60 * 24 * 7
+        groups = list(cls.AUTHORIZED_OKTA_GROUPS) if is_authorized else []
         future_timestamp: int = int(time() + SECONDS_PER_WEEK)
         to_encode: dict = {
             "email": email,
             "sub": username,
-            "groups": list(cls.AUTHORIZED_OKTA_GROUPS),
+            "groups": groups,
             "exp": future_timestamp,
         }
         return jwt.encode(to_encode, "secret")

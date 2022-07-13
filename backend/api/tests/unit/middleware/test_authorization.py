@@ -1,5 +1,6 @@
 from ...base import FastApiTest
 from ....core.config import Settings
+from ....core.middleware.authorization import Authorization
 
 settings = Settings()
 authorized_client = FastApiTest()
@@ -35,6 +36,21 @@ def test_invalid_jwt():
 
     response = client.get("/")
     assert response.status_code == 401
+    assert "Error decoding token claims." in response.json()["message"]
+
+
+def test_invalid_okta_group():
+    client = FastApiTest(with_auth=False)
+    unauthorized_jwt = Authorization.build_sample_token(
+        email="foo@mongodb.com", username="foo", is_authorized=False
+    )
+    client.headers = {"Authorization": "Bearer " + unauthorized_jwt}
+
+    response = client.get("/")
+    assert response.status_code == 401
+    assert (
+        "User is not authorized to access this resource." in response.json()["message"]
+    )
 
 
 def test_valid_jwt():
