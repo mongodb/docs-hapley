@@ -63,6 +63,7 @@ steps:
       context: ./frontend
       registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
       repo: docs/${DRONE_REPO_NAME}/frontend
+      cache_repo: docs/${DRONE_REPO_NAME}/backend/${DRONE_SOURCE_BRANCH}
       build_args:
         - GATSBY_API_URL
       tags:
@@ -86,6 +87,7 @@ steps:
       context: ./backend
       registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
       repo: docs/${DRONE_REPO_NAME}/backend
+      cache_repo: docs/${DRONE_REPO_NAME}/backend/${DRONE_SOURCE_BRANCH}
       tags:
       - ${DRONE_SOURCE_BRANCH}
       - drone-build-${DRONE_BUILD_NUMBER}
@@ -98,21 +100,22 @@ steps:
       event:
       - push
 
-  - name: promote-staging
-    image: drone/cli:1.4.0-alpine
-    commands:
-    - drone build promote mongodb/docs-hapley ${DRONE_BUILD_NUMBER} staging
-    environment:
-      DRONE_SERVER: ${DRONE_SYSTEM_PROTO}://${DRONE_SYSTEM_HOST}
-      DRONE_TOKEN:
-        from_secret: drone_token
-    when:
-      event:
-      - push
+  # - name: promote-staging
+  #   image: drone/cli:1.4.0-alpine
+  #   commands:
+  #   - drone build promote mongodb/docs-hapley ${DRONE_BUILD_NUMBER} staging
+  #   environment:
+  #     DRONE_SERVER: ${DRONE_SYSTEM_PROTO}://${DRONE_SYSTEM_HOST}
+  #     DRONE_TOKEN:
+  #       from_secret: drone_token
+  #   when:
+  #     event:
+  #     - push
 
 trigger:
   branch:
     - main
+    - dop-3124-pipeline-caching
   event:
     - push
 
