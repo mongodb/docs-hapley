@@ -52,31 +52,31 @@ type: kubernetes
 name: build-hapley-staging
 
 steps:
-  - name: publish-staging-frontend-image
-    image: plugins/kaniko-ecr
-    environment:
-      GATSBY_API_URL: https://hapley.docs.staging.corp.mongodb.com/api/v1
-    settings:
-      create_repository: true
-      enable_cache: true
-      dockerfile: ./frontend/Dockerfile
-      context: ./frontend
-      registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
-      repo: docs/${DRONE_REPO_NAME}/frontend
-      cache_repo: docs/${DRONE_REPO_NAME}/frontend
-      build_args:
-        - GATSBY_API_URL
-      tags:
-      - ${DRONE_SOURCE_BRANCH}
-      - drone-build-${DRONE_BUILD_NUMBER}
-      - ${DRONE_SOURCE_BRANCH}-${DRONE_COMMIT_SHA:0:7}
-      access_key:
-        from_secret: ecr_access_key
-      secret_key:
-        from_secret: ecr_secret_key
-    when:
-      event:
-      - push
+  # - name: publish-staging-frontend-image
+  #   image: plugins/kaniko-ecr
+  #   environment:
+  #     GATSBY_API_URL: https://hapley.docs.staging.corp.mongodb.com/api/v1
+  #   settings:
+  #     create_repository: true
+  #     enable_cache: true
+  #     dockerfile: ./frontend/Dockerfile
+  #     context: ./frontend
+  #     registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
+  #     repo: docs/${DRONE_REPO_NAME}/frontend
+  #     cache_repo: docs/${DRONE_REPO_NAME}/frontend
+  #     build_args:
+  #       - GATSBY_API_URL
+  #     tags:
+  #     - ${DRONE_SOURCE_BRANCH}
+  #     - drone-build-${DRONE_BUILD_NUMBER}
+  #     - ${DRONE_SOURCE_BRANCH}-${DRONE_COMMIT_SHA:0:7}
+  #     access_key:
+  #       from_secret: ecr_access_key
+  #     secret_key:
+  #       from_secret: ecr_secret_key
+  #   when:
+  #     event:
+  #     - push
     
   - name: publish-staging-backend-image
     image: plugins/kaniko-ecr
@@ -87,11 +87,11 @@ steps:
       context: ./backend
       registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
       repo: docs/${DRONE_REPO_NAME}/backend
-      cache_repo: docs/${DRONE_REPO_NAME}/backend
+      # cache_repo: docs/${DRONE_REPO_NAME}/backend
       tags:
-      - ${DRONE_SOURCE_BRANCH}
+      - ${DRONE_SOURCE_BRANCH//\//-}
+      - ${DRONE_SOURCE_BRANCH//\//-}-${DRONE_COMMIT_SHA:0:7}
       - drone-build-${DRONE_BUILD_NUMBER}
-      - ${DRONE_SOURCE_BRANCH}-${DRONE_COMMIT_SHA:0:7}
       access_key:
         from_secret: ecr_access_key
       secret_key:
