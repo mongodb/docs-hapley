@@ -63,7 +63,7 @@ steps:
       context: ./frontend
       registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
       repo: docs/${DRONE_REPO_NAME}/frontend
-      cache_repo: docs/${DRONE_REPO_NAME}/backend/${DRONE_SOURCE_BRANCH}
+      cache_repo: docs/${DRONE_REPO_NAME}/frontend:${DRONE_SOURCE_BRANCH}
       build_args:
         - GATSBY_API_URL
       tags:
@@ -87,7 +87,7 @@ steps:
       context: ./backend
       registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
       repo: docs/${DRONE_REPO_NAME}/backend
-      cache_repo: docs/${DRONE_REPO_NAME}/backend/${DRONE_SOURCE_BRANCH}
+      cache_repo: docs/${DRONE_REPO_NAME}/backend:${DRONE_SOURCE_BRANCH}
       tags:
       - ${DRONE_SOURCE_BRANCH}
       - drone-build-${DRONE_BUILD_NUMBER}
