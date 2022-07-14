@@ -53,7 +53,7 @@ class Authorization(BaseHTTPMiddleware):
             response = JSONResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 content={
-                    "message": f"Unauthorized. Error message: {e}. {context}",
+                    "message": f"Unauthorized. Error message: {e} {context}",
                 },
             )
         return response
