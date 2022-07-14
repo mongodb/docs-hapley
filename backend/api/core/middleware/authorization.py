@@ -22,11 +22,11 @@ class UnauthorizedOktaGroup(HTTPException):
 class Authorization(BaseHTTPMiddleware):
 
     AUTHORIZED_OKTA_GROUPS: set = set(["10gen-docs-platform"])
-    LOGIN_PATH = "/api/v1/login"
+    SAMPLE_TOKEN_PATH = "/api/v1/sample-token"
 
     async def dispatch(self, request: Request, call_next):
-        # Allow login requests to proceed without authorization
-        if request.url.path == self.LOGIN_PATH:
+        # Allow sample token requests to proceed without authorization
+        if request.url.path == self.SAMPLE_TOKEN_PATH:
             return await call_next(request)
 
         try:
@@ -43,10 +43,15 @@ class Authorization(BaseHTTPMiddleware):
             else:
                 raise UnauthorizedOktaGroup()
         except (UnauthorizedOktaGroup, JWTError) as e:
+            context = (
+                "See README for instructions on creating a JWT token if developing locally"
+                if e.__class__ == JWTError
+                else "Ensure you are a member of an authorized Okta group"
+            )
             response = JSONResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 content={
-                    "message": f"Unauthorized. If developing locally, see the README for instructions on creating a JWT token. Error message: {e}"
+                    "message": f"Unauthorized. Error message: {e}. {context}",
                 },
             )
         return response

@@ -33,7 +33,7 @@ The API implements middleware that validates incoming JWT tokens are associated 
 
 1. Create a `.env` file within the backend directory.
 2. Start the local development server with `pipenv run app`
-3. Using Postman, `cURL`, or a similar tool, send a request to the `/api/v1/login` endpoint with `username` and `email` query parameters. For example: `http://localhost:8000/api/v1/login?email=foo@mongodb.com&username=foo`
+3. Using Postman, `cURL`, or a similar tool, send a request to the `/api/v1/sample-token` endpoint with `username` and `email` query parameters. For example: `http://localhost:8000/api/v1/sample_token?email=foo@mongodb.com&username=foo`
 4. Create a `JWT_TOKEN` environment variable in `.env`. Set this equal to the token received in the JSON response.
 5. Shut down the development server with Ctrl + C
 
