@@ -1,0 +1,381 @@
+[{
+  "_id": {
+    "$oid": "5dc2e2c61c9d4400001ec4ab"
+  },
+  "github_username": "i80and",
+  "slack_user_id": "U0V2WGRFC",
+  "repos": [
+    "10gen/cloud-docs",
+    "mongodb/docs",
+    "mongodb/docs-mongodb-shell",
+    "mongodb/docs-bi-connector"
+  ],
+  "email": "andrew.aldridge@10gen.com"
+},{
+  "_id": {
+    "$oid": "5faae9ce9505771886986df5"
+  },
+  "github_username": "schmalliso",
+  "slack_user_id": "U0V6H55D2",
+  "repos": [
+    "10gen/cloud-docs-osb",
+    "10gen/docs-kafka-connector",
+    "mongodb/docs-realm",
+    "mongodb/docs",
+    "schmallisoi/docs-allison",
+    "10gen/cloud-docs",
+    "mongodb/docs-compass",
+    "mongodb/docs-node",
+    "mongodb/docs-spark-connector",
+    "mongodb/docs-golang",
+    "mongodb/docs-ecosystem",
+    "mongodb/docs-mongodb-vscode",
+    "10gen/docs-datalake",
+    "10gen/cloudgov-docs",
+    "mongodb/docs-bi-connector",
+    "10gen/docs-charts",
+    "mongodb/docs-commandline-tools",
+    "mongodb/docs-java",
+    "mongodb/docs-landing",
+    "10gen/docs-mongocli",
+    "mongodb/docs-visual-studio-extension",
+    "mongodb/docs-mongodb-shell",
+    "mongodb/docs-cluster-to-cluster-sync",
+    "mongodb/docs-app-services"
+  ],
+  "email": "allison.moore@10gen.com"
+},{
+  "_id": {
+    "$oid": "60493e6335418f5be87f20c9"
+  },
+  "github_username": "rayangler",
+  "slack_user_id": "UKF72EJRF",
+  "repos": [
+    "mongodb/docs-commandline-tools",
+    "mongodb/docs-landing",
+    "10gen/devhub-content",
+    "10gen/docs-datalake",
+    "mongodb/docs-ecosystem",
+    "mongodb/docs-mongodb-shell",
+    "mongodb/docs-mongodb-vscode",
+    "mongodb/docs-node",
+    "mongodb/docs-realm",
+    "10gen/docs-charts",
+    "10gen/docs-mongocli",
+    "mongodb/docs-bi-connector",
+    "mongodb/docs-spark-connector",
+    "10gen/cloud-docs-osb",
+    "mongodb/docs-compass",
+    "mongodb/docs",
+    "10gen/cloud-docs",
+    "mongodb/docs-java",
+    "rayangler/docs",
+    "rayangler/docs-landing",
+    "mongodb/docs-golang",
+    "10gen/docs-tutorials",
+    "rayangler/docs-tutorials",
+    "mongodb/docs-visual-studio-extension",
+    "10gen/cloudgov-docs",
+    "mongodb/docs-ruby",
+    "rayangler/docs-realm",
+    "10gen/docs-kafka-connector",
+    "mongodb/docs-atlas-cli",
+    "mongodb/docs-app-services"
+  ],
+  "email": "raymund.rodriguez@mongodb.com"
+},{
+  "_id": {
+    "$oid": "609ebdd0659c3494dafd066c"
+  },
+  "slack_user_id": "U01S32X6GJV",
+  "github_username": "casthewiz",
+  "repos": [
+    "mongodb/docs-landing",
+    "10gen/devhub-content",
+    "10gen/docs-datalake",
+    "mongodb/docs-ecosystem",
+    "mongodb/docs-mongodb-shell",
+    "mongodb/docs-mongodb-vscode",
+    "mongodb/docs-node",
+    "mongodb/docs-realm",
+    "10gen/docs-charts",
+    "10gen/docs-mongocli",
+    "mongodb/docs-bi-connector",
+    "mongodb/docs-spark-connector",
+    "10gen/cloud-docs-osb",
+    "mongodb/docs-compass",
+    "10gen/docs-kafka-connector",
+    "mongodb/docs",
+    "10gen/cloud-docs",
+    "mongodb/docs-compass",
+    "10gen/cloudgov-docs"
+  ],
+  "email": "cassidy.schaufele@mongodb.com"
+},{
+  "_id": {
+    "$oid": "60d4d564902b4325f9f8df25"
+  },
+  "slack_user_id": "URF5PJS6Q",
+  "github_username": "mango-db",
+  "repos": [
+    "mongodb/docs-landing",
+    "10gen/devhub-content",
+    "10gen/docs-datalake",
+    "mongodb/docs-ecosystem",
+    "mongodb/docs-mongodb-shell",
+    "mongodb/docs-mongodb-vscode",
+    "mongodb/docs-node",
+    "mongodb/docs-realm",
+    "10gen/docs-charts",
+    "10gen/docs-mongocli",
+    "mongodb/docs-bi-connector",
+    "mongodb/docs-spark-connector",
+    "10gen/cloud-docs-osb",
+    "mongodb/docs-compass"
+  ],
+  "email": "claire.goeckner-wald@10gen.com"
+},{
+  "_id": {
+    "$oid": "61521b464c42d66cd0c346dd"
+  },
+  "slack_user_id": "U024NPB7ZDZ",
+  "github_username": "ianf-mongodb",
+  "repos": [
+    "mongodb/docs-bi-connector",
+    "mongodb/docs-ecosystem",
+    "mongodb/docs-node",
+    "mongodb/docs-realm",
+    "mongodb/docs-commandline-tools",
+    "10gen/docs-k8s-operator",
+    "10gen/docs-kafka-connector",
+    "mongodb/docs-spark-connector",
+    "10gen/docs-tutorials",
+    "mongodb/docs-mongodb-vscode",
+    "mongodb/docs-mongodb-shell",
+    "10gen/docs-mongocli",
+    "mongodb/docs-java",
+    "mongodb/docs-php-library",
+    "mongodb/docs-landing",
+    "10gen/docs-charts",
+    "10gen/cloud-docs",
+    "10gen/docs-datalake",
+    "10gen/cloud-docs-osb",
+    "mongodb/docs-compass",
+    "10gen/cloudgov-docs",
+    "mongodb/docs",
+    "10gen/mms-docs",
+    "mongodb-university/realm-docs-sdk-java",
+    "10gen/devhub-content",
+    "mongodb/docs-golang",
+    "ianf-mongodb/docs"
+  ],
+  "email": "ian.fogelman@mongodb.com"
+},{
+  "_id": {
+    "$oid": "61708195a95123a866130102"
+  },
+  "github_username": "JuliaMongo",
+  "slack_user_id": "U01C5FU4HFW",
+  "repos": [
+    "10gen/docs-charts",
+    "mongodb/docs-spark-connector",
+    "mongodb/docs-compass",
+    "10gen/cloud-docs",
+    "10gen/docs-mongocli",
+    "mongodb/docs-bi-connector",
+    "10gen/docs-datalake",
+    "mongodb/docs-mongodb-vscode",
+    "mongodb/docs-mongodb-shell"
+  ],
+  "email": "julia.malkin@mongodb.com"
+},{
+  "_id": {
+    "$oid": "61708195a95123a8661300fe"
+  },
+  "slack_user_id": "U1GELR1RD",
+  "github_username": "jdestefano-mongo",
+  "repos": [
+    "10gen/docs-datalake",
+    "mongodb/docs-mongodb-shell",
+    "mongodb/docs-mongodb-vscode",
+    "mongodb/docs-ecosystem",
+    "mongodb/docs-realm",
+    "mongodb/docs-landing",
+    "mongodb/docs-bi-connector",
+    "mongodb/docs-spark-connector",
+    "10gen/docs-kafka-connector",
+    "10gen/cloud-docs",
+    "10gen/docs-mongocli",
+    "mongodb/docs",
+    "10gen/cloud-docs-osb",
+    "10gen/docs-charts",
+    "mongodb/docs-compass",
+    "mongodb/docs-commandline-tools"
+  ],
+  "email": "jonathan.destefano@mongodb.com"
+},{
+  "_id": {
+    "$oid": "61708195a95123a8661300ff"
+  },
+  "slack_user_id": "UKVDLBEAD",
+  "github_username": "ccho-mongodb",
+  "repos": [
+    "mongodb/docs-ecosystem",
+    "mongodb/docs-node",
+    "10gen/docs-kafka-connector",
+    "mongodb/docs-java",
+    "mongodb/docs-golang"
+  ],
+  "email": "chris.cho@10gen.com"
+},{
+  "_id": {
+    "$oid": "61708195a95123a866130101"
+  },
+  "slack_user_id": "U0V3DT30A",
+  "github_username": "atsansone",
+  "repos": [
+    "10gen/docs-datalake",
+    "mongodb/docs-mongodb-shell",
+    "mongodb/docs-bi-connector",
+    "mongodb/docs-spark-connector",
+    "10gen/docs-mongocli",
+    "10gen/cloud-docs-osb",
+    "10gen/cloud-docs",
+    "10gen/mms-docs"
+  ],
+  "email": "tony.sansone@10gen.com"
+},{
+  "_id": {
+    "$oid": "61708195a95123a866130100"
+  },
+  "github_username": "corryroot",
+  "slack_user_id": "U01BJCMHJR5",
+  "repos": [
+    "10gen/docs-charts",
+    "mongodb/docs-spark-connector",
+    "mongodb/docs-compass",
+    "10gen/cloud-docs",
+    "10gen/docs-mongocli",
+    "mongodb/docs-bi-connector",
+    "10gen/docs-datalake",
+    "mongodb/docs-mongodb-vscode",
+    "mongodb/docs-mongodb-shell"
+  ],
+  "email": "corry.root@mongodb.com"
+},{
+  "_id": {
+    "$oid": "6171aafa408aa72e206c57b3"
+  },
+  "github_username": "nlarew",
+  "slack_user_id": "U5FM0SX9N",
+  "repos": [
+    "mongodb/docs-realm",
+    "nlarew/docs-realm"
+  ],
+  "email": "nick.larew@mongodb.com"
+},{
+  "_id": {
+    "$oid": "620400fae8408673d3dc8a29"
+  },
+  "slack_user_id": "U01QVEWPL5B",
+  "github_username": "GuruPKK",
+  "repos": [
+    "mongodb/docs-atlas-cli"
+  ],
+  "email": "guru.kanthasamy@mongodb.com"
+},{
+  "_id": {
+    "$oid": "6261c86d946f057fed4967a6"
+  },
+  "github_username": "gjchong25",
+  "slack_user_id": "U015S53G8TT",
+  "repos": [
+    "10gen/cloud-docs-osb",
+    "10gen/docs-kafka-connector",
+    "mongodb/docs-realm",
+    "mongodb/docs",
+    "schmallisoi/docs-allison",
+    "10gen/cloud-docs",
+    "mongodb/docs-compass",
+    "mongodb/docs-node",
+    "mongodb/docs-spark-connector",
+    "mongodb/docs-golang",
+    "mongodb/docs-ecosystem",
+    "mongodb/docs-mongodb-vscode",
+    "10gen/docs-datalake",
+    "10gen/cloudgov-docs",
+    "mongodb/docs-bi-connector",
+    "10gen/docs-charts",
+    "mongodb/docs-commandline-tools",
+    "mongodb/docs-java",
+    "mongodb/docs-landing",
+    "10gen/docs-mongocli",
+    "mongodb/docs-visual-studio-extension",
+    "mongodb/docs-mongodb-shell"
+  ],
+  "email": "grace.chong@mongodb.com"
+},{
+  "_id": {
+    "$oid": "627286da6a6e823c83b56828"
+  },
+  "slack_user_id": "U01JF2FST8B",
+  "github_username": "rkhullar-mongodb",
+  "email": "rajan.khullar@mongodb.com",
+  "repos": [
+    "mongodb/docs",
+    "10gen/cloud-docs",
+    "mongodb/docs-mongodb-shell",
+    "mongodb/docs-landing"
+  ]
+},{
+  "_id": {
+    "$oid": "62b33f6349f486a76dc1616a"
+  },
+  "github_username": "drew-beckmen",
+  "slack_user_id": "U03J33KBUCW",
+  "repos": [
+    "10gen/docs-tutorials",
+    "mongodb/docs-404"
+  ],
+  "email": "drew.beckmen@mongodb.com"
+},{
+  "_id": {
+    "$oid": "62b3768fafa9b6a78b29f1d0"
+  },
+  "github_username": "anabellabuckvar",
+  "slack_user_id": "U03JNB56DK3",
+  "repos": [
+    "10gen/docs-tutorials",
+    "mongodb/docs",
+    "mongodb/docs-landing"
+  ],
+  "email": "anabella.buckvar@mongodb.com"
+},{
+  "_id": {
+    "$oid": "62c70425ccc1aea32246f690"
+  },
+  "slack_user_id": "U03NNGX1EF2",
+  "github_username": "mmeigs",
+  "repos": [
+    "mongodb/docs-landing",
+    "10gen/devhub-content",
+    "10gen/docs-datalake",
+    "mongodb/docs-ecosystem",
+    "mongodb/docs-mongodb-shell",
+    "mongodb/docs-mongodb-vscode",
+    "mongodb/docs-node",
+    "mongodb/docs-realm",
+    "10gen/docs-charts",
+    "10gen/docs-mongocli",
+    "mongodb/docs-bi-connector",
+    "mongodb/docs-spark-connector",
+    "10gen/cloud-docs-osb",
+    "mongodb/docs-compass",
+    "10gen/docs-kafka-connector",
+    "mongodb/docs",
+    "10gen/cloud-docs",
+    "mongodb/docs-compass",
+    "10gen/cloudgov-docs"
+  ],
+  "email": "matt.meigs@mongodb.com"
+}]

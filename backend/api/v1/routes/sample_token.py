@@ -5,6 +5,6 @@ from ...core.middleware.authorization import Authorization
 router = APIRouter()
 
 
-@router.get("/sample-token")
+@router.get("/sample-token", tags=["local-development"])
 async def generate_sample_token(email: str, username: str):
     return {"token": Authorization.build_sample_token(email, username)}
