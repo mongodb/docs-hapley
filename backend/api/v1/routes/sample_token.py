@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from ...core.middleware.authorization import Authorization
 
 router = APIRouter()

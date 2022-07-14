@@ -1,10 +1,12 @@
-from fastapi import Request, status, HTTPException
-from starlette.middleware.base import BaseHTTPMiddleware
-from fastapi.responses import JSONResponse
-from ..util.jwt import TokenData, parse_jwt
-from jose import JWTError, jwt
-from time import time
 from os import getenv
+from time import time
+
+from fastapi import HTTPException, Request, status
+from fastapi.responses import JSONResponse
+from jose import JWTError, jwt
+from starlette.middleware.base import BaseHTTPMiddleware
+
+from ..util.jwt import TokenData, parse_jwt
 
 
 class UnauthorizedOktaGroup(HTTPException):

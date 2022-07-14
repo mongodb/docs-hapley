@@ -1,6 +1,8 @@
 from fastapi.testclient import TestClient
-from ..core.middleware.authorization import Authorization
+
 from main import app
+
+from ..core.middleware.authorization import Authorization
 
 
 class FastApiTest(TestClient):

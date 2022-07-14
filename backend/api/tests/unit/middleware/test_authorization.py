@@ -1,6 +1,6 @@
-from ...base import FastApiTest
 from ....core.config import Settings
 from ....core.middleware.authorization import Authorization
+from ...base import FastApiTest
 
 settings = Settings()
 authorized_client = FastApiTest()

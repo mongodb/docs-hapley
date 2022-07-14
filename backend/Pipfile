@@ -16,6 +16,7 @@ requests = "~=2.28.0"
 python-dotenv = "~=0.20.0"
 flake8 = "~=4.0.0"
 black = "~=22.6.0"
+isort = "~=5.10.0"
 
 [requires]
 python_version = "3.10"
@@ -23,5 +24,5 @@ python_version = "3.10"
 [scripts]
 app = "uvicorn main:app --reload"
 test = "pipenv run pytest --cov=. api/tests/unit"
-format = "pipenv run black ."
+format = "pipenv run isort . && pipenv run black ."
 lint = "pipenv run flake8 ."

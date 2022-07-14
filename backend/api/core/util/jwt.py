@@ -1,6 +1,7 @@
-from jose import jwt
-from datetime import datetime as dt
 from dataclasses import dataclass
+from datetime import datetime as dt
+
+from jose import jwt
 
 
 @dataclass

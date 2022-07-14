@@ -1,7 +1,8 @@
 from fastapi import FastAPI
-from .config import Settings
 from starlette.middleware.cors import CORSMiddleware
+
 from ..router import router as api_router
+from .config import Settings
 from .middleware.authorization import Authorization
 
 
