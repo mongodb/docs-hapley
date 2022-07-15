@@ -1,6 +1,12 @@
 service:
   targetPort: 8000
 
+env:
+  MONGO_DB_NAME: pool_test
+
+envSecrets:
+  MONGO_URI: docs-hapley
+
 ingress:
   enabled: true
   path: /api/v1

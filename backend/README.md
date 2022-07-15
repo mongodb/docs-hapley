@@ -81,15 +81,14 @@ docker run -dp 8000:8000 hapley-backend
 The above commands will create and tag an image using the Dockerfile found in
 the `backend` directory. The image is then ran within a container for local development.
 
-Go to http://127.0.0.1:8000/ to access routes.
+Go to http://127.0.0.1:8000/api/v1 to access routes.
 
 (TODO: Update instructions for Docker Compose and consolidate with frontend.)
 
 ### Accessing OpenAPI Docs
 
 FastAPI has a feature that generates an OpenAPI schema. The schema can be found
-on http://127.0.0.1:8000/openapi.json. Go to http://127.0.0.1:8000/docs if you'd
-prefer to see the API documentation interactively.
+on http://127.0.0.1:8000/api/v1/openapi.json. Go to http://127.0.0.1:8000/api/v1/docs if you'd prefer to see the API documentation interactively.
 
 Additional information about FastAPI's OpenAPI generation can be found
 [here](https://fastapi.tiangolo.com/tutorial/first-steps/#openapi).
