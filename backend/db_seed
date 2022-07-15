@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "Starting script..."
+
+echo "Exporting data from Atlas..."
+mongoexport --db=pool_test --collection=entitlements --type=json --out=./entitlements.json --uri="mongodb+srv://cluster0.ylwlz.mongodb.net" --username="$ATLAS_USERNAME"
+mongoexport --db=pool_test --collection=repos_branches --type=json --out=./repos_branches.json --uri="mongodb+srv://cluster0.ylwlz.mongodb.net" --username="$ATLAS_USERNAME"
+
+echo "Loading seed data..."
+mongoimport --type json --drop -d hapley-dev -c entitlements entitlements.json
+mongoimport --type json --drop -d hapley-dev -c repos_branches repos_branches.json
+
+echo "Deleting temporary files..."
+rm ./entitlements.json
+rm ./repos_branches.json
+
+echo "Done."

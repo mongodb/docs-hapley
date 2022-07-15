@@ -31,7 +31,11 @@ First ensure you've installed and configured `kubectl` according to [these instr
 
 **AWS Parameter Store**:
 
-Although we store application secrets in k8s, we leverage AWS Param Store to share long term secrets. You can find the values in AWS Param Store [here](https://us-east-2.console.aws.amazon.com/systems-manager/parameters/?region=us-east-2&tab=Table#list_parameter_filters=Name:Contains:hapley). If you add a new secret to k8s or Drone, add it to param store as well for team visibility and to maintain
+Although we store application secrets in k8s, we leverage AWS Param Store to share long term secrets. You can find the values in AWS Param Store [here](https://us-east-2.console.aws.amazon.com/systems-manager/parameters/?region=us-east-2&tab=Table#list_parameter_filters=Name:Contains:hapley). If you add a new secret to k8s or Drone, add it to param store as well for team visibility and to maintain a single source of truth.
+
+**Kanopy Portal**:
+
+All k8s secrets for the `docs` namespace can be accessed via the Kanopy portal. The staging portal is [here](https://kanopy.staging.corp.mongodb.com/docs/secrets/docs-hapley), and the production portal is [here](https://kanopy.prod.corp.mongodb.com/docs/secrets/docs-hapley).
 
 ## Development and Deployment Workflow
 

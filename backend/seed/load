@@ -1,6 +1,0 @@
-#!/bin/bash
-
-echo "Loading seed data..."
-mongoimport --type json --jsonArray --drop -d hapley-dev -c entitlements entitlements.json
-mongoimport --type json --jsonArray --drop -d hapley-dev -c repos_branches repos_branches.json
-echo "Seed data loaded."

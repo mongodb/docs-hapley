@@ -28,26 +28,39 @@ The `--dev` option allows both production and dev packages to be installed.
 
 ### Running Locally
 
-**Generating a JWT Token**:
+#### Generating a JWT Token
 The API implements middleware that validates incoming JWT tokens are associated with users who belong to authorized Okta groups. Follow these steps to generate a fake JWT token that can be used for local development:
 
 1. Create a `.env` file within the backend directory.
 2. Start the local development server with `pipenv run app`
-3. Using Postman, `cURL`, or a similar tool, send a request to the `/api/v1/sample-token` endpoint with `username` and `email` query parameters. For example: `http://localhost:8000/api/v1/sample_token?email=foo@mongodb.com&username=foo`
+3. Using Postman, `cURL`, or a similar tool, send a request to the `/api/v1/sample-token` endpoint with `username` and `email` query parameters. For example: `http://localhost:8000/api/v1/sample-token?email=foo@mongodb.com&username=foo`
 4. Create a `JWT_TOKEN` environment variable in `.env`. Set this equal to the token received in the JSON response.
 5. Shut down the development server with Ctrl + C
 
-**Seeding the Database**:
+#### Database Connection
 
-Before you begin these steps, ensure that you've installed the MongoDB database and shell on your computer. You can find instructions for installing MongoDB [here](https://www.mongodb.com/docs/manual/installation/) and instructions for installing `mongosh` [here](https://www.mongodb.com/docs/mongodb-shell/install/).
+We provide two options for database connection while working locally. You can either connect to a local instance of `mongod` or you can connect to an Atlas database. We will provide instructions for both.
+
+**Connecting to Mongo Locally**:
+
+Before you begin these steps, ensure that you've installed the MongoDB database and shell on your computer. You can find instructions for installing MongoDB [here](https://www.mongodb.com/docs/manual/installation/) and instructions for installing `mongosh` [here](https://www.mongodb.com/docs/mongodb-shell/install/). You'll want to install the free MongoDB Community Edition.
 
 After installing MongoDB, don't forget to run it to start the `mongod` process. The command for running on macOS would be `brew services start mongodb-community@<version #>`.
 
 To verify that the installations were successful, run the command `mongosh`. The Mongo shell should connect to your local `mongod` process automatically.
 
-Now, `cd` into the `seed` directory and run `./load`. This loads seed data from two JSON files into collections called `entitlements` and `repos_branches` within a `hapley-dev` database.
+Now you're ready to seed your database locally. Follow these steps:
+1. From the `backend` repository, run `ATLAS_USERNAME=<username-here> ./db_seed`. `ATLAS_USERNAME` should be the database username you normally use to connect to the docs platform cluster.
+2. The `db_seed` script will prompt you for your database password twice.
+3. After entering your password twice, the script will download data from Atlas and load it into your local MongoDB instance.
+
+You should now have seed data in collections called `entitlements` and `repos_branches` within a `hapley-dev` database. You can verify setup worked correctly by connecting to `mongodb://localhost:27017` in Compass.
 
 Finally, add `MONGO_URI` and `MONGO_DB_NAME` to your `.env` file. `MONGO_URI` should be set to `mongodb://localhost:27017`, and `MONGO_DB_NAME` should equal `hapley-dev`.
+
+**Connecting via Atlas**:
+
+If you'd like to develop using sample data in Atlas, set `MONGO_URI` in your `.env` file to `mongodb+srv://<db-username>:<db-password>@cluster0.ylwlz.mongodb.net`, and set `MONGO_DB_NAME` to `hapley-dev`.
 
 **Starting the Server**:
 
@@ -95,7 +108,7 @@ Additional information about FastAPI's OpenAPI generation can be found
 
 ## Testing
 
-All tests are located in the `tests/` directory and can be run with `pipenv` and
+All tests are located in the `api/tests/` directory and can be run with `pipenv` and
 `pytest`.
 
 From the `backend/` directory, use the following to run all tests:
@@ -107,13 +120,13 @@ pipenv run test
 To run all tests within a specific file:
 
 ```
-pipenv run test -- tests/path/to/test.py
+pipenv run test -- api/tests/path/to/test.py
 ```
 
 To run a specific test:
 
 ```
-pipenv run test -- tests/path/to/test.py::test_name
+pipenv run test -- api/tests/path/to/test.py::test_name
 ```
 
 See the [pytest docs](https://docs.pytest.org/en/7.1.x/how-to/usage.html) for

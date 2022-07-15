@@ -1,4 +1,4 @@
-from ....core.config import Settings
+from ....core.config import get_settings
 from ....core.middleware.authorization import Authorization
 from ...base import FastApiTest
 
@@ -9,7 +9,7 @@ from ...base import FastApiTest
 """
 
 unauthorized_client = FastApiTest(with_auth=False)
-authorizd_client = FastApiTest()
+authorized_client = FastApiTest()
 
 
 def test_sample_token():
@@ -20,7 +20,7 @@ def test_sample_token():
 
 
 def test_sample_jwt():
-    settings = Settings()
+    settings = get_settings()
     token_response = unauthorized_client.get(
         "/sample-token?email=foo@gmail.com&username=foo"
     )
@@ -66,7 +66,7 @@ def test_invalid_okta_group():
 
 
 def test_valid_jwt():
-    authorizd_client = FastApiTest()
+    authorized_client = FastApiTest()
 
-    response = authorizd_client.get("/")
+    response = authorized_client.get("/")
     assert response.status_code == 200
