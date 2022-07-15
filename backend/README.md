@@ -47,7 +47,7 @@ To verify that the installations were successful, run the command `mongosh`. The
 
 Now, `cd` into the `seed` directory and run `./load`. This loads seed data from two JSON files into collections called `entitlements` and `repos_branches` within a `hapley-dev` database.
 
-Finally, add `MONGO_URI` and `MONGO_DB_NAME` to your `.env` file. `MONG_URI` should be set to `mongodb://localhost:27017`, and `MONGO_DB_NAME` should equal `hapley-dev`.
+Finally, add `MONGO_URI` and `MONGO_DB_NAME` to your `.env` file. `MONGO_URI` should be set to `mongodb://localhost:27017`, and `MONGO_DB_NAME` should equal `hapley-dev`.
 
 **Starting the Server**:
 

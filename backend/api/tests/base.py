@@ -5,6 +5,7 @@ from main import app
 from ..core.middleware.authorization import Authorization
 
 
+# Custom TestClient that accounts for custom middleware & API structure
 class FastApiTest(TestClient):
     def __init__(self, with_auth: bool = True):
         super().__init__(app)
