@@ -10,6 +10,7 @@ from ...base import FastApiTest
 
 unauthorized_client = FastApiTest(with_auth=False)
 
+
 def test_sample_token():
     response = unauthorized_client.get("/sample-token?email=foo@gmail.com&username=foo")
 
