@@ -1,18 +1,27 @@
-from fastapi import FastAPI
-from starlette.middleware.cors import CORSMiddleware
+from beanie import init_beanie
+from motor import motor_asyncio
+from pymongo.errors import ConfigurationError, InvalidName
 
-from routers import hello_world
+from api.core.config import get_settings
+from api.core.factory import create_app
+from api.model.entitlement import Entitlement
 
-app = FastAPI()
+settings = get_settings()
+app = create_app(settings)
 
-# Prevent CORS errors in local development
-origins = ["http://localhost:3000"]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
-app.include_router(hello_world.router)
+@app.on_event("startup")
+async def startup_db_client():
+    try:
+        client = motor_asyncio.AsyncIOMotorClient(settings.mongo_uri)
+        await init_beanie(
+            database=client[settings.mongo_db_name], document_models=[Entitlement]
+        )
+    except (ConfigurationError):
+        raise ConfigurationError(
+            "FastAPI encountered an error on startup. Did you set MONGO_URI in your .env file?"
+        )
+    except (InvalidName):
+        raise InvalidName(
+            "FastAPI encountered an error on startup. Did you set MONGO_DB_NAME in your .env file?"
+        )
