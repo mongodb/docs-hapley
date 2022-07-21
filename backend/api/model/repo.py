@@ -18,7 +18,7 @@ class Group(BaseModel):
 
 
 class DefaultRepoFields:
-    """Default fields for a repo document and its fields."""
+    """Default fields for a repo document and its views."""
 
     name: str = Field(alias="repoName")
     versions: list[Version] = Field(alias="branches")
@@ -41,3 +41,8 @@ class RepoGroupView(BaseModel):
 
     name: str = DefaultRepoFields.name
     groups: list[Group] | None
+
+
+async def insert_new_group(repo_name: str, group: Group):
+    repo = await Repo.find_one(Repo.name == repo_name)
+    await repo.update({"$push": {"groups": group}})
