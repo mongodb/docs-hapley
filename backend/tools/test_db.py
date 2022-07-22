@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 from pymongo import InsertOne, MongoClient
 
 LOCAL_URI = "mongodb://localhost:27017"

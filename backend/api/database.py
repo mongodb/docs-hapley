@@ -5,7 +5,6 @@ from pymongo.errors import ConfigurationError, InvalidName
 from api.core.config import Settings
 from api.model.entitlement import Entitlement
 
-
 ALL_DOCUMENT_MODELS = [Entitlement]
 
 
