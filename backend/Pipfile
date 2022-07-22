@@ -25,6 +25,6 @@ python_version = "3.10"
 
 [scripts]
 app = "uvicorn main:app --reload"
-test = "pipenv run pytest --cov=./api api/tests/unit"
+test = "pipenv run pytest --cov=./api --cov-config=setup.cfg api/tests/unit"
 format = "pipenv run isort . && pipenv run black ."
 lint = "pipenv run flake8 ."
