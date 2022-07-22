@@ -43,6 +43,8 @@ jobs:
           pipenv install --dev
       - name: Format and lint
         run: pipenv run format && pipenv run lint
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.7.0
       - name: Run tests
         run: |
           pipenv run test
