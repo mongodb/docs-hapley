@@ -1,4 +1,4 @@
 [
-  { "email": "foo@gmail.com" },
-  { "email": "test@mongodb.com" }
+  { "email": "foo@gmail.com", "github_username": "foo_git", "repos": ["docs-landing"], "slack_user_id": "0" },
+  { "email": "test@mongodb.com", "github_username": "test_git", "repos": ["docs", "docs-landing"], "slack_user_id": "1"  }
 ]

@@ -1,14 +1,23 @@
 from fastapi.testclient import TestClient
-
-from main import app
+from api.core.config import Settings
+from api.core.factory import create_app
+from api.database import start_db_client
 
 from ..core.middleware.authorization import Authorization
+
+settings = Settings(mongo_uri="mongodb://localhost:27017", mongo_db_name="hapley_test")
+test_app = create_app(settings)
+
+
+@test_app.on_event("startup")
+async def startup_test_app():
+    await start_db_client(settings)
 
 
 # Custom TestClient that accounts for custom middleware & API structure
 class FastApiTest(TestClient):
     def __init__(self, with_auth: bool = True):
-        super().__init__(app)
+        super().__init__(test_app)
         self.base_url += "/api/v1/"
         if with_auth:
             token = Authorization.build_sample_token(
