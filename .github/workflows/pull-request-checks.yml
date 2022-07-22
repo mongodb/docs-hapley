@@ -44,7 +44,7 @@ jobs:
       - name: Format and lint
         run: pipenv run format && pipenv run lint
       - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.7.0
+        run: docker run -d -p 27017:27017 --name example-mongo mongo:latest
       - name: Run tests
         run: |
           pipenv run test
