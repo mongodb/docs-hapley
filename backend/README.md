@@ -115,6 +115,11 @@ Additional information about FastAPI's OpenAPI generation can be found
 All tests are located in the `api/tests/` directory and can be run with `pipenv` and
 `pytest`.
 
+Before running the tests, please ensure that your local instance of `mongodb` is 
+running at port `27017`. `pytest` will set up test data in a `hapley-test` database 
+prior to the start of the test session, and will tear it down after the test session 
+is complete.
+
 From the `backend/` directory, use the following to run all tests:
 
 ```

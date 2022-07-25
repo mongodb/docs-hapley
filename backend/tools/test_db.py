@@ -25,6 +25,7 @@ def bulk_insert_items(collection, filename):
 
 
 # Reminder: Ensure that local database is set up and running first
+# TODO: Set up indexes for each collection.
 def setup_test_db():
     print("Setting up local database for testing")
 
@@ -40,15 +41,13 @@ def setup_test_db():
     bulk_insert_items(entitlements_coll, "./data/entitlements.json")
     bulk_insert_items(repos_coll, "./data/repos_branches.json")
 
-    # result = entitlements_coll.bulk_write(writes)
-    # print(result.bulk_api_result)
     client.close()
 
     print("Finished setting up local database for testing")
 
 
 def drop_test_db():
-    print("Dropping local database used for testing")
+    print("\nDropping local database used for testing")
     client = MongoClient(LOCAL_URI)
 
     if DB_NAME in client.list_database_names():
