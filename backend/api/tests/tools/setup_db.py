@@ -3,7 +3,7 @@ from pathlib import Path
 
 from pymongo import InsertOne, MongoClient
 
-LOCAL_TEST_DB_URI = "mongodb://localhost:27017"
+TEST_LOCAL_DB_URI = "mongodb://localhost:27017"
 TEST_DB_NAME = "hapley_test"
 COLL_ENTITLEMENTS = "entitlements"
 COLL_REPOS_BRANCHES = "repos_branches"
@@ -11,7 +11,7 @@ COLL_REPOS_BRANCHES = "repos_branches"
 
 class TestDatabase:
     def __init__(self):
-        self.client = MongoClient(LOCAL_TEST_DB_URI)
+        self.client = MongoClient(TEST_LOCAL_DB_URI)
 
     def _bulk_insert_items(self, collection, filename):
         writes = []

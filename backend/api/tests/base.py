@@ -3,10 +3,11 @@ from fastapi.testclient import TestClient
 from api.core.config import Settings
 from api.core.factory import create_app
 from api.database import start_db_client
+from .tools.setup_db import TEST_LOCAL_DB_URI, TEST_DB_NAME
 
 from ..core.middleware.authorization import Authorization
 
-settings = Settings(mongo_uri="mongodb://localhost:27017", mongo_db_name="hapley_test")
+settings = Settings(mongo_uri=TEST_LOCAL_DB_URI, mongo_db_name=TEST_DB_NAME)
 test_app = create_app(settings)
 
 
