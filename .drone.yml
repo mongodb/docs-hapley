@@ -5,9 +5,8 @@ type: kubernetes
 name: test-backend
 
 services:
-  - name: test-db
+  - name: setup-mongo
     image: mongo:latest
-    detach: true
     ports:
     - 27017
 
@@ -26,6 +25,7 @@ steps:
 trigger:
   branch:
     - main
+    - setup-db-testing
   event:
     - push
 
