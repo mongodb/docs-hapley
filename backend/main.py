@@ -5,6 +5,7 @@ from pymongo.errors import ConfigurationError, InvalidName
 from api.core.config import get_settings
 from api.core.factory import create_app
 from api.model.entitlement import Entitlement
+from api.model.repo import Repo
 
 settings = get_settings()
 app = create_app(settings)
@@ -15,7 +16,7 @@ async def startup_db_client():
     try:
         client = motor_asyncio.AsyncIOMotorClient(settings.mongo_uri)
         await init_beanie(
-            database=client[settings.mongo_db_name], document_models=[Entitlement]
+            database=client[settings.mongo_db_name], document_models=[Entitlement, Repo]
         )
     except (ConfigurationError):
         raise ConfigurationError(
