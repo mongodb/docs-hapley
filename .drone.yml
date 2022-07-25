@@ -8,10 +8,11 @@ steps:
   - name: backend-test
     image: python:3.10-bullseye
     commands:
-    - cd backend
-    - pip install pipenv
-    - pipenv install --dev
-    - pipenv run test
+    # - cd backend
+    # - pip install pipenv
+    # - pipenv install --dev
+    # - pipenv run test
+    - echo "hello world"
     when:
       event:
         - push
@@ -33,9 +34,10 @@ steps:
   - name: frontend-test
     image: node:16-alpine
     commands:
-    - cd frontend
-    - npm install
-    - npm run test
+    # - cd frontend
+    # - npm install
+    # - npm run test
+    - echo "hello world"
     when:
       event:
         - push
@@ -54,30 +56,30 @@ type: kubernetes
 name: build-hapley-staging
 
 steps:
-  - name: publish-staging-frontend-image
-    image: plugins/kaniko-ecr
-    environment:
-      GATSBY_API_URL: https://hapley.docs.staging.corp.mongodb.com/api/v1
-    settings:
-      create_repository: true
-      enable_cache: true
-      dockerfile: ./frontend/Dockerfile
-      context: ./frontend
-      registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
-      repo: docs/${DRONE_REPO_NAME}/frontend
-      build_args:
-        - GATSBY_API_URL
-      tags:
-      - ${DRONE_SOURCE_BRANCH}
-      - drone-build-${DRONE_BUILD_NUMBER}
-      - ${DRONE_SOURCE_BRANCH}-${DRONE_COMMIT_SHA:0:7}
-      access_key:
-        from_secret: ecr_access_key
-      secret_key:
-        from_secret: ecr_secret_key
-    when:
-      event:
-      - push
+  # - name: publish-staging-frontend-image
+  #   image: plugins/kaniko-ecr
+  #   environment:
+  #     GATSBY_API_URL: https://hapley.docs.staging.corp.mongodb.com/api/v1
+  #   settings:
+  #     create_repository: true
+  #     enable_cache: true
+  #     dockerfile: ./frontend/Dockerfile
+  #     context: ./frontend
+  #     registry: 795250896452.dkr.ecr.us-east-1.amazonaws.com
+  #     repo: docs/${DRONE_REPO_NAME}/frontend
+  #     build_args:
+  #       - GATSBY_API_URL
+  #     tags:
+  #     - ${DRONE_SOURCE_BRANCH}
+  #     - drone-build-${DRONE_BUILD_NUMBER}
+  #     - ${DRONE_SOURCE_BRANCH}-${DRONE_COMMIT_SHA:0:7}
+  #     access_key:
+  #       from_secret: ecr_access_key
+  #     secret_key:
+  #       from_secret: ecr_secret_key
+  #   when:
+  #     event:
+  #     - push
     
   - name: publish-staging-backend-image
     image: plugins/kaniko-ecr
@@ -126,19 +128,19 @@ type: kubernetes
 name: deploy-hapley-staging
 
 steps:
-  - name: deploy-staging-frontend
-    image: quay.io/mongodb/drone-helm:v3
-    settings:
-      chart: mongodb/web-app
-      chart_version: 4.7.3
-      add_repos: [mongodb=https://10gen.github.io/helm-charts]
-      namespace: docs
-      release: hapley
-      values: image.tag=${DRONE_SOURCE_BRANCH}-${DRONE_COMMIT_SHA:0:7},image.repository=795250896452.dkr.ecr.us-east-1.amazonaws.com/docs/${DRONE_REPO_NAME}/frontend
-      values_files: ["environments/frontend-staging.yaml"]
-      api_server: https://api.staging.corp.mongodb.com
-      kubernetes_token:
-        from_secret: staging_kubernetes_token
+  # - name: deploy-staging-frontend
+  #   image: quay.io/mongodb/drone-helm:v3
+  #   settings:
+  #     chart: mongodb/web-app
+  #     chart_version: 4.7.3
+  #     add_repos: [mongodb=https://10gen.github.io/helm-charts]
+  #     namespace: docs
+  #     release: hapley
+  #     values: image.tag=${DRONE_SOURCE_BRANCH}-${DRONE_COMMIT_SHA:0:7},image.repository=795250896452.dkr.ecr.us-east-1.amazonaws.com/docs/${DRONE_REPO_NAME}/frontend
+  #     values_files: ["environments/frontend-staging.yaml"]
+  #     api_server: https://api.staging.corp.mongodb.com
+  #     kubernetes_token:
+  #       from_secret: staging_kubernetes_token
   
   - name: deploy-staging-backend
     image: quay.io/mongodb/drone-helm:v3
