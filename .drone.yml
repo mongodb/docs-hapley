@@ -19,6 +19,7 @@ steps:
 trigger:
   branch:
     - main
+    - dop-3149-dockerfile-fix
   event:
     - push
 
@@ -42,6 +43,7 @@ steps:
 trigger:
   branch:
     - main
+    - dop-3149-dockerfile-fix
   event:
     - push
 
@@ -113,6 +115,7 @@ steps:
 trigger:
   branch:
     - main
+    - dop-3149-dockerfile-fix
   event:
     - push
 
