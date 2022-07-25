@@ -14,7 +14,7 @@ class FastApiTest(TestClient):
             token = Authorization.build_sample_token(
                 email="foo@gmail.com", username="foo"
             )
-            self.headers = {"Authorization": "Bearer " + token}
+            self.headers = {"cookie": "auth_user=foo; auth_token=" + token}
 
     # TestClient uses urljoin, which requires a trailing slash on base_url
     # and no leading slash on the second arg. https://stackoverflow.com/questions/69166262/fastapi-adding-route-prefix-to-testclient

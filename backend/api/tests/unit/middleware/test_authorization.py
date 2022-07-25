@@ -24,7 +24,7 @@ def test_sample_jwt():
         "/sample-token?email=foo@gmail.com&username=foo"
     )
     unauthorized_client.headers = {
-        "Authorization": "Bearer " + token_response.json()["token"]
+        "cookie": "auth_user=foo.bar; auth_token= " + token_response.json()["token"]
     }
 
     response = unauthorized_client.get("/")
@@ -36,7 +36,9 @@ def test_sample_jwt():
 
 
 def test_invalid_jwt():
-    unauthorized_client.headers = {"Authorization": "Bearer " + "invalid_token"}
+    unauthorized_client.headers = {
+        "cookie": "auth_user=foo.bar; auth_token=invalid_token"
+    }
 
     response = unauthorized_client.get("/")
     assert response.status_code == 401
@@ -51,7 +53,9 @@ def test_invalid_okta_group():
     unauthorized_jwt = Authorization.build_sample_token(
         email="foo@mongodb.com", username="foo", is_authorized=False
     )
-    unauthorized_client.headers = {"Authorization": "Bearer " + unauthorized_jwt}
+    unauthorized_client.headers = {
+        "cookie": "auth_user=foo.bar; auth_token=" + unauthorized_jwt
+    }
 
     response = unauthorized_client.get("/")
     assert response.status_code == 401
