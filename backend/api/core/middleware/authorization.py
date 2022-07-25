@@ -34,6 +34,8 @@ class Authorization(BaseHTTPMiddleware):
         try:
             # For local development, JWT comes from env file not Authorization header
             auth_headers = request.headers.get("Authorization")
+            print(auth_headers)
+            print(request.headers)
             token = (auth_headers and self.parse_header(auth_headers)) or getenv(
                 "JWT_TOKEN"
             )
