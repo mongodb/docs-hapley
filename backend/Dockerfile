@@ -4,5 +4,5 @@ COPY ["Pipfile", "Pipfile.lock", "./"]
 RUN pip install pipenv \
     && pipenv install --system
 COPY *.py ./
-COPY ./routers ./routers
+COPY ./api ./api
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
