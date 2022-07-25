@@ -1,11 +1,13 @@
-from tools.test_db import drop_test_db, setup_test_db
+from tools.test_db import TestDatabase
+
+test_db = TestDatabase()
 
 
 # Set up local db for testing
 def pytest_sessionstart():
-    setup_test_db()
+    test_db.setup()
 
 
 # Drop local db when testing is finisheds
 def pytest_sessionfinish():
-    drop_test_db()
+    test_db.drop_and_close()
