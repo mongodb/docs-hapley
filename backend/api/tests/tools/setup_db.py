@@ -40,7 +40,7 @@ class TestDatabase:
         entitlements_coll = db[COLL_ENTITLEMENTS]
         repos_coll = db[COLL_REPOS_BRANCHES]
 
-        relative_path_to_test_data = "../api/tests/data"
+        relative_path_to_test_data = "../data"
         self._bulk_insert_items(
             entitlements_coll, f"{relative_path_to_test_data}/entitlements.json"
         )
@@ -51,7 +51,7 @@ class TestDatabase:
         print("Finished setting up local database for testing")
 
     def drop_and_close(self):
-        print("\nDropping local database used for testing")
+        print("\n\nDropping local database used for testing")
 
         client = self.client
 

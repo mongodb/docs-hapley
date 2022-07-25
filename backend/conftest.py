@@ -1,4 +1,4 @@
-from tools.test_db import TestDatabase
+from api.tests.tools.setup_db import TestDatabase
 
 test_db = TestDatabase()
 
