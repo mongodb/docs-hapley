@@ -13,15 +13,14 @@ def bulk_insert_items(collection, filename):
     writes = []
 
     base_path = Path(__file__).parent
-    file_path = base_path / filename
-    f = open(file_path)
+    file_path: Path = base_path / filename
+    f = open(file_path.resolve())
 
     data = json.load(f)
     for item in data:
         writes.append(InsertOne(item))
 
-    result = collection.bulk_write(writes)
-    print(result.bulk_api_result)
+    collection.bulk_write(writes)
 
 
 # Reminder: Ensure that local database is set up and running first
@@ -38,8 +37,11 @@ def setup_test_db():
     entitlements_coll = db[COLL_ENTITLEMENTS]
     repos_coll = db[COLL_REPOS_BRANCHES]
 
-    bulk_insert_items(entitlements_coll, "./data/entitlements.json")
-    bulk_insert_items(repos_coll, "./data/repos_branches.json")
+    relative_path_to_test_data = "../api/tests/data"
+    bulk_insert_items(
+        entitlements_coll, f"{relative_path_to_test_data}/entitlements.json"
+    )
+    bulk_insert_items(repos_coll, f"{relative_path_to_test_data}/repos_branches.json")
 
     client.close()
 
