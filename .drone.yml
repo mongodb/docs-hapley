@@ -4,6 +4,13 @@ kind: pipeline
 type: kubernetes
 name: test-backend
 
+services:
+  - name: test-db
+    image: mongo:latest
+    detach: true
+    ports:
+    - 27017
+
 steps:
   - name: backend-test
     image: python:3.10-bullseye
@@ -19,6 +26,7 @@ steps:
 trigger:
   branch:
     - main
+    - setup-db-testing
   event:
     - push
 
