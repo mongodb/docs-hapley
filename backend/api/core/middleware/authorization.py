@@ -33,10 +33,8 @@ class Authorization(BaseHTTPMiddleware):
 
         try:
             # For local development, JWT comes from env file not Authorization header
-            auth_headers = request.headers.get("Authorization")
-            token = (auth_headers and self.parse_header(auth_headers)) or getenv(
-                "JWT_TOKEN"
-            )
+            cookies = request.cookies
+            token = (cookies and cookies["auth_token"]) or getenv("JWT_TOKEN")
             token_data: TokenData = parse_jwt(token)
 
             if bool(self.AUTHORIZED_OKTA_GROUPS & set(token_data.groups)):
@@ -57,9 +55,6 @@ class Authorization(BaseHTTPMiddleware):
                 },
             )
         return response
-
-    def parse_header(self, auth_headers: str):
-        return auth_headers.split(" ")[1]
 
     @classmethod
     def build_sample_token(

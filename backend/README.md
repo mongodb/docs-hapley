@@ -78,6 +78,10 @@ pipenv run -- app --port=<int>
 
 > :bulb: Note: The frontend uses port 3000 for hosting.
 
+#### Testing in API Client
+
+If you want to send requests to the Hapley API from an API tool such as **Postman**, you'll need to mock the cookies traditionally attached to requests via CorpSecure. For example, if you send a `GET` request to `http://localhost:8000/api/v1`, the request headers must contain a key `cookie` with a value of `auth_user=<mongo-username>; auth_token=<jwt-token>` where `jwt-token` is the token generated via a request to `/api/v1/sample-token` and `mongo-username` equals the `username` query parameter passed to `/api/v1/sample-token`.
+
 ### Running in a Docker Container
 
 If you'd like to develop locally using Docker, ensure that you have Docker
