@@ -26,7 +26,6 @@ steps:
 trigger:
   branch:
     - main
-    - setup-db-testing
   event:
     - push
 
