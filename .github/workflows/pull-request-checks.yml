@@ -43,6 +43,8 @@ jobs:
           pipenv install --dev
       - name: Format and lint
         run: pipenv run format && pipenv run lint
+      - name: Start MongoDB
+        run: docker run -d -p 27017:27017 --name test-mongo mongo:5.0
       - name: Run tests
         run: |
           pipenv run test
