@@ -4,6 +4,12 @@ kind: pipeline
 type: kubernetes
 name: test-backend
 
+services:
+  - name: setup-mongo
+    image: mongo:5.0
+    ports:
+    - 27017
+
 steps:
   - name: backend-test
     image: python:3.10-bullseye
