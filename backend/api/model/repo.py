@@ -1,6 +1,7 @@
 from beanie import Document
-from fastapi import HTTPException, status
 from pydantic import BaseModel, Field
+
+from api.exceptions import ValidationError, RepoNotFound, ReorderIndexError
 
 
 class PersonalRepos(BaseModel):
@@ -44,22 +45,6 @@ class RepoGroupsView(BaseModel):
     """Projection focused on groups for a specific repo."""
 
     groups: list[Group] | None
-
-
-class RepoNotFound(HTTPException):
-    def __init__(self, repo_name: str) -> None:
-        super().__init__(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"The repo {repo_name} does not exist.",
-        )
-
-
-class ValidationError(HTTPException):
-    def __init__(self, message, errors: list[str]) -> None:
-        super().__init__(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail={"message": message, "errors": errors},
-        )
 
 
 class GroupValidator:
@@ -165,14 +150,6 @@ async def insert_new_group(repo_name: str, group: Group) -> None:
     validator = GroupValidator(repo)
     validator.validate_new_group(group)
     await repo.update({"$push": {"groups": group}})
-
-
-class ReorderIndexError(HTTPException):
-    def __init__(self, index: int, model_name: str, repo_name: str) -> None:
-        super().__init__(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Index {index} is out of bounds of {model_name} for repo: {repo_name}",
-        )
 
 
 async def reorder_groups(repo_name: str, current_index: int, target_index: int) -> None:

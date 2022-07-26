@@ -1,14 +1,7 @@
-from fastapi import HTTPException, Request, status
+from fastapi import Request
 
 from api.model.entitlement import get_user_entitlements
-
-
-class UserNotEntitled(HTTPException):
-    def __init__(self) -> None:
-        super().__init__(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User is not entitled to this docs content repo.",
-        )
+from api.exceptions import UserNotEntitled
 
 
 def get_request_user_email(request: Request) -> str:
