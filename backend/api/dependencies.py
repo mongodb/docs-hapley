@@ -21,7 +21,6 @@ async def check_if_user_entitled_to_repo(request: Request, repo_name: str) -> No
     """Raises an HTTP exception if the user is not entitled to the repo being accessed."""
 
     entitled_repos = await get_user_entitlements(get_request_user_email(request))
-    print(entitled_repos)
 
     entitlement_found = False
 

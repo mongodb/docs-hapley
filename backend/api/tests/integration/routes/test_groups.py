@@ -94,3 +94,30 @@ def test_groups_post_used_version():
         errs = detail["errors"]
         assert len(errs) == 1
         assert "Attempting to use version" in errs[0]
+
+
+def test_groups_put():
+    entitled_user = "test@mongodb.com"
+    with FastApiTest(email=entitled_user) as client:
+        new_indexes = {"currentIndex": 2, "targetIndex": 0}
+        repo_name = "docs"
+
+        groups = get_groups(client, repo_name)
+        response = client.put(groups_route(repo_name), json=new_indexes)
+        new_groups = get_groups(client, repo_name)
+
+        assert response.status_code == 200
+        assert len(groups) == len(new_groups)
+        assert groups[2] == new_groups[0]
+
+
+def test_groups_put_out_of_bounds():
+    entitled_user = "test@mongodb.com"
+    with FastApiTest(email=entitled_user) as client:
+        new_indexes = {"currentIndex": 5, "targetIndex": 0}
+        repo_name = "docs"
+
+        response = client.put(groups_route(repo_name), json=new_indexes)
+
+        assert response.status_code == 422
+        assert "Index 5 is out of bounds" in response.json()["detail"]

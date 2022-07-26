@@ -8,6 +8,6 @@ def pytest_sessionstart():
     test_db.setup()
 
 
-# Drop local db when testing is finisheds
+# Drop local db when testing is finished
 def pytest_sessionfinish():
     test_db.drop_and_close()
