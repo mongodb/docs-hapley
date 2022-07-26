@@ -25,6 +25,7 @@ async def check_if_user_entitled_to_repo(request: Request, repo_name: str) -> No
 
         if full_repo_name in entitled_repos:
             entitlement_found = True
+            break
 
     if not entitlement_found:
         raise UserNotEntitled()

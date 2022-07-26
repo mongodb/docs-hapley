@@ -1,19 +1,16 @@
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel, Field
 
 from api.dependencies import check_if_user_entitled_to_repo
 from api.model.repo import Group, Repo, RepoGroupsView, insert_new_group, reorder_groups
+from api.model.payload import ReorderItemPayload
+
+GROUPS_INDEX_PATH = "/"
 
 router = APIRouter()
 
 
-class UpdateGroupsBody(BaseModel):
-    current_index: int = Field(alias="currentIndex")
-    target_index: int = Field(alias="targetIndex")
-
-
 @router.get(
-    "/",
+    GROUPS_INDEX_PATH,
     response_model=RepoGroupsView,
     dependencies=[Depends(check_if_user_entitled_to_repo)],
 )
@@ -22,7 +19,7 @@ async def read_groups(repo_name: str):
 
 
 @router.post(
-    "/",
+    GROUPS_INDEX_PATH,
     response_model=Group,
     dependencies=[Depends(check_if_user_entitled_to_repo)],
 )
@@ -31,6 +28,6 @@ async def create_group(repo_name: str, group: Group):
     return group
 
 
-@router.put("/", dependencies=[Depends(check_if_user_entitled_to_repo)])
-async def update_groups(repo_name: str, body: UpdateGroupsBody):
+@router.put(GROUPS_INDEX_PATH, dependencies=[Depends(check_if_user_entitled_to_repo)])
+async def update_groups(repo_name: str, body: ReorderItemPayload):
     await reorder_groups(repo_name, body.current_index, body.target_index)
