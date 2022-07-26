@@ -14,15 +14,12 @@ class TestDatabase:
         self.client = MongoClient(TEST_LOCAL_DB_URI)
 
     def _bulk_insert_items(self, collection, filename):
-        writes = []
-
         base_path = Path(__file__).parent
         file_path: Path = base_path / filename
-        f = open(file_path.resolve())
 
-        data = json.load(f)
-        for item in data:
-            writes.append(InsertOne(item))
+        with file_path.resolve().open("r") as f:
+            data = json.load(f)
+            writes = [InsertOne(item) for item in data]
 
         collection.bulk_write(writes)
 

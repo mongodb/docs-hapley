@@ -6,7 +6,7 @@ name: test-backend
 
 services:
   - name: setup-mongo
-    image: mongo:latest
+    image: mongo:5.0
     ports:
     - 27017
 
