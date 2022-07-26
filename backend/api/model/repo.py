@@ -17,6 +17,9 @@ class Group(BaseModel):
     group_label: str = Field(alias="groupLabel")
     included_branches: list[str] = Field(alias="includedBranches")
 
+    class Config:
+        allow_population_by_field_name = True
+
 
 class DefaultRepoFields:
     """Default fields for a repo document and its views."""

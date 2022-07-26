@@ -18,17 +18,19 @@ async def startup_test_app():
 
 # Custom TestClient that accounts for custom middleware & API structure
 class FastApiTest(TestClient):
-    def __init__(self, with_auth: bool = True):
+    def __init__(
+        self,
+        with_auth: bool = True,
+        email: str = "foo@gmail.com",
+        username: str = "foo",
+    ):
         super().__init__(test_app)
         self.base_url += "/api/v1/"
         if with_auth:
-            test_username = "foo"
-            token = Authorization.build_sample_token(
-                email="foo@gmail.com", username=test_username
-            )
+            token = Authorization.build_sample_token(email=email, username=username)
 
             # Set cookies that are automatically set through CorpSecure
-            self.cookies["auth_user"] = test_username
+            self.cookies["auth_user"] = username
             self.cookies["auth_token"] = token
 
     # TestClient uses urljoin, which requires a trailing slash on base_url
@@ -40,3 +42,6 @@ class FastApiTest(TestClient):
 
     def get(self, path: str, **kwargs):
         return super().get(self.base_url + self.trim_leading_slash(path), **kwargs)
+
+    def post(self, path: str, **kwargs):
+        return super().post(self.base_url + self.trim_leading_slash(path), **kwargs)
