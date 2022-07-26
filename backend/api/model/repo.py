@@ -164,11 +164,37 @@ async def insert_new_group(repo_name: str, group: Group) -> None:
     await repo.update({"$push": {"groups": group}})
 
 
-async def set_groups(repo_name: str, groups: list[Group]) -> None:
+class ReorderIndexError(HTTPException):
+    def __init__(self, index: int, model_name: str, repo_name: str) -> None:
+        super().__init__(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Index {index} is out of bounds of {model_name} for repo: {repo_name}",
+        )
+
+
+async def reorder_groups(repo_name: str, current_index: int, target_index: int) -> None:
+    """
+    Accepts the current index of the group to move and then moves it to the target
+    index.
+    """
+
     repo = await find_one_repo(repo_name)
 
     if not repo:
         raise RepoNotFound(repo_name)
+
+    groups = repo.groups
+    model_name = "groups"
+
+    max_index = max(current_index, target_index)
+    if max_index >= len(groups):
+        raise ReorderIndexError(max_index, model_name, repo.name)
+
+    if current_index == target_index:
+        return
+
+    group_to_move = groups.pop(current_index)
+    groups.insert(target_index, group_to_move)
 
     validator = GroupValidator(repo)
     validator.validate_new_groups(groups)
