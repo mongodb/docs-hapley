@@ -24,9 +24,7 @@ def test_groups_get_none():
     entitled_user = "test@mongodb.com"
     with FastApiTest(email=entitled_user) as client:
         # Nonexistent groups
-        response = client.get(groups_route("docs-landing"))
-        assert response.status_code == 200
-        groups = response.json()["groups"]
+        groups = get_groups(client, "docs-landing")
         assert groups is None
 
 
