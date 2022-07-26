@@ -91,7 +91,24 @@ def test_groups_post_used_version():
         detail = response.json()["detail"]
         errs = detail["errors"]
         assert len(errs) == 1
-        assert "Attempting to use version" in errs[0]
+        assert "Version already used" in errs[0]
+
+
+def test_groups_post_no_version():
+    entitled_user = "test@mongodb.com"
+    with FastApiTest(email=entitled_user) as client:
+        new_group = {
+            "groupLabel": "New Test Group - Used Version",
+            "includedBranches": ["fake-version"],
+        }
+
+        response = client.post(groups_route("docs"), json=new_group)
+        assert response.status_code == 422
+
+        detail = response.json()["detail"]
+        errs = detail["errors"]
+        assert len(errs) == 1
+        assert 'version "fake-version" does not exist' in errs[0]
 
 
 def test_groups_put():
