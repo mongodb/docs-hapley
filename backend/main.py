@@ -4,8 +4,8 @@ from pymongo.errors import ConfigurationError, InvalidName
 
 from api.core.config import get_settings
 from api.core.factory import create_app
-from api.model.entitlement import Entitlement
-from api.model.repo import Repo
+from api.models.entitlement import Entitlement
+from api.models.repo import Repo
 
 settings = get_settings()
 app = create_app(settings)

@@ -1,22 +1,45 @@
-
+from typing import Generic, TypeVar
 
 from beanie import Document
-from fastapi import HTTPException, status, Depends
-from pydantic import BaseModel, Field, validator
-from typing import Generic, TypeVar
+from fastapi import Depends, HTTPException, status
+from pydantic import BaseModel, Field, root_validator, validator
 from pydantic.generics import GenericModel
 
+
 class PersonalRepos(BaseModel):
+    """Projection of the repos accessible to the user"""
+
     repos: list[str]
+
 
 class Version(BaseModel):
     git_branch_name: str = Field(alias="gitBranchName")
     active: bool
+    url_aliases: list[str] | None = Field(alias="urlAliases")
+    publish_original_branch_name: bool | None = Field(alias="publishOriginalBranchName")
     url_slug: str | None = Field(alias="urlSlug")
     version_selector_label: str | None = Field(alias="versionSelectorLabel")
-    publish_original_branch_name: bool | None = Field(alias="publishOriginalBranchName")
     is_stable_branch: bool | None = Field(alias="isStableBranch")
-    url_aliases: list[str] | None = Field(alias="urlAliases")
+
+    @validator("url_slug")
+    def url_slug_validator(cls, v, values):
+        # Defaults to git branch if not specified, otherwise perform validations
+        if v is None:
+            return values["git_branch_name"]
+        else:
+            if v != values["git_branch_name"] and v not in values["url_aliases"]:
+                raise ValidationError(
+                    "Version error",
+                    "urlSlug must match gitBranchName or be an element of url aliases",
+                )
+        return v
+
+    @validator("version_selector_label")
+    def version_selector_label_validator(cls, v, values):
+        # Defaults to git branch if not specified
+        if v is None:
+            return values["git_branch_name"]
+
 
 class Group(BaseModel):
     """A group of versions."""
@@ -49,29 +72,93 @@ class RepoGroupsView(BaseModel):
 
     groups: list[Group] | None
 
+
 class RepoVersionsView(BaseModel):
     """Projection focused on versions for a specific repo."""
+
     versions: list[Version] = DefaultRepoFields.versions
+
 
 class ReorderPayload(BaseModel):
     currIndex: int
     newIndex: int
 
+
 # Generic class for validating reordering of a list of items
 # Can be used across branches, groups, and versions within groups
-# Would be better to inherit from ReorderPayload, but then we wouldn't have access to 
+# Would be better to inherit from ReorderPayload, but then we wouldn't have access to
 # reordering list because of the field definition order.
-ListT = TypeVar('ListT')
-class ReorderPayloadWithList(GenericModel, Generic[ListT]):
-    reorderingList: list[ListT]
-    currIndex: int = None
-    newIndex: int = None
+ListT = TypeVar("ListT")
 
-    @validator('currIndex', 'newIndex')
-    def validate_indexes(cls, v, values):
-        if 'reorderingList' in values and v >= len(values['reorderingList']) or v < 0:
-            raise ValidationError("Reordering error", [f"Index {v} is out of range"])
-        return v
+
+class ReorderPayloadWithList(GenericModel, Generic[ListT], ReorderPayload):
+    reorderingList: list[ListT]
+
+    @root_validator(pre=True)
+    def validate_indexes(cls, values):
+        vals = ["currIndex", "newIndex"]
+        for val in vals:
+            index = values.get(val)
+            if index >= len(values.get("reorderingList")) or index < 0:
+                raise ValidationError(
+                    "Reordering error", [f"{val}: {index} is out of range"]
+                )
+        return values
+
+
+class VersionPayloadWithRepo(BaseModel):
+    version: Version
+    repo: Repo
+
+    @root_validator(pre=True)
+    def validate_version(cls, values):
+        errors = []
+        new_version: Version = values.get("version")
+        list_versions: list[Version] = values.get("repo").versions
+        # git branch name must be unique within the repo
+        new_branch_name = new_version.git_branch_name
+        if new_branch_name in set(
+            map(lambda version: version.git_branch_name, list_versions)
+        ):
+            errors.append(f"gitBranchName: {new_branch_name} is already in use")
+
+        # url aliases must be unique within the repo if present
+        new_aliases = new_version.url_aliases
+        if new_aliases is not None:
+            for aliases in map(lambda version: version.url_aliases, list_versions):
+                if set(new_version.url_aliases) & set(aliases):
+                    errors.append(f"urlAliases: one of {new_aliases} is already in use")
+        # ensure only one stable branch is present
+        is_stable = new_version.is_stable_branch
+        if is_stable is not None:
+            if (
+                is_stable
+                and len(
+                    list(
+                        filter(lambda version: version.is_stable_branch, list_versions)
+                    )
+                )
+                > 1
+            ):
+                errors.append(f"Only one stable branch can be present")
+
+        # ensure version selector label is unique within the repo if present
+        version_selector_label = values.get("version").version_selector_label
+        if version_selector_label is not None:
+            if version_selector_label in set(
+                map(lambda version: version.version_selector_label, list_versions)
+            ):
+                errors.append(
+                    f"versionSelectorLabel: {version_selector_label} is already in use"
+                )
+        print(errors)
+        if len(errors) > 0:
+            raise ValidationError(
+                f"There were errors validating a version for repo {values.get('repo').name}",
+                errors,
+            )
+        return values
+
 
 class RepoNotFound(HTTPException):
     def __init__(self, repo_name: str) -> None:
@@ -81,6 +168,8 @@ class RepoNotFound(HTTPException):
         )
 
 
+# TODO: This is confusing OpenAPI since Pydantic has the same class name.
+# We should align response to be same as Pydantic so the frontend handles errors consistently.
 class ValidationError(HTTPException):
     def __init__(self, message, errors: list[str]) -> None:
         super().__init__(
@@ -101,13 +190,14 @@ class ReorderVersionValidator:
                 f'There were errors validating groups for repo "{self.repo.name}".',
                 self.errors,
             )
-    
-    def check_out_of_bounds(self) -> None:
-        return self.reordering.currIndex >= len(self.repo.versions) or \
-            self.reordering.newIndex >= len(self.repo.versions) or \
-            self.reordering.currIndex < 0 or \
-            self.reordering.newIndex < 0
 
+    def check_out_of_bounds(self) -> None:
+        return (
+            self.reordering.currIndex >= len(self.repo.versions)
+            or self.reordering.newIndex >= len(self.repo.versions)
+            or self.reordering.currIndex < 0
+            or self.reordering.newIndex < 0
+        )
 
     def validate(self) -> None:
         # Ensure indexes are different
@@ -121,6 +211,7 @@ class ReorderVersionValidator:
                 f"The current index ({self.reordering.currIndex}) or new index ({self.reordering.newIndex}) is out of range."
             )
         self.raise_errors()
+
 
 class GroupValidator:
     def __init__(self, repo: Repo) -> None:
@@ -218,21 +309,42 @@ async def find_one_repo(repo_name: str) -> Repo:
         raise RepoNotFound(repo_name)
     return repo
 
-async def reorder_validator(reordering: ReorderPayload, repo: Repo = Depends(find_one_repo)) -> None:
-    ReorderPayloadWithList[Version](reorderingList=repo.versions, currIndex=reordering.currIndex, newIndex=reordering.newIndex)
-    return { 'repo': repo, 'currIndex': reordering.currIndex, 'newIndex': reordering.newIndex }
 
-async def insert_new_version(repo_name: str, version: Version) -> None:
-    repo = await find_one_repo(repo_name)
+async def reorder_validator(
+    reordering: ReorderPayload, repo: Repo = Depends(find_one_repo)
+) -> None:
+    ReorderPayloadWithList[Version](
+        reorderingList=repo.versions,
+        currIndex=reordering.currIndex,
+        newIndex=reordering.newIndex,
+    )
+    return {
+        "repo": repo,
+        "currIndex": reordering.currIndex,
+        "newIndex": reordering.newIndex,
+    }
 
+
+async def new_version_validator(
+    new_version: Version, repo: Repo = Depends(find_one_repo)
+) -> dict[str, Repo | Version]:
+    VersionPayloadWithRepo(version=new_version, repo=repo)
+    return {"repo": repo, "version": new_version}
+
+
+async def insert_new_version(repo: Repo, version: Version) -> None:
     repo.versions.append(version)
-    await repo.save()
+    await repo.update({"$push": {"branches": version}})
+    return version
 
 
-async def reorder_version(repo: Repo, currIndex: int, newIndex: int) -> list[Version]:
+async def reorder_repo_version(
+    repo: Repo, currIndex: int, newIndex: int
+) -> list[Version]:
     repo.versions.insert(newIndex, repo.versions.pop(currIndex))
-    await repo.save()
+    await repo.update({"$set": {"branches": repo.versions}})
     return repo
+
 
 async def insert_new_group(repo_name: str, group: Group) -> None:
     repo = await find_one_repo(repo_name)

@@ -34,7 +34,9 @@ class Authorization(BaseHTTPMiddleware):
         try:
             # For local development, JWT comes from env file not Authorization header
             cookies = request.cookies
-            token = (cookies and cookies["auth_token"]) or getenv("JWT_TOKEN")
+            token = (
+                cookies and "auth_token" in cookies and cookies["auth_token"]
+            ) or getenv("JWT_TOKEN")
             token_data: TokenData = parse_jwt(token)
 
             if bool(self.AUTHORIZED_OKTA_GROUPS & set(token_data.groups)):
