@@ -1,199 +1,168 @@
-[
-  {
-    "repoName": "docs",
-    "branches": [
-      {
-        "name": "v4.4",
-        "publishOriginalBranchName": true,
-        "active": true,
-        "aliases": null,
-        "gitBranchName": "v4.4",
-        "urlSlug": null,
-        "versionSelectorLabel": "4.4",
-        "urlAliases": null,
-        "isStableBranch": false
-      },
-      {
-        "gitBranchName": "v4.2",
-        "versionSelectorLabel": "4.2",
-        "isStableBranch": false,
-        "buildsWithSnooty": false,
-        "active": true
-      },
-      {
-        "gitBranchName": "v4.0",
-        "versionSelectorLabel": "4.0",
-        "isStableBranch": false,
-        "buildsWithSnooty": false,
-        "active": true
-      },
-      {
-        "name": "master",
-        "publishOriginalBranchName": false,
-        "active": true,
-        "aliases": [
-          "v5.3",
-          "upcoming"
-        ],
-        "gitBranchName": "master",
-        "urlAliases": [
-          "v5.3",
-          "upcoming"
-        ],
-        "urlSlug": "upcoming",
-        "versionSelectorLabel": "5.3 (upcoming)",
-        "isStableBranch": false
-      },
-      {
-        "name": "v5.0",
-        "publishOriginalBranchName": true,
-        "active": true,
-        "aliases": [
-          "manual",
-          "stable"
-        ],
-        "gitBranchName": "v5.0",
-        "urlAliases": [
-          "manual",
-          "stable"
-        ],
-        "versionSelectorLabel": "5.0 (current)",
-        "isStableBranch": true,
-        "urlSlug": "manual"
-      },
-      {
-        "name": "v5.2",
-        "publishOriginalBranchName": true,
-        "active": true,
-        "aliases": [
-          "rapid"
-        ],
-        "gitBranchName": "v5.2",
-        "urlAliases": [
-          "rapid"
-        ],
-        "versionSelectorLabel": "5.2 (current)",
-        "isStableBranch": false
-      },
-      {
-        "gitBranchName": "v2.2",
-        "buildsWithSnooty": false,
-        "active": false
-      },
-      {
-        "gitBranchName": "v2.4",
-        "buildsWithSnooty": false,
-        "active": false
-      },
-      {
-        "gitBranchName": "v3.2",
-        "buildsWithSnooty": false,
-        "active": false
-      },
-      {
-        "gitBranchName": "v2.6",
-        "buildsWithSnooty": false,
-        "active": false
-      },
-      {
-        "gitBranchName": "v3.4",
-        "buildsWithSnooty": false,
-        "active": false
-      },
-      {
-        "gitBranchName": "v3.6",
-        "buildsWithSnooty": false,
-        "active": false
-      },
-      {
-        "gitBranchName": "v3.0",
-        "buildsWithSnooty": false,
-        "active": false
+[{
+  "repoName": "docs",
+  "branches": [
+    {
+      "name": "v4.4",
+      "publishOriginalBranchName": true,
+      "active": true,
+      "aliases": null,
+      "gitBranchName": "v4.4",
+      "isStableBranch": false,
+      "urlAliases": null,
+      "urlSlug": null,
+      "versionSelectorLabel": "4.4",
+      "buildsWithSnooty": true,
+      "id": {
+        "$oid": "62e187caab5eba28886e74b9"
       }
-    ],
-    "bucket": {
-      "regression": "docs-mongodb-org-stg",
-      "dev": "docs-mongodb-org-dev",
-      "stg": "docs-mongodb-org-stg",
-      "prd": "docs-mongodb-org-prd",
-      "dotcomstg": "docs-mongodb-org-dotcomstg",
-      "dotcomprd": "docs-mongodb-org-dotcomprd"
     },
-    "url": {
-      "regression": "https://docs-mongodbcom-integration.corp.mongodb.com",
-      "dev": "https://docs-mongodborg-staging.corp.mongodb.com",
-      "stg": "https://docs-mongodborg-staging.corp.mongodb.com",
-      "prd": "https://docs.mongodb.com",
-      "dotcomprd": "http://mongodb.com/",
-      "dotcomstg": "https://mongodbcom-cdn.website.staging.corp.mongodb.com/"
-    },
-    "groups": [
-      {
-        "groupLabel": "Long-Term Support Release",
-        "includedBranches": [
-          "v5.0",
-          "v4.4",
-          "v4.2",
-          "v4.0"
-        ]
-      },
-      {
-        "groupLabel": "Rapid Release",
-        "includedBranches": [
-          "master",
-          "v5.2"
-        ]
+    {
+      "gitBranchName": "v4.2",
+      "versionSelectorLabel": "4.2",
+      "isStableBranch": false,
+      "buildsWithSnooty": false,
+      "active": true,
+      "id": {
+        "$oid": "62e187caab5eba28886e74ba"
       }
-    ],
-    "prefix": {
-      "stg": "",
-      "prd": "",
-      "dotcomstg": "docs-qa",
-      "dotcomprd": "docs-qa"
     },
-    "project": "docs",
-    "search": {
-      "categoryName": "manual",
-      "categoryTitle": "MongoDB Server"
+    {
+      "gitBranchName": "v4.0",
+      "buildsWithSnooty": false,
+      "active": false,
+      "id": {
+        "$oid": "62e187caab5eba28886e74bb"
+      }
+    },
+    {
+      "publishOriginalBranchName": true,
+      "active": true,
+      "gitBranchName": "v5.0",
+      "isStableBranch": false,
+      "urlAliases": [],
+      "urlSlug": "v5.0",
+      "versionSelectorLabel": "5.0",
+      "buildsWithSnooty": true,
+      "id": {
+        "$oid": "62e187caab5eba28886e74bc"
+      }
+    },
+    {
+      "publishOriginalBranchName": false,
+      "active": true,
+      "gitBranchName": "master",
+      "isStableBranch": true,
+      "urlAliases": [
+        "v6.0",
+        "upcoming",
+        "rapid",
+        "current",
+        "stable",
+        "manual"
+      ],
+      "urlSlug": "v6.0",
+      "versionSelectorLabel": "6.0 (current)",
+      "buildsWithSnooty": true,
+      "id": {
+        "$oid": "62e187caab5eba28886e74bd"
+      }
+    },
+    {
+      "gitBranchName": "3.6",
+      "buildsWithSnooty": false,
+      "active": false,
+      "id": {
+        "$oid": "62e187caab5eba28886e74be"
+      }
+    },
+    {
+      "gitBranchName": "3.4",
+      "buildsWithSnooty": false,
+      "active": false,
+      "id": {
+        "$oid": "62e187caab5eba28886e74bf"
+      }
+    },
+    {
+      "gitBranchName": "2.4",
+      "buildsWithSnooty": false,
+      "active": false,
+      "id": {
+        "$oid": "62e187caab5eba28886e74c0"
+      }
+    },
+    {
+      "gitBranchName": "3.2",
+      "buildsWithSnooty": false,
+      "active": false,
+      "id": {
+        "$oid": "62e187caab5eba28886e74c1"
+      }
+    },
+    {
+      "gitBranchName": "2.2",
+      "buildsWithSnooty": false,
+      "active": false,
+      "id": {
+        "$oid": "62e187caab5eba28886e74c2"
+      }
+    },
+    {
+      "gitBranchName": "2.6",
+      "buildsWithSnooty": false,
+      "active": false,
+      "id": {
+        "$oid": "62e187caab5eba28886e74c3"
+      }
+    },
+    {
+      "gitBranchName": "3.0",
+      "buildsWithSnooty": false,
+      "active": false,
+      "id": {
+        "$oid": "62e187caab5eba28886e74c4"
+      }
     }
+  ],
+  "bucket": {
+    "regression": "docs-mongodb-org-stg",
+    "dev": "docs-mongodb-org-dev",
+    "stg": "docs-mongodb-org-stg",
+    "prd": "docs-mongodb-org-prd",
+    "dotcomstg": "docs-mongodb-org-dotcomstg",
+    "dotcomprd": "docs-mongodb-org-dotcomprd"
   },
-  {
-    "repoName": "docs-landing",
-    "branches": [
-      {
-        "name": "master",
-        "publishOriginalBranchName": false,
-        "active": true,
-        "aliases": null,
-        "gitBranchName": "master",
-        "urlSlug": null,
-        "versionSelectorLabel": "master",
-        "urlAliases": null,
-        "isStableBranch": false
+  "url": {
+    "regression": "https://docs-mongodbcom-integration.corp.mongodb.com",
+    "dev": "https://docs-mongodborg-staging.corp.mongodb.com",
+    "stg": "https://docs-mongodborg-staging.corp.mongodb.com",
+    "prd": "https://docs.mongodb.com",
+    "dotcomprd": "http://mongodb.com",
+    "dotcomstg": "https://mongodbcom-cdn.website.staging.corp.mongodb.com"
+  },
+  "prefix": {
+    "stg": "",
+    "prd": "",
+    "dotcomstg": "docs",
+    "dotcomprd": "docs"
+  },
+  "project": "docs",
+  "groups": [
+    {
+      "groupLabel": "Major Release",
+      "includedBranches": [
+        "master",
+        "v5.0",
+        "v4.4",
+        "v4.2"
+      ],
+      "id": {
+        "$oid": "62e187caab5eba28886e74c5"
       }
-    ],
-    "bucket": {
-      "regression": "docs-mongodb-org-stg",
-      "dev": "docs-mongodb-org-dev",
-      "stg": "docs-mongodb-org-stg",
-      "prd": "docs-mongodb-org-prd",
-      "dotcomstg": "docs-mongodb-org-dotcomstg",
-      "dotcomprd": "docs-mongodb-org-dotcomprd"
-    },
-    "url": {
-      "regression": "https://docs-mongodbcom-integration.corp.mongodb.com",
-      "dev": "https://docs-mongodborg-staging.corp.mongodb.com",
-      "stg": "https://docs-mongodborg-staging.corp.mongodb.com",
-      "prd": "https://docs.mongodb.com",
-      "dotcomprd": "http://mongodb.com/",
-      "dotcomstg": "https://mongodbcom-cdn.website.staging.corp.mongodb.com/"
-    },
-    "prefix": {
-      "stg": "",
-      "prd": "",
-      "dotcomstg": "docs-qa",
-      "dotcomprd": "docs-qa"
-    },
-    "project": "landing"
+    }
+  ],
+  "search": {
+    "categoryName": "manual",
+    "categoryTitle": "MongoDB Server"
   }
-]
+}]
