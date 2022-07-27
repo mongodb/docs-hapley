@@ -10,13 +10,13 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-env', '--environment', choices=['dev', 'test', 'prod'], help='Environment to run the script in', default='dev')
-parser.add_argument('--rollback', action='store_true', help="Drop email address field from collection")
+parser.add_argument('--rollback', action='store_true', help="Drop id field from subdocuments")
 args = parser.parse_args()
 
 COLLECTION_NAME_BY_ENVIRONMENT = {
     'dev': 'drew_repo_branches',
     'test': 'repos_branches',
-    'prod': 'entitlements'
+    'prod': 'repos_branches'
 } 
 
 DATABASE_BY_ENVIRONMENT = {
@@ -34,7 +34,7 @@ def connect() -> MongoClient:
 
 
 def modify_uuids(collection: collection.Collection, removeIds: bool = False):
-    print("Rollback flag not set. Adding ids to subdocuments in branches and groups fields")
+    print(f"Rollback flag {'not ' if not removeIds else ''}set. {'Removing' if removeIds else 'Adding'} ids to subdocuments in branches and groups fields")
     for doc in collection.find():
         for branch in doc['branches']:
             if removeIds:
@@ -49,7 +49,7 @@ def modify_uuids(collection: collection.Collection, removeIds: bool = False):
                 else:
                   group['id'] = ObjectId()
         collection.update_one({'_id': doc['_id']}, {'$set': doc})
-    print(f"Finished {'removing' if removeIds else 'adding'} ids to documents.")
+    print(f"Finished {'removing' if removeIds else 'adding'} ids.")
 
 def execute() -> bool:
     db = connect().get_database(DATABASE_BY_ENVIRONMENT[args.environment])
