@@ -15,17 +15,8 @@ async def check_if_user_entitled_to_repo(request: Request, repo_name: str) -> No
 
     entitled_repos = await get_user_entitlements(get_request_user_email(request))
 
-    entitlement_found = False
-
     # Entitlements are in the form of <org>/<repo_name> but repo documents do not
     # care about the org owner.
-    possible_owners = ["10gen", "mongodb"]
-    for owner in possible_owners:
-        full_repo_name = owner + "/" + repo_name
-
-        if full_repo_name in entitled_repos:
-            entitlement_found = True
-            break
-
-    if not entitlement_found:
+    possible_repo_names = set([f"10gen/{repo_name}", f"mongodb/{repo_name}"])
+    if not possible_repo_names & set(entitled_repos):
         raise UserNotEntitled()

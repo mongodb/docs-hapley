@@ -20,6 +20,13 @@ def test_groups_get():
         assert len(groups) == 2
 
 
+def test_groups_get_not_entitled():
+    unentitled_user = "foo@gmail.com"
+    with FastApiTest(email=unentitled_user) as client:
+        response = client.get(groups_route("docs"))
+        assert response.status_code == 401
+
+
 def test_groups_get_none():
     entitled_user = "test@mongodb.com"
     with FastApiTest(email=entitled_user) as client:
