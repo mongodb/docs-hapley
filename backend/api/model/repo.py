@@ -1,5 +1,5 @@
 from beanie import Document
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 from api.exceptions import ValidationError, RepoNotFound, ReorderIndexError
 
@@ -17,9 +17,6 @@ class Group(BaseModel):
 
     group_label: str = Field(alias="groupLabel")
     included_branches: list[str] = Field(alias="includedBranches")
-
-    class Config:
-        allow_population_by_field_name = True
 
 
 class DefaultRepoFields:
@@ -45,6 +42,10 @@ class RepoGroupsView(BaseModel):
     """Projection focused on groups for a specific repo."""
 
     groups: list[Group] | None
+
+    @validator("groups")
+    def validate_groups(cls, groups: list[Group] | None) -> list[Group]:
+        return groups or []
 
 
 class GroupValidator:
