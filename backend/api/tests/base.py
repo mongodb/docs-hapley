@@ -40,3 +40,9 @@ class FastApiTest(TestClient):
 
     def get(self, path: str, **kwargs):
         return super().get(self.base_url + self.trim_leading_slash(path), **kwargs)
+    
+    def put(self, path: str, **kwargs):
+        return super().put(self.base_url + self.trim_leading_slash(path), **kwargs)
+    
+    def post(self, path: str, **kwargs):
+        return super().post(self.base_url + self.trim_leading_slash(path), **kwargs)

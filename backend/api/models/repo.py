@@ -21,7 +21,19 @@ class Version(BaseModel):
     version_selector_label: str | None = Field(alias="versionSelectorLabel")
     is_stable_branch: bool | None = Field(alias="isStableBranch")
 
-    @validator("url_slug")
+    # Pydantic type checking runs after custom validations
+    # Need to verify presence of git_branch_name since downstream validations depend on it
+    @validator("git_branch_name", always=True, pre=True)
+    def git_branch_validator(cls, value):
+        # TODO: incorporate calls to GitHub API to verify that the branch exists
+        if value is None:
+            raise ValidationError(
+                "Version error",
+                "gitBranchName is required",
+            )
+        return value
+
+    @validator("url_slug", always=True)
     def url_slug_validator(cls, v, values):
         # Defaults to git branch if not specified, otherwise perform validations
         if v is None:
@@ -34,11 +46,12 @@ class Version(BaseModel):
                 )
         return v
 
-    @validator("version_selector_label")
+    @validator("version_selector_label", always=True)
     def version_selector_label_validator(cls, v, values):
         # Defaults to git branch if not specified
         if v is None:
             return values["git_branch_name"]
+        return v
 
 
 class Group(BaseModel):
@@ -115,19 +128,22 @@ class VersionPayloadWithRepo(BaseModel):
         errors = []
         new_version: Version = values.get("version")
         list_versions: list[Version] = values.get("repo").versions
+        
         # git branch name must be unique within the repo
         new_branch_name = new_version.git_branch_name
         if new_branch_name in set(
             map(lambda version: version.git_branch_name, list_versions)
         ):
             errors.append(f"gitBranchName: {new_branch_name} is already in use")
-
-        # url aliases must be unique within the repo if present
+        
+        # url aliases (optional field) must be unique within the repo
         new_aliases = new_version.url_aliases
         if new_aliases is not None:
-            for aliases in map(lambda version: version.url_aliases, list_versions):
+            existing_aliases = filter(None, map(lambda version: version.url_aliases, list_versions))
+            for aliases in existing_aliases:
                 if set(new_version.url_aliases) & set(aliases):
                     errors.append(f"urlAliases: one of {new_aliases} is already in use")
+        
         # ensure only one stable branch is present
         is_stable = new_version.is_stable_branch
         if is_stable is not None:
@@ -138,7 +154,7 @@ class VersionPayloadWithRepo(BaseModel):
                         filter(lambda version: version.is_stable_branch, list_versions)
                     )
                 )
-                > 1
+                >= 1
             ):
                 errors.append(f"Only one stable branch can be present")
 
@@ -151,7 +167,6 @@ class VersionPayloadWithRepo(BaseModel):
                 errors.append(
                     f"versionSelectorLabel: {version_selector_label} is already in use"
                 )
-        print(errors)
         if len(errors) > 0:
             raise ValidationError(
                 f"There were errors validating a version for repo {values.get('repo').name}",
@@ -164,7 +179,7 @@ class RepoNotFound(HTTPException):
     def __init__(self, repo_name: str) -> None:
         super().__init__(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"The repo {repo_name} does not exist.",
+            detail={"message": "Repo not found", "errors": [f"The repo {repo_name} does not exist."]},
         )
 
 
@@ -332,15 +347,14 @@ async def new_version_validator(
     return {"repo": repo, "version": new_version}
 
 
-async def insert_new_version(repo: Repo, version: Version) -> None:
-    repo.versions.append(version)
+async def insert_new_version(repo: Repo, version: Version) -> Repo:
     await repo.update({"$push": {"branches": version}})
-    return version
+    return repo
 
 
 async def reorder_repo_version(
     repo: Repo, currIndex: int, newIndex: int
-) -> list[Version]:
+) -> Repo:
     repo.versions.insert(newIndex, repo.versions.pop(currIndex))
     await repo.update({"$set": {"branches": repo.versions}})
     return repo
