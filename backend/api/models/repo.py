@@ -106,6 +106,7 @@ ListT = TypeVar("ListT")
 
 class ReorderPayloadWithList(GenericModel, Generic[ListT], ReorderPayload):
     reorderingList: list[ListT]
+    repo: Repo
 
     @root_validator(pre=True)
     def validate_indexes(cls, values):
@@ -123,6 +124,7 @@ class VersionPayloadWithRepo(BaseModel):
     version: Version
     repo: Repo
 
+    # TODO: break this up into helper functions
     @root_validator(pre=True)
     def validate_version(cls, values):
         errors = []
@@ -328,23 +330,18 @@ async def find_one_repo(repo_name: str) -> Repo:
 async def reorder_validator(
     reordering: ReorderPayload, repo: Repo = Depends(find_one_repo)
 ) -> None:
-    ReorderPayloadWithList[Version](
+    return ReorderPayloadWithList[Version](
+        repo=repo,
         reorderingList=repo.versions,
         currIndex=reordering.currIndex,
         newIndex=reordering.newIndex,
     )
-    return {
-        "repo": repo,
-        "currIndex": reordering.currIndex,
-        "newIndex": reordering.newIndex,
-    }
 
 
 async def new_version_validator(
     new_version: Version, repo: Repo = Depends(find_one_repo)
 ) -> dict[str, Repo | Version]:
-    VersionPayloadWithRepo(version=new_version, repo=repo)
-    return {"repo": repo, "version": new_version}
+    return VersionPayloadWithRepo(version=new_version, repo=repo)
 
 
 async def insert_new_version(repo: Repo, version: Version) -> Repo:

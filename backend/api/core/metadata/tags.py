@@ -13,6 +13,6 @@ tags_metadata = [
     },
     {
         "name": "versions",
-        "description": "Manage versions for a repo via the `branches` field",
+        "description": "Manage the list of versions for a repo via the `branches` field",
     },
 ]

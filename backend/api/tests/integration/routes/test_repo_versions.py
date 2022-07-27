@@ -55,7 +55,7 @@ def test_all_methods_invalid_repo_name():
       for method in http_methods:
           response = getattr(client, method)(INVALID_ENDPOINT)
           assert response.status_code == 404
-          assert response.json()["detail"] == "The repo foobar does not exist."
+          assert "The repo foobar does not exist." in response.json()["detail"]["errors"]
 
 # --------- PUT /repos/{repo_name}/versions ---------
 
