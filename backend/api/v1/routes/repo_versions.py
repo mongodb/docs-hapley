@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from ...core.util.base_error import ErrorResponse
-
+from . import repo_version
 from ...models.repo import (
     Repo,
     RepoVersionsView,
@@ -13,10 +13,13 @@ from ...models.repo import (
     reorder_validator,
 )
 
+ENDPOINT = "/{repo_name}/versions"
+
+
 router = APIRouter(dependencies=[Depends(find_one_repo)], tags=["versions"], responses={
     404: {"description": "The repo specified by `repo_name` does not exist.", "model": ErrorResponse},
 })
-ENDPOINT = "/{repo_name}/versions"
+router.include_router(repo_version.router, prefix=ENDPOINT)
 
 
 @router.get(

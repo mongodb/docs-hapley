@@ -15,4 +15,8 @@ tags_metadata = [
         "name": "versions",
         "description": "Manage the list of versions for a repo via the `branches` field",
     },
+    {
+        "name": "version",
+        "description": "Manage individual versions for a repo by `gitBranchName`",
+    }
 ]

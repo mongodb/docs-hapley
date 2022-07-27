@@ -184,6 +184,12 @@ class RepoNotFound(HTTPException):
             detail={"message": "Repo not found", "errors": [f"The repo {repo_name} does not exist."]},
         )
 
+class VersionNotFound(HTTPException):
+    def __init__(self, github_branch_name: str) -> None:
+        super().__init__(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"message": "Version not found", "errors": [f"The version with branch name {github_branch_name} does not exist."]},
+        )
 
 # TODO: This is confusing OpenAPI since Pydantic has the same class name.
 # We should align response to be same as Pydantic so the frontend handles errors consistently.
@@ -327,6 +333,12 @@ async def find_one_repo(repo_name: str) -> Repo:
     return repo
 
 
+async def find_one_version(git_branch_name: str, repo: Repo = Depends(find_one_repo)) -> Version:
+    version = list(filter(lambda v: v.git_branch_name == git_branch_name, repo.versions))
+    if not repo:
+        raise VersionNotFound(git_branch_name)
+    return version[0]
+
 async def reorder_validator(
     reordering: ReorderPayload, repo: Repo = Depends(find_one_repo)
 ) -> None:
@@ -340,7 +352,7 @@ async def reorder_validator(
 
 async def new_version_validator(
     new_version: Version, repo: Repo = Depends(find_one_repo)
-) -> dict[str, Repo | Version]:
+) -> VersionPayloadWithRepo:
     return VersionPayloadWithRepo(version=new_version, repo=repo)
 
 
