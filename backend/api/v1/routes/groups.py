@@ -6,28 +6,20 @@ from api.model.payloads import ReorderItemPayload
 
 GROUPS_INDEX_PATH = "/"
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(check_if_user_entitled_to_repo)])
 
 
-@router.get(
-    GROUPS_INDEX_PATH,
-    response_model=RepoGroupsView,
-    dependencies=[Depends(check_if_user_entitled_to_repo)],
-)
+@router.get(GROUPS_INDEX_PATH, response_model=RepoGroupsView)
 async def read_groups(repo_name: str):
     return await Repo.find_one(Repo.name == repo_name).project(RepoGroupsView)
 
 
-@router.post(
-    GROUPS_INDEX_PATH,
-    response_model=Group,
-    dependencies=[Depends(check_if_user_entitled_to_repo)],
-)
+@router.post(GROUPS_INDEX_PATH, response_model=Group)
 async def create_group(repo_name: str, group: Group):
     await insert_new_group(repo_name, group)
     return group
 
 
-@router.put(GROUPS_INDEX_PATH, dependencies=[Depends(check_if_user_entitled_to_repo)])
+@router.put(GROUPS_INDEX_PATH)
 async def update_groups(repo_name: str, body: ReorderItemPayload):
     await reorder_groups(repo_name, body.current_index, body.target_index)
