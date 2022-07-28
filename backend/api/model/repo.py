@@ -1,9 +1,13 @@
+from typing import Generic, TypeVar
+
 from beanie import Document
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, root_validator, validator
+from pydantic.generics import GenericModel
 
 from api.exceptions import ValidationError
 
 from .group import Group
+from .payloads import ReorderItemPayload
 from .version import Version
 
 
@@ -26,6 +30,66 @@ class RepoGroupsView(BaseModel):
     @validator("groups")
     def validate_groups(cls, groups: list[Group] | None) -> list[Group]:
         return groups or []
+
+
+class RepoVersionsView(BaseModel):
+    """Projection focused on versions for a specific repo."""
+
+    versions: list[Version] = Field(alias="branches")
+
+
+class VersionPayloadWithRepo(BaseModel):
+    version: Version
+    repo: Repo
+
+    # TODO: break this up into helper functions
+    @root_validator(pre=True)
+    def validate_version(cls, values):
+        errors = []
+        new_version: Version = values.get("version")
+        list_versions: list[Version] = values.get("repo").versions
+
+        # git branch name must be unique within the repo
+        new_branch_name = new_version.git_branch_name
+        if new_branch_name in set(
+            map(lambda version: version.git_branch_name, list_versions)
+        ):
+            errors.append(f"gitBranchName: {new_branch_name} is already in use")
+
+        # url aliases (optional field) must be unique within the repo
+        new_aliases = new_version.url_aliases
+        if new_aliases is not None:
+            existing_aliases = filter(
+                None, map(lambda version: version.url_aliases, list_versions)
+            )
+            for aliases in existing_aliases:
+                if set(new_version.url_aliases) & set(aliases):
+                    errors.append(f"urlAliases: one of {new_aliases} is already in use")
+
+        # ensure only one stable branch is present
+        is_stable = new_version.is_stable_branch
+        if is_stable is not None:
+            num_stable_branches = len(
+                list(filter(lambda version: version.is_stable_branch, list_versions))
+            )
+            if is_stable and num_stable_branches > 0:
+                errors.append("Only one stable branch can be present")
+
+        # ensure version selector label is unique within the repo if present
+        version_selector_label = values.get("version").version_selector_label
+        if version_selector_label is not None:
+            if version_selector_label in set(
+                map(lambda version: version.version_selector_label, list_versions)
+            ):
+                errors.append(
+                    f"versionSelectorLabel: {version_selector_label} is already in use"
+                )
+        if len(errors) > 0:
+            raise ValidationError(
+                f"There were errors validating a version for repo {values.get('repo').name}",
+                errors,
+            )
+        return values
 
 
 class GroupValidator:
@@ -117,6 +181,27 @@ class GroupValidator:
         self.raise_errors()
 
 
+ListT = TypeVar("ListT")
+
+
+class ReorderPayloadWithList(GenericModel, Generic[ListT], ReorderItemPayload):
+    reorderingList: list[ListT]
+    repo: Repo
+
+    @root_validator(pre=True)
+    def validate_indexes(cls, values):
+        print(ReorderItemPayload.__fields__.keys())
+        for val in ReorderItemPayload.__fields__.keys():
+            index = values.get(val)
+            print(index)
+            if index >= len(values.get("reorderingList")) or index < 0:
+                raise ValidationError(
+                    "Error reordering groups.",
+                    [f"Index {index} is out of bounds."],
+                )
+        return values
+
+
 async def insert_new_group(repo: Repo, group: Group) -> None:
     validator = GroupValidator(repo)
     validator.validate_new_group(group)
@@ -147,3 +232,16 @@ async def reorder_groups(repo: Repo, current_index: int, target_index: int) -> N
     validator = GroupValidator(repo)
     validator.validate_new_groups(groups)
     await repo.update({"$set": {"groups": groups}})
+
+
+async def insert_new_version(repo: Repo, version: Version) -> Repo:
+    await repo.update({"$push": {"branches": version}})
+    return repo
+
+
+async def reorder_repo_version(
+    repo: Repo, current_index: int, target_index: int
+) -> Repo:
+    repo.versions.insert(target_index, repo.versions.pop(current_index))
+    await repo.update({"$set": {"branches": repo.versions}})
+    return repo

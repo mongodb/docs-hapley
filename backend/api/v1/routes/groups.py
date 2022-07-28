@@ -10,7 +10,6 @@ GROUPS_INDEX_PATH = "/"
 
 router = APIRouter(
     dependencies=[Depends(check_if_user_entitled_to_repo)],
-    tags=["groups"],
     responses={
         status.HTTP_401_UNAUTHORIZED: {
             "description": "User is not entitled to the repo.",
@@ -24,17 +23,26 @@ router = APIRouter(
 )
 
 
-@router.get(GROUPS_INDEX_PATH, response_model=RepoGroupsView)
+@router.get(
+    GROUPS_INDEX_PATH,
+    response_model=RepoGroupsView,
+    description="Get all groups for a specific repo",
+)
 async def read_groups(repo: Repo = Depends(find_one_repo)):
     return repo
 
 
-@router.post(GROUPS_INDEX_PATH, response_model=Group)
+@router.post(
+    GROUPS_INDEX_PATH,
+    response_model=Group,
+    description="Create a new group for a specific repo",
+)
 async def create_group(group: Group, repo: Repo = Depends(find_one_repo)):
     await insert_new_group(repo, group)
     return group
 
 
-@router.put(GROUPS_INDEX_PATH)
+# TODO: there should be a response model here
+@router.put(GROUPS_INDEX_PATH, description="Move a group to a new position in the list")
 async def update_groups(body: ReorderItemPayload, repo: Repo = Depends(find_one_repo)):
     await reorder_groups(repo, body.current_index, body.target_index)

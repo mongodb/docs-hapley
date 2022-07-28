@@ -12,20 +12,14 @@ class Version(BaseModel):
     version_selector_label: str | None = Field(alias="versionSelectorLabel")
     is_stable_branch: bool | None = Field(alias="isStableBranch")
 
-    # Pydantic type checking runs after custom validations
-    # Need to verify presence of git_branch_name since downstream validations depend on it
-    @validator("git_branch_name", always=True, pre=True)
-    def git_branch_validator(cls, value):
-        if value is None:
-            raise ValidationError(
-                "Version error",
-                "gitBranchName is required",
-            )
-        return value
-
+    # If validation on git_branch name fails, it won't be included in values.
+    # https://pydantic-docs.helpmanual.io/usage/validators/
     @validator("url_slug", always=True)
     def url_slug_validator(cls, v, values):
-        # Defaults to git branch if not specified, otherwise perform validations
+        if "git_branch_name" not in values:
+            return v
+
+        # Defaults to git branch if not specified
         if v is None:
             return values["git_branch_name"]
         else:
@@ -39,6 +33,7 @@ class Version(BaseModel):
     @validator("version_selector_label", always=True)
     def version_selector_label_validator(cls, v, values):
         # Defaults to git branch if not specified
-        if v is None:
-            return values["git_branch_name"]
+        if "git_branch_name" in values:
+            if v is None:
+                return values["git_branch_name"]
         return v

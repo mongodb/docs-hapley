@@ -3,7 +3,9 @@ from fastapi import Depends, Request
 from api.exceptions import RepoNotFound, UserNotEntitled
 
 from .model.entitlement import Entitlement, PersonalRepos
-from .model.repo import Repo
+from .model.payloads import ReorderItemPayload
+from .model.repo import ReorderPayloadWithList, Repo, VersionPayloadWithRepo
+from .model.version import Version
 
 
 def get_request_user_email(request: Request) -> str:
@@ -38,3 +40,20 @@ async def find_one_repo(repo_name: str) -> Repo:
     if not repo:
         raise RepoNotFound(repo_name)
     return repo
+
+
+async def new_version_validator(
+    new_version: Version, repo: Repo = Depends(find_one_repo)
+) -> VersionPayloadWithRepo:
+    return VersionPayloadWithRepo(version=new_version, repo=repo)
+
+
+async def reorder_validator(
+    reordering: ReorderItemPayload, repo: Repo = Depends(find_one_repo)
+) -> ReorderPayloadWithList:
+    return ReorderPayloadWithList[Version](
+        repo=repo,
+        reorderingList=repo.versions,
+        current_index=reordering.current_index,
+        target_index=reordering.target_index,
+    )

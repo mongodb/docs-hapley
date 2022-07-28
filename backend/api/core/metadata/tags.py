@@ -12,7 +12,15 @@ tags_metadata = [
         "description": "Manage the `repos_branches` collection",
     },
     {
+        "name": "versions",
+        "description": "Manage the list of versions for a repo via the `branches` field",
+    },
+    {
         "name": "groups",
         "description": "Manage the list of `groups` for a repo",
+    },
+    {
+        "name": "version",
+        "description": "Manage individual versions for a repo by `gitBranchName`",
     },
 ]
