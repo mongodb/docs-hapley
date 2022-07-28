@@ -6,7 +6,6 @@ from api.core.config import Settings
 from api.model.entitlement import Entitlement
 from api.model.repo import Repo
 
-
 ALL_DOCUMENT_MODELS = [Entitlement, Repo]
 
 

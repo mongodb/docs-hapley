@@ -18,6 +18,9 @@ def post_groups(client: FastApiTest, repo_name: str, new_group: dict):
     response = client.post(groups_route(repo_name), json=new_group)
     res_json = response.json()
     assert response.status_code == 200
+    # assigned a valid object id
+    assert len(res_json["id"]) > 0
+    del res_json["id"]
     assert res_json == new_group
 
     new_groups = get_groups(client, repo_name)
@@ -66,14 +69,14 @@ def test_groups_post_first_group():
 def test_groups_post_existing_group():
     entitled_user = "test@mongodb.com"
     with FastApiTest(email=entitled_user) as client:
-        new_group = {"groupLabel": "Long-Term Support Release", "includedBranches": []}
+        new_group = {"groupLabel": "Major Release", "includedBranches": []}
 
         response = client.post(groups_route("docs"), json=new_group)
         assert response.status_code == 422
 
         detail = response.json()["detail"]
         errs = detail["errors"]
-        assert "Duplicate group label: Long-Term Support Release." in errs
+        assert "Duplicate group label: Major Release." in errs
 
 
 def test_groups_post_used_version():

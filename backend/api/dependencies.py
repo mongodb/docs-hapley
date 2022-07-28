@@ -1,7 +1,7 @@
 from fastapi import Request
 
-from api.model.entitlement import get_user_entitlements
 from api.exceptions import UserNotEntitled
+from api.model.entitlement import get_user_entitlements
 
 
 def get_request_user_email(request: Request) -> str:

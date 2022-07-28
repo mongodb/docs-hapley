@@ -1,7 +1,8 @@
 from beanie import Document
+from beanie.odm.fields import PydanticObjectId
 from pydantic import BaseModel, Field, validator
 
-from api.exceptions import ValidationError, RepoNotFound, ReorderIndexError
+from api.exceptions import ReorderIndexError, RepoNotFound, ValidationError
 
 
 class PersonalRepos(BaseModel):
@@ -15,23 +16,16 @@ class Version(BaseModel):
 class Group(BaseModel):
     """A group of versions."""
 
+    id: PydanticObjectId = Field(default_factory=PydanticObjectId)
     group_label: str = Field(alias="groupLabel")
     included_branches: list[str] = Field(alias="includedBranches")
-
-
-class DefaultRepoFields:
-    """Default fields for a repo document and its views."""
-
-    name: str = Field(alias="repoName")
-    versions: list[Version] = Field(alias="branches")
-    groups: list[Group] | None
 
 
 class Repo(Document):
     """Representation of a docs content repo."""
 
-    name: str = DefaultRepoFields.name
-    versions: list[Version] = DefaultRepoFields.versions
+    name: str = Field(alias="repoName")
+    versions: list[Version] = Field(alias="branches")
     groups: list[Group] | None
 
     class Settings:
