@@ -50,10 +50,13 @@ async def create_group(new_group_params: GroupValidator = Depends(new_group_vali
     return new_group
 
 
-@router.put(GROUPS_INDEX_PATH, description="Move a group to a new position in the list")
+@router.put(
+    GROUPS_INDEX_PATH,
+    description="Move a group to a new position in the list",
+    response_model=RepoGroupsView,
+)
 async def reorder_group(
     reorder_params: ReorderPayloadValidator = Depends(reorder_group_validator),
-    response_model=RepoGroupsView,
 ):
     updated_repo = await reorder_repo_group(
         repo=reorder_params.repo,
