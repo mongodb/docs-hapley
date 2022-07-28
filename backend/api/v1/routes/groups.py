@@ -11,7 +11,7 @@ router = APIRouter(dependencies=[Depends(check_if_user_entitled_to_repo)])
 
 @router.get(GROUPS_INDEX_PATH, response_model=RepoGroupsView)
 async def read_groups(repo_name: str):
-    return await Repo.find_one(Repo.name == repo_name)
+    return await Repo.find_one(Repo.name == repo_name).project(RepoGroupsView)
 
 
 @router.post(GROUPS_INDEX_PATH, response_model=Group)

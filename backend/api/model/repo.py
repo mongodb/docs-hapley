@@ -1,10 +1,8 @@
 from beanie import Document
-from bson import ObjectId
+from beanie.odm.fields import PydanticObjectId
 from pydantic import BaseModel, Field, validator
 
 from api.exceptions import ReorderIndexError, RepoNotFound, ValidationError
-
-from .pydantic_object_id import PyObjectId
 
 
 class PersonalRepos(BaseModel):
@@ -18,13 +16,9 @@ class Version(BaseModel):
 class Group(BaseModel):
     """A group of versions."""
 
-    id: PyObjectId = Field(default_factory=PyObjectId)
+    id: PydanticObjectId = Field(default_factory=PydanticObjectId)
     group_label: str = Field(alias="groupLabel")
     included_branches: list[str] = Field(alias="includedBranches")
-
-    class Config:
-        json_encoders = {ObjectId: str}
-        arbitrary_types_allowed = True
 
 
 class Repo(Document):
@@ -46,11 +40,6 @@ class RepoGroupsView(BaseModel):
     @validator("groups")
     def validate_groups(cls, groups: list[Group] | None) -> list[Group]:
         return groups or []
-
-    # For unknown reason, when you use a projection in a response model,
-    # you need to redefine the JSON encoder for ObjectId.
-    class Config:
-        json_encoders = {ObjectId: str}
 
 
 class GroupValidator:
