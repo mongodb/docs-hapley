@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field
 from beanie.odm.fields import PydanticObjectId
+from pydantic import BaseModel, Field
+
 
 class Group(BaseModel):
     id: PydanticObjectId = Field(default_factory=PydanticObjectId)

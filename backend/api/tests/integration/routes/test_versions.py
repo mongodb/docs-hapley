@@ -14,7 +14,7 @@ def test_valid_get():
         assert response.status_code == 200
         versions = response.json()["branches"]
         assert len(versions) > 0
-        assert len(versions[0]['id']) > 0
+        assert len(versions[0]["id"]) > 0
         version = versions[0]
         del version["id"]
         assert version == {

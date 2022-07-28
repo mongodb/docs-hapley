@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field, validator
 from beanie.odm.fields import PydanticObjectId
+from pydantic import BaseModel, Field, validator
+
 from api.exceptions import ValidationError
 
 
