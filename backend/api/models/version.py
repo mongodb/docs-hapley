@@ -1,9 +1,10 @@
 from pydantic import BaseModel, Field, validator
-
+from beanie.odm.fields import PydanticObjectId
 from api.exceptions import ValidationError
 
 
 class Version(BaseModel):
+    id: PydanticObjectId = Field(default_factory=PydanticObjectId)
     git_branch_name: str = Field(alias="gitBranchName")
     active: bool
     url_aliases: list[str] | None = Field(alias="urlAliases")
