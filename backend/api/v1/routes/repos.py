@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from api.dependencies import get_user_entitlements
 
-from ...model.entitlement import PersonalRepos
+from ...models.entitlement import PersonalRepos
 from . import groups, versions
 
 PARAM_REPO_NAME = "{repo_name}"

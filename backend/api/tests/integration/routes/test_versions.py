@@ -78,10 +78,10 @@ def test_valid_payload_post():
     with FastApiTest() as client:
         current_num_branches = len(client.get(VALID_ENDPOINT).json()["branches"])
         response = client.post(VALID_ENDPOINT, json=payload)
-        print(response.json())
         assert response.status_code == 200
-        assert response.json()["branches"][-1] == payload
-        assert len(response.json()["branches"]) - current_num_branches == 1
+        assert response.json() == payload
+        new_num_branches = len(client.get(VALID_ENDPOINT).json()["branches"])
+        assert new_num_branches - current_num_branches == 1
 
 
 def test_invalid_git_branch_name_post():
@@ -99,7 +99,7 @@ def test_default_vals_post():
     with FastApiTest() as client:
         response = client.post(VALID_ENDPOINT, json=payload)
         assert response.status_code == 200
-        new_version = response.json()["branches"][-1]
+        new_version = response.json()
         assert new_version["urlSlug"] == payload["gitBranchName"]
         assert new_version["versionSelectorLabel"] == payload["gitBranchName"]
 

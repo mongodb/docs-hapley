@@ -90,7 +90,7 @@ def test_groups_post_used_version():
         detail = response.json()["detail"]
         errs = detail["errors"]
         assert len(errs) == 1
-        assert "Version already used" in errs[0]
+        assert "already exists in another group" in errs[0]
 
 
 def test_groups_post_no_version():

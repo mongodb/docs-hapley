@@ -1,11 +1,15 @@
 from fastapi import Depends, Request
 
+from api.core.validators.group_validator import GroupValidator
+from api.core.validators.reorder_validator import ReorderPayloadValidator
+from api.core.validators.version_validator import VersionValidator
 from api.exceptions import RepoNotFound, UserNotEntitled
 
-from .model.entitlement import Entitlement, PersonalRepos
-from .model.payloads import ReorderItemPayload
-from .model.repo import ReorderPayloadWithList, Repo, VersionPayloadWithRepo
-from .model.version import Version
+from .models.entitlement import Entitlement, PersonalRepos
+from .models.group import Group
+from .models.payloads import ReorderItemPayload
+from .models.repo import Repo
+from .models.version import Version
 
 
 def get_request_user_email(request: Request) -> str:
@@ -42,18 +46,36 @@ async def find_one_repo(repo_name: str) -> Repo:
     return repo
 
 
+# TODO: what if the dependency was just the class not the method?
 async def new_version_validator(
     new_version: Version, repo: Repo = Depends(find_one_repo)
-) -> VersionPayloadWithRepo:
-    return VersionPayloadWithRepo(version=new_version, repo=repo)
+) -> VersionValidator:
+    return VersionValidator(version=new_version, repo=repo)
 
 
-async def reorder_validator(
+async def new_group_validator(
+    new_group: Group, repo: Repo = Depends(find_one_repo)
+) -> GroupValidator:
+    return GroupValidator(group=new_group, repo=repo)
+
+
+async def reorder_version_validator(
     reordering: ReorderItemPayload, repo: Repo = Depends(find_one_repo)
-) -> ReorderPayloadWithList:
-    return ReorderPayloadWithList[Version](
+) -> ReorderPayloadValidator:
+    return ReorderPayloadValidator[Version](
         repo=repo,
         reorderingList=repo.versions,
+        current_index=reordering.current_index,
+        target_index=reordering.target_index,
+    )
+
+
+async def reorder_group_validator(
+    reordering: ReorderItemPayload, repo: Repo = Depends(find_one_repo)
+) -> ReorderPayloadValidator:
+    return ReorderPayloadValidator[Group](
+        repo=repo,
+        reorderingList=repo.groups,
         current_index=reordering.current_index,
         target_index=reordering.target_index,
     )
