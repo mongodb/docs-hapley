@@ -1,33 +1,14 @@
 from beanie import Document
 from pydantic import BaseModel, Field, validator
-
-from api.exceptions import ValidationError, RepoNotFound, ReorderIndexError
-
-
-class Version(BaseModel):
-    git_branch_name: str = Field(alias="gitBranchName")
-
-
-class Group(BaseModel):
-    """A group of versions."""
-
-    group_label: str = Field(alias="groupLabel")
-    included_branches: list[str] = Field(alias="includedBranches")
-
-
-class DefaultRepoFields:
-    """Default fields for a repo document and its views."""
-
-    name: str = Field(alias="repoName")
-    versions: list[Version] = Field(alias="branches")
-    groups: list[Group] | None
-
+from .version import Version
+from .group import Group
+from api.exceptions import ReorderIndexError, ValidationError
 
 class Repo(Document):
     """Representation of a docs content repo."""
 
-    name: str = DefaultRepoFields.name
-    versions: list[Version] = DefaultRepoFields.versions
+    name: str = Field(alias="repoName")
+    versions: list[Version] = Field(alias="branches")
     groups: list[Group] | None
 
     class Settings:
@@ -42,7 +23,6 @@ class RepoGroupsView(BaseModel):
     @validator("groups")
     def validate_groups(cls, groups: list[Group] | None) -> list[Group]:
         return groups or []
-
 
 class GroupValidator:
     def __init__(self, repo: Repo) -> None:
@@ -131,14 +111,6 @@ class GroupValidator:
 
         self.validate_one_group(new_group)
         self.raise_errors()
-
-
-async def find_one_repo(repo_name: str) -> Repo:
-    repo = await Repo.find_one(Repo.name == repo_name)
-    if not repo:
-        raise RepoNotFound(repo_name)
-    return repo
-
 
 async def insert_new_group(repo: Repo, group: Group) -> None:
     validator = GroupValidator(repo)

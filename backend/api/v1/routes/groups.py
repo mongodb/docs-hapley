@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
 
-from api.dependencies import check_if_user_entitled_to_repo
-from api.model.repo import Group, Repo, RepoGroupsView, insert_new_group, reorder_groups, find_one_repo
+from api.dependencies import check_if_user_entitled_to_repo, find_one_repo
+from api.model.repo import Repo, RepoGroupsView, insert_new_group, reorder_groups
+from api.model.group import Group
 from api.model.payloads import ReorderItemPayload
 
 GROUPS_INDEX_PATH = "/"

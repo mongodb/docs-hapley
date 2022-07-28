@@ -1,6 +1,7 @@
 from fastapi import Request, Depends
 from .model.entitlement import Entitlement, PersonalRepos
-from api.exceptions import UserNotEntitled
+from .model.repo import Repo
+from api.exceptions import UserNotEntitled, RepoNotFound
 
 
 def get_request_user_email(request: Request) -> str:
@@ -22,3 +23,10 @@ async def check_if_user_entitled_to_repo(repo_name: str, entitled_repos: Persona
     possible_repo_names = set([f"10gen/{repo_name}", f"mongodb/{repo_name}"])
     if not possible_repo_names & set(entitled_repos.repos):
         raise UserNotEntitled()
+
+
+async def find_one_repo(repo_name: str) -> Repo:
+    repo = await Repo.find_one(Repo.name == repo_name)
+    if not repo:
+        raise RepoNotFound(repo_name)
+    return repo
