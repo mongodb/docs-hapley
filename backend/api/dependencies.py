@@ -1,6 +1,5 @@
-from fastapi import Request
-
-from api.model.entitlement import get_user_entitlements
+from fastapi import Request, Depends
+from .model.entitlement import Entitlement, PersonalRepos
 from api.exceptions import UserNotEntitled
 
 
@@ -10,13 +9,16 @@ def get_request_user_email(request: Request) -> str:
     return request.state.user.email
 
 
-async def check_if_user_entitled_to_repo(request: Request, repo_name: str) -> None:
-    """Raises an HTTP exception if the user is not entitled to the repo being accessed."""
+async def get_user_entitlements(user_email: str = Depends(get_request_user_email)) -> PersonalRepos:
+    # Use email for now, but we should probably use the immutable okta_id in the future.
+    return await Entitlement.find_one(Entitlement.email == user_email).project(PersonalRepos)
 
-    entitled_repos = await get_user_entitlements(get_request_user_email(request))
+
+async def check_if_user_entitled_to_repo(repo_name: str, entitled_repos: PersonalRepos = Depends(get_user_entitlements)) -> None:
+    """Raises an HTTP exception if the user is not entitled to the repo being accessed."""
 
     # Entitlements are in the form of <org>/<repo_name> but repo documents do not
     # care about the org owner.
     possible_repo_names = set([f"10gen/{repo_name}", f"mongodb/{repo_name}"])
-    if not possible_repo_names & set(entitled_repos):
+    if not possible_repo_names & set(entitled_repos.repos):
         raise UserNotEntitled()

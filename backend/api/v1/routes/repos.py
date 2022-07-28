@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
-from api.dependencies import get_request_user_email
+from api.dependencies import get_user_entitlements
 
-from ...model.entitlement import Entitlement, PersonalRepos
+from ...model.entitlement import PersonalRepos
 from . import groups
 
 PARAM_REPO_NAME = "{repo_name}"
@@ -14,5 +14,5 @@ router.include_router(
 
 
 @router.get("/", response_model=PersonalRepos, tags=["repos"])
-async def read_repos(email: str = Depends(get_request_user_email)):
-    return await Entitlement.find_one(Entitlement.email == email)
+async def read_repos(repos: PersonalRepos = Depends(get_user_entitlements)):
+    return repos
