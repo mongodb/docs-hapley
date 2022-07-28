@@ -1,5 +1,7 @@
 from pydantic import BaseModel, Field, validator
+
 from api.exceptions import ValidationError
+
 
 class Version(BaseModel):
     git_branch_name: str = Field(alias="gitBranchName")

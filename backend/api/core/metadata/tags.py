@@ -11,4 +11,8 @@ tags_metadata = [
         "name": "repos",
         "description": "Manage the `repos_branches` collection",
     },
+    {
+        "name": "groups",
+        "description": "Manage the list of `groups` for a repo",
+    },
 ]

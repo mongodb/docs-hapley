@@ -1,8 +1,10 @@
 from beanie import Document
 from pydantic import BaseModel
 
+
 class PersonalRepos(BaseModel):
     repos: list[str]
+
 
 class Entitlement(Document):
     class Settings:

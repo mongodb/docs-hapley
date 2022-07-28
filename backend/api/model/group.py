@@ -1,5 +1,5 @@
-
 from pydantic import BaseModel, Field
+
 
 class Group(BaseModel):
     """A group of versions."""

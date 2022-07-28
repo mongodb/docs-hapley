@@ -1,11 +1,14 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
+
 from ...core.middleware.authorization import Authorization
 
 router = APIRouter()
 
+
 class TokenResponse(BaseModel):
     token: str
+
 
 @router.get(
     "/sample-token",

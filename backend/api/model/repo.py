@@ -1,8 +1,11 @@
 from beanie import Document
 from pydantic import BaseModel, Field, validator
-from .version import Version
+
+from api.exceptions import ValidationError
+
 from .group import Group
-from api.exceptions import ReorderIndexError, ValidationError
+from .version import Version
+
 
 class Repo(Document):
     """Representation of a docs content repo."""
@@ -23,6 +26,7 @@ class RepoGroupsView(BaseModel):
     @validator("groups")
     def validate_groups(cls, groups: list[Group] | None) -> list[Group]:
         return groups or []
+
 
 class GroupValidator:
     def __init__(self, repo: Repo) -> None:
@@ -112,6 +116,7 @@ class GroupValidator:
         self.validate_one_group(new_group)
         self.raise_errors()
 
+
 async def insert_new_group(repo: Repo, group: Group) -> None:
     validator = GroupValidator(repo)
     validator.validate_new_group(group)
@@ -125,11 +130,13 @@ async def reorder_groups(repo: Repo, current_index: int, target_index: int) -> N
     """
 
     groups = repo.groups
-    model_name = "groups"
 
     max_index = max(current_index, target_index)
     if max_index >= len(groups):
-        raise ReorderIndexError(max_index, model_name, repo.name)
+        raise ValidationError(
+            "Error reordering groups.",
+            [f"Index {max_index} is out of bounds."],
+        )
 
     if current_index == target_index:
         return

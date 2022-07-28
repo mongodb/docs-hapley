@@ -134,4 +134,4 @@ def test_groups_put_out_of_bounds():
         response = client.put(groups_route(repo_name), json=new_indexes)
 
         assert response.status_code == 422
-        assert "Index 5 is out of bounds" in response.json()["detail"]
+        assert "Index 5 is out of bounds" in response.json()["detail"]["errors"][0]
