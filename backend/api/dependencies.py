@@ -46,7 +46,6 @@ async def find_one_repo(repo_name: str) -> Repo:
     return repo
 
 
-# TODO: what if the dependency was just the class not the method?
 async def new_version_validator(
     new_version: Version, repo: Repo = Depends(find_one_repo)
 ) -> VersionValidator:
