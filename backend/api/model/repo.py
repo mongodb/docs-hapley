@@ -133,32 +133,24 @@ class GroupValidator:
         self.raise_errors()
 
 
-async def find_one_repo(repo_name: str) -> Repo | None:
+async def find_one_repo(repo_name: str) -> Repo:
     repo = await Repo.find_one(Repo.name == repo_name)
+    if not repo:
+        raise RepoNotFound(repo_name)
     return repo
 
 
-async def insert_new_group(repo_name: str, group: Group) -> None:
-    repo = await find_one_repo(repo_name)
-
-    if not repo:
-        raise RepoNotFound(repo_name)
-
+async def insert_new_group(repo: Repo, group: Group) -> None:
     validator = GroupValidator(repo)
     validator.validate_new_group(group)
     await repo.update({"$push": {"groups": group}})
 
 
-async def reorder_groups(repo_name: str, current_index: int, target_index: int) -> None:
+async def reorder_groups(repo: Repo, current_index: int, target_index: int) -> None:
     """
     Accepts the current index of the group to move and then moves it to the target
     index.
     """
-
-    repo = await find_one_repo(repo_name)
-
-    if not repo:
-        raise RepoNotFound(repo_name)
 
     groups = repo.groups
     model_name = "groups"
