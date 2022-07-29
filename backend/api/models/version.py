@@ -4,8 +4,9 @@ from pydantic import BaseModel, Field, validator
 from api.exceptions import ValidationError
 
 
-class Version(BaseModel):
-    id: PydanticObjectId = Field(default_factory=PydanticObjectId)
+# id should not be listed as a field in request body because it is automatically
+# generated for POST or pulled from the URL path parameter for PUT.
+class VersionIn(BaseModel):
     git_branch_name: str = Field(alias="gitBranchName")
     active: bool
     url_aliases: list[str] | None = Field(alias="urlAliases")
@@ -28,7 +29,9 @@ class Version(BaseModel):
             if v != values["git_branch_name"] and v not in values["url_aliases"]:
                 raise ValidationError(
                     "Version error",
-                    "urlSlug must match gitBranchName or be an element of url aliases",
+                    [
+                        "urlSlug must match gitBranchName or be an element of url aliases"
+                    ],
                 )
         return v
 
@@ -39,3 +42,10 @@ class Version(BaseModel):
             if v is None:
                 return values["git_branch_name"]
         return v
+
+    class Config:
+        allow_population_by_field_name = True
+
+
+class Version(VersionIn):
+    id: PydanticObjectId = Field(default_factory=PydanticObjectId)

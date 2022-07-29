@@ -48,3 +48,6 @@ class FastApiTest(TestClient):
 
     def put(self, path: str, **kwargs):
         return super().put(self.base_url + self.trim_leading_slash(path), **kwargs)
+
+    def delete(self, path: str, **kwargs):
+        return super().delete(self.base_url + self.trim_leading_slash(path), **kwargs)
