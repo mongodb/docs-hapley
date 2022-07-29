@@ -53,8 +53,7 @@ class ValidGroup(BaseModel):
             )
             if len(previously_used_versions) > 0:
                 err_msg = (
-                    f'Attempting to use version {",".join(previously_used_versions)} in {new_group_label}. '
-                    f'{",".join(previously_used_versions)} already exists in another group.'
+                    f'Versions {", ".join(previously_used_versions)} {"are" if len(previously_used_versions) > 1 else "is"} already used in another group.'
                 )
                 errors.append(err_msg)
         if len(errors) > 0:
