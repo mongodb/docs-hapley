@@ -15,10 +15,6 @@ class VersionIn(BaseModel):
     version_selector_label: str | None = Field(alias="versionSelectorLabel")
     is_stable_branch: bool | None = Field(alias="isStableBranch")
 
-
-class Version(VersionIn):
-    id: PydanticObjectId = Field(default_factory=PydanticObjectId)
-   
     # If validation on git_branch_name fails, it won't be included in values.
     # https://pydantic-docs.helpmanual.io/usage/validators/
     @validator("url_slug", always=True)
@@ -33,7 +29,9 @@ class Version(VersionIn):
             if v != values["git_branch_name"] and v not in values["url_aliases"]:
                 raise ValidationError(
                     "Version error",
-                    "urlSlug must match gitBranchName or be an element of url aliases",
+                    [
+                        "urlSlug must match gitBranchName or be an element of url aliases"
+                    ],
                 )
         return v
 
@@ -44,5 +42,13 @@ class Version(VersionIn):
             if v is None:
                 return values["git_branch_name"]
         return v
+
+    class Config:
+        allow_population_by_field_name = True
+
+
+class Version(VersionIn):
+    id: PydanticObjectId = Field(default_factory=PydanticObjectId)
+
     class Config:
         allow_population_by_field_name = True

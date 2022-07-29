@@ -35,11 +35,12 @@ class RepoNotFound(HTTPException):
             detail=error.dict(),
         )
 
+
 class VersionNotFound(HTTPException):
     def __init__(self, version_id: str) -> None:
         error: ErrorDetail = ErrorDetail(
             message="Version not found.",
-            errors=[f"The version with id {version_id} does not exist."],
+            errors=[f"The version {version_id} does not exist."],
         )
         super().__init__(
             status_code=status.HTTP_404_NOT_FOUND,

@@ -22,5 +22,5 @@ tags_metadata = [
     {
         "name": "version",
         "description": "Manage a specific version for a repo",
-    }
+    },
 ]

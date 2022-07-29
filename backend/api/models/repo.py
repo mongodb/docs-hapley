@@ -61,14 +61,19 @@ async def reorder_repo_version(
     await repo.update({"$set": {"branches": repo.versions}})
     return repo
 
+
 def get_version_index(repo: Repo, version_id: ObjectId) -> int:
-    return repo.versions.index(next(filter(lambda v: v.id == version_id, repo.versions)))
+    return repo.versions.index(
+        next(filter(lambda v: v.id == version_id, repo.versions))
+    )
+
 
 async def update_repo_version(repo: Repo, version: Version) -> Version:
     version_index: int = get_version_index(repo, version.id)
     repo.versions[version_index] = version
     await repo.update({"$set": {"branches": repo.versions}})
     return version
+
 
 async def delete_repo_version(repo: Repo, version_id: ObjectId) -> None:
     version_index: int = get_version_index(repo, version_id)

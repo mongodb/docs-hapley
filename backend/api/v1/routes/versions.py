@@ -33,11 +33,12 @@ router = APIRouter(
 
 router.include_router(version.router, prefix=f"/{PARAM_VERSION_ID}", tags=["version"])
 
+
 @router.get(
     VERSIONS_INDEX_PATH,
     response_model=RepoVersionsView,
     description="Get all versions for a specific repo",
-    tags=["versions"]
+    tags=["versions"],
 )
 async def read_versions(repo: Repo = Depends(find_one_repo)):
     return repo
@@ -47,7 +48,7 @@ async def read_versions(repo: Repo = Depends(find_one_repo)):
     VERSIONS_INDEX_PATH,
     response_model=Version,
     description="Create a new version for a specific repo",
-    tags=["versions"]
+    tags=["versions"],
 )
 async def create_version(
     new_version_params: ValidVersion = Depends(new_version_validator),
@@ -62,7 +63,7 @@ async def create_version(
     VERSIONS_INDEX_PATH,
     response_model=RepoVersionsView,
     description="Move a version to a new position in the list",
-    tags=["versions"]
+    tags=["versions"],
 )
 async def reorder_version(
     reorder_params: ValidReorderPayload = Depends(reorder_version_validator),

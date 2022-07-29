@@ -69,7 +69,10 @@ class ValidVersion(BaseModel):
         list_versions: list[Version] = values.get("repo").versions
 
         # If updating an existing version, exclude it from list_versions to avoid catching fake duplicates
-        list_versions = list(filter(lambda version: version.id != new_version.id, list_versions))
+        if hasattr(new_version, "id"):
+            list_versions = list(
+                filter(lambda version: version.id != new_version.id, list_versions)
+            )
 
         errors.append(cls.validate_unique_git_branch_name(new_version, list_versions))
         errors.extend(cls.validate_unique_url_aliases(new_version, list_versions))
