@@ -59,3 +59,11 @@ async def reorder_repo_version(
     repo.versions.insert(target_index, repo.versions.pop(current_index))
     await repo.update({"$set": {"branches": repo.versions}})
     return repo
+
+async def update_repo_version(repo: Repo, version: Version) -> Version:
+    await repo.update({"branches.id": version.id}, {"$set": {"branches.$": version}})
+    return version
+
+async def delete_repo_version(repo: Repo, version: Version) -> Repo:
+    await repo.update({"branches.id": version.id}, {"$pull": {"branches": version}})
+    return repo

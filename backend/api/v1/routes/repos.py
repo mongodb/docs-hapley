@@ -12,7 +12,7 @@ router.include_router(
     groups.router, prefix=f"/{PARAM_REPO_NAME}/groups", tags=["groups"]
 )
 router.include_router(
-    versions.router, prefix=f"/{PARAM_REPO_NAME}/versions", tags=["versions"]
+    versions.router, prefix=f"/{PARAM_REPO_NAME}/versions"
 )
 
 

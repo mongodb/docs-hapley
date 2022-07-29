@@ -3,8 +3,8 @@ from fastapi import Depends, Request
 from api.core.validators.valid_group import ValidGroup
 from api.core.validators.valid_reorder_payload import ValidReorderPayload
 from api.core.validators.valid_version import ValidVersion
-from api.exceptions import RepoNotFound, UserNotEntitled
-
+from api.exceptions import RepoNotFound, UserNotEntitled, VersionNotFound, ValidationError
+from bson import ObjectId, errors
 from .models.entitlement import Entitlement, PersonalRepos
 from .models.group import Group
 from .models.payloads import ReorderItemPayload
@@ -45,6 +45,21 @@ async def find_one_repo(repo_name: str) -> Repo:
         raise RepoNotFound(repo_name)
     return repo
 
+async def convert_to_object_id(version_id: str) -> ObjectId:
+    try:
+        return ObjectId(version_id)
+    except errors.InvalidId:
+        raise ValidationError(
+            message="Invalid ObjectId.",
+            errors=[f"{version_id} is not a valid 24-byte hex string."]
+        )
+
+async def find_one_version(object_id: ObjectId = Depends(convert_to_object_id), repo: Repo = Depends(find_one_repo)) -> Version:
+    # Could potentially move query to the database layer via aggregation pipeline.
+    version = list(filter(lambda v: v.id == object_id, repo.versions))
+    if not version:
+        raise VersionNotFound(object_id)
+    return version[0]
 
 async def new_version_validator(
     new_version: Version, repo: Repo = Depends(find_one_repo)

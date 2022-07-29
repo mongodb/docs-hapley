@@ -19,4 +19,8 @@ tags_metadata = [
         "name": "groups",
         "description": "Manage the list of `groups` for a repo",
     },
+    {
+        "name": "version",
+        "description": "Manage a specific version for a repo",
+    }
 ]
