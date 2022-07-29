@@ -1,8 +1,5 @@
 from beanie import Document
-<<<<<<< HEAD
 from bson import ObjectId
-=======
->>>>>>> main
 from pydantic import BaseModel, Field, validator
 
 from .group import Group
