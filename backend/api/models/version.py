@@ -4,9 +4,14 @@ from pydantic import BaseModel, Field, validator
 from api.exceptions import ValidationError
 
 
+<<<<<<< HEAD
 # id should not be listed as a field in request body because it is automatically
 # generated for POST or pulled from the URL path parameter for PUT.
 class VersionIn(BaseModel):
+=======
+class Version(BaseModel):
+    id: PydanticObjectId = Field(default_factory=PydanticObjectId)
+>>>>>>> main
     git_branch_name: str = Field(alias="gitBranchName")
     active: bool
     url_aliases: list[str] | None = Field(alias="urlAliases")
@@ -49,6 +54,3 @@ class VersionIn(BaseModel):
 
 class Version(VersionIn):
     id: PydanticObjectId = Field(default_factory=PydanticObjectId)
-
-    class Config:
-        allow_population_by_field_name = True
