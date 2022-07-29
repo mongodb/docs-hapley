@@ -5,7 +5,7 @@ from api.models.group import Group
 from api.models.repo import Repo
 
 
-class GroupValidator(BaseModel):
+class ValidGroup(BaseModel):
     repo: Repo
     group: Group
 
@@ -30,11 +30,9 @@ class GroupValidator(BaseModel):
         missing_versions = list(
             set(new_group.included_branches) - cls.get_version_names(repo)
         )
-        if len(missing_versions) > 0:
-            err_msg = (
-                f'Attempting to use version "{",".join(missing_versions)}" in {new_group_label}, '
-                f'but version "{",".join(missing_versions)}" does not exist.'
-            )
+        num_non_existent_versions = len(missing_versions)
+        if num_non_existent_versions:
+            err_msg = f'Version{"s" if num_non_existent_versions > 1 else ""} "{", ".join(missing_versions)}" do{"es" if num_non_existent_versions == 1 else ""} not exist.'
             errors.append(err_msg)
 
         # All remaining checks depend on pre-existing groups

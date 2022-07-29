@@ -1,8 +1,8 @@
 from fastapi import Depends, Request
 
-from api.core.validators.group_validator import GroupValidator
-from api.core.validators.reorder_validator import ReorderPayloadValidator
-from api.core.validators.version_validator import VersionValidator
+from api.core.validators.valid_group import ValidGroup
+from api.core.validators.valid_reorder_payload import ValidReorderPayload
+from api.core.validators.valid_version import ValidVersion
 from api.exceptions import RepoNotFound, UserNotEntitled
 
 from .models.entitlement import Entitlement, PersonalRepos
@@ -48,22 +48,22 @@ async def find_one_repo(repo_name: str) -> Repo:
 
 async def new_version_validator(
     new_version: Version, repo: Repo = Depends(find_one_repo)
-) -> VersionValidator:
-    return VersionValidator(version=new_version, repo=repo)
+) -> ValidVersion:
+    return ValidVersion(version=new_version, repo=repo)
 
 
 async def new_group_validator(
     new_group: Group, repo: Repo = Depends(find_one_repo)
-) -> GroupValidator:
-    return GroupValidator(group=new_group, repo=repo)
+) -> ValidGroup:
+    return ValidGroup(group=new_group, repo=repo)
 
 
 async def reorder_version_validator(
     reordering: ReorderItemPayload, repo: Repo = Depends(find_one_repo)
-) -> ReorderPayloadValidator:
-    return ReorderPayloadValidator[Version](
+) -> ValidReorderPayload:
+    return ValidReorderPayload[Version](
         repo=repo,
-        reorderingList=repo.versions,
+        reordering_list=repo.versions,
         current_index=reordering.current_index,
         target_index=reordering.target_index,
     )
@@ -71,10 +71,10 @@ async def reorder_version_validator(
 
 async def reorder_group_validator(
     reordering: ReorderItemPayload, repo: Repo = Depends(find_one_repo)
-) -> ReorderPayloadValidator:
-    return ReorderPayloadValidator[Group](
+) -> ValidReorderPayload:
+    return ValidReorderPayload[Group](
         repo=repo,
-        reorderingList=repo.groups,
+        reordering_list=repo.groups,
         current_index=reordering.current_index,
         target_index=reordering.target_index,
     )

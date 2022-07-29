@@ -110,7 +110,7 @@ def test_groups_post_no_version():
         detail = response.json()["detail"]
         errs = detail["errors"]
         assert len(errs) == 1
-        assert 'version "fake-version" does not exist' in errs[0]
+        assert 'Version "fake-version" does not exist.' in errs[0]
 
 
 def test_groups_put():

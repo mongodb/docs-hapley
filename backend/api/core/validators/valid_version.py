@@ -5,19 +5,23 @@ from api.models.repo import Repo
 from api.models.version import Version
 
 
-class VersionValidator(BaseModel):
+class ValidVersion(BaseModel):
     version: Version
     repo: Repo
 
     @classmethod
-    def validate_unique_git_branch_name(cls, new_version, existing_versions):
+    def validate_unique_git_branch_name(
+        cls, new_version: Version, existing_versions: list[Version]
+    ) -> str | None:
         if new_version.git_branch_name in [
             version.git_branch_name for version in existing_versions
         ]:
             return f"gitBranchName: {new_version.git_branch_name } is already in use"
 
     @classmethod
-    def validate_unique_url_aliases(cls, new_version, existing_versions):
+    def validate_unique_url_aliases(
+        cls, new_version: Version, existing_versions: list[Version]
+    ) -> list[str]:
         alias_errors = []
         new_aliases = new_version.url_aliases
         if new_aliases is not None:
@@ -25,14 +29,17 @@ class VersionValidator(BaseModel):
                 None, [version.url_aliases for version in existing_versions]
             )
             for aliases in existing_aliases:
-                if set(new_version.url_aliases) & set(aliases):
+                repeated_aliases = set(new_version.url_aliases) & set(aliases)
+                if len(repeated_aliases) > 0:
                     alias_errors.append(
-                        f"urlAliases: one of {new_aliases} is already in use"
+                        f"urlAliases: {', '.join(list(repeated_aliases))} is already in use"
                     )
         return alias_errors
 
     @classmethod
-    def validate_single_stable_branch(cls, new_version, existing_versions):
+    def validate_single_stable_branch(
+        cls, new_version: Version, existing_versions: list[Version]
+    ) -> str | None:
         if new_version.is_stable_branch:
             num_stable_branches = len(
                 list(
@@ -43,12 +50,14 @@ class VersionValidator(BaseModel):
                 return "Only one stable branch can be present"
 
     @classmethod
-    def validate_unique_version_selector(cls, new_version, existing_versions):
+    def validate_unique_version_selector(
+        cls, new_version: Version, existing_versions: list[Version]
+    ) -> str | None:
         version_selector_label = new_version.version_selector_label
         if version_selector_label is not None:
-            if version_selector_label in set(
-                [version.version_selector_label for version in existing_versions]
-            ):
+            if version_selector_label in [
+                version.version_selector_label for version in existing_versions
+            ]:
                 return (
                     f"versionSelectorLabel: {version_selector_label} is already in use"
                 )

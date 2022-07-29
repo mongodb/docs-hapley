@@ -44,13 +44,13 @@ def test_all_methods_invalid_repo_name():
 
 def test_valid_put():
     with FastApiTest() as client:
-        beforeUpdate = client.get(VALID_ENDPOINT).json()["branches"]
+        before_update = client.get(VALID_ENDPOINT).json()["branches"]
         response = client.put(
             VALID_ENDPOINT, json={"currentIndex": 0, "targetIndex": 1}
         )
         assert response.status_code == 200
-        assert response.json()["branches"][1] == beforeUpdate[0]
-        assert len(response.json()["branches"]) == len(beforeUpdate)
+        assert response.json()["branches"][1] == before_update[0]
+        assert len(response.json()["branches"]) == len(before_update)
 
 
 def test_invalid_payload_put():
@@ -113,9 +113,8 @@ def test_default_vals_post():
 def test_repeat_git_branch_name_post():
     payload = generate_random_valid_version()
     with FastApiTest() as client:
-        used_branch_name = client.get(VALID_ENDPOINT).json()["branches"][0][
-            "gitBranchName"
-        ]
+        existing_version = client.get(VALID_ENDPOINT).json()
+        used_branch_name = existing_version["branches"][0]["gitBranchName"]
         payload["gitBranchName"] = used_branch_name
         response = client.post(VALID_ENDPOINT, json=payload)
         assert response.status_code == 422
@@ -142,9 +141,9 @@ def test_repeat_version_selector_label_post():
 
 def test_repeat_url_aliases_post():
     payload = generate_random_valid_version()
-    payloadWithRepeat = generate_random_valid_version()
-    payloadWithRepeat["urlAliases"] = payload["urlAliases"]
+    payload_with_repeat = generate_random_valid_version()
+    payload_with_repeat["urlAliases"] = payload["urlAliases"]
     with FastApiTest() as client:
         client.post(VALID_ENDPOINT, json=payload)
-        response = client.post(VALID_ENDPOINT, json=payloadWithRepeat)
+        response = client.post(VALID_ENDPOINT, json=payload_with_repeat)
         assert response.status_code == 422

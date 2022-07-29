@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 
-from api.core.validators.reorder_validator import ReorderPayloadValidator
-from api.core.validators.version_validator import VersionValidator
+from api.core.validators.valid_reorder_payload import ValidReorderPayload
+from api.core.validators.valid_version import ValidVersion
 from api.dependencies import (
     find_one_repo,
     new_version_validator,
@@ -45,7 +45,7 @@ async def read_versions(repo: Repo = Depends(find_one_repo)):
     description="Create a new version for a specific repo",
 )
 async def create_version(
-    new_version_params: VersionValidator = Depends(new_version_validator),
+    new_version_params: ValidVersion = Depends(new_version_validator),
 ):
     new_version = await insert_new_version(
         repo=new_version_params.repo, version=new_version_params.version
@@ -59,7 +59,7 @@ async def create_version(
     description="Move a version to a new position in the list",
 )
 async def reorder_version(
-    reorder_params: ReorderPayloadValidator = Depends(reorder_version_validator),
+    reorder_params: ValidReorderPayload = Depends(reorder_version_validator),
 ):
     updated_repo = await reorder_repo_version(
         repo=reorder_params.repo,

@@ -14,7 +14,7 @@ class Version(BaseModel):
     version_selector_label: str | None = Field(alias="versionSelectorLabel")
     is_stable_branch: bool | None = Field(alias="isStableBranch")
 
-    # If validation on git_branch name fails, it won't be included in values.
+    # If validation on git_branch_name fails, it won't be included in values.
     # https://pydantic-docs.helpmanual.io/usage/validators/
     @validator("url_slug", always=True)
     def url_slug_validator(cls, v, values):

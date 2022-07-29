@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 
-from api.core.validators.group_validator import GroupValidator
-from api.core.validators.reorder_validator import ReorderPayloadValidator
+from api.core.validators.valid_group import ValidGroup
+from api.core.validators.valid_reorder_payload import ValidReorderPayload
 from api.dependencies import (
     check_if_user_entitled_to_repo,
     find_one_repo,
@@ -43,7 +43,7 @@ async def read_groups(repo: Repo = Depends(find_one_repo)):
     response_model=Group,
     description="Create a new group for a specific repo",
 )
-async def create_group(new_group_params: GroupValidator = Depends(new_group_validator)):
+async def create_group(new_group_params: ValidGroup = Depends(new_group_validator)):
     new_group = await insert_new_group(
         repo=new_group_params.repo, group=new_group_params.group
     )
@@ -56,7 +56,7 @@ async def create_group(new_group_params: GroupValidator = Depends(new_group_vali
     response_model=RepoGroupsView,
 )
 async def reorder_group(
-    reorder_params: ReorderPayloadValidator = Depends(reorder_group_validator),
+    reorder_params: ValidReorderPayload = Depends(reorder_group_validator),
 ):
     updated_repo = await reorder_repo_group(
         repo=reorder_params.repo,
