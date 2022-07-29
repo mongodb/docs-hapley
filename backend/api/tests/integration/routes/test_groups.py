@@ -93,7 +93,7 @@ def test_groups_post_used_version():
         detail = response.json()["detail"]
         errs = detail["errors"]
         assert len(errs) == 1
-        assert "Version already used" in errs[0]
+        assert "is already used in another group" in errs[0]
 
 
 def test_groups_post_no_version():
@@ -110,7 +110,7 @@ def test_groups_post_no_version():
         detail = response.json()["detail"]
         errs = detail["errors"]
         assert len(errs) == 1
-        assert 'version "fake-version" does not exist' in errs[0]
+        assert 'Version "fake-version" does not exist.' in errs[0]
 
 
 def test_groups_put():
@@ -137,4 +137,4 @@ def test_groups_put_out_of_bounds():
         response = client.put(groups_route(repo_name), json=new_indexes)
 
         assert response.status_code == 422
-        assert "Index 5 is out of bounds" in response.json()["detail"]
+        assert "Index 5 is out of bounds" in response.json()["detail"]["errors"][0]

@@ -1,33 +1,60 @@
 from fastapi import HTTPException, status
+from pydantic import BaseModel
+
+
+# Pydantic classes used to define schema of error responses in OpenAPI
+class ErrorDetail(BaseModel):
+    message: str
+    errors: list
+
+
+class ErrorResponse(BaseModel):
+    detail: ErrorDetail
 
 
 class UserNotEntitled(HTTPException):
-    def __init__(self) -> None:
+    def __init__(self, repo_name: str) -> None:
+        error: ErrorDetail = ErrorDetail(
+            message="Authorization error",
+            errors=[f"User is not entitled to access repo {repo_name}"],
+        )
         super().__init__(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User is not entitled to this docs content repo.",
+            detail=error.dict(),
         )
 
 
 class RepoNotFound(HTTPException):
     def __init__(self, repo_name: str) -> None:
+        error: ErrorDetail = ErrorDetail(
+            message="Repo not found.",
+            errors=[f"The repo {repo_name} does not exist."],
+        )
         super().__init__(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"The repo {repo_name} does not exist.",
+            detail=error.dict(),
+        )
+
+
+class VersionNotFound(HTTPException):
+    def __init__(self, github_branch_name: str) -> None:
+        error: ErrorDetail = ErrorDetail(
+            message="Version not found.",
+            errors=[f"The version {github_branch_name} does not exist."],
+        )
+        super().__init__(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=error.dict(),
         )
 
 
 class ValidationError(HTTPException):
     def __init__(self, message, errors: list[str]) -> None:
-        super().__init__(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail={"message": message, "errors": errors},
+        error: ErrorDetail = ErrorDetail(
+            message=message,
+            errors=errors,
         )
-
-
-class ReorderIndexError(HTTPException):
-    def __init__(self, index: int, model_name: str, repo_name: str) -> None:
         super().__init__(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Index {index} is out of bounds of {model_name} for repo: {repo_name}",
+            detail=error.dict(),
         )
