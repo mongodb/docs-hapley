@@ -82,10 +82,8 @@ def test_invalid_url_slug_put():
         update_payload = client.get(VALID_ENDPOINT).json()
         update_payload["urlSlug"] = "foobar"
         del update_payload["id"]
-        print(update_payload)
         response = client.put(VALID_ENDPOINT, json=update_payload)
         assert response.status_code == 422
-        print(response.json())
         assert (
             "urlSlug must match gitBranchName or be an element of url aliases"
             in response.json()["detail"]["errors"][0]
