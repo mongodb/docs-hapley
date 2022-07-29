@@ -9,7 +9,7 @@ from .models.entitlement import Entitlement, PersonalRepos
 from .models.group import Group
 from .models.payloads import ReorderItemPayload
 from .models.repo import Repo
-from .models.version import Version
+from .models.version import Version, VersionIn
 
 
 def get_request_user_email(request: Request) -> str:
@@ -62,10 +62,15 @@ async def find_one_version(object_id: ObjectId = Depends(convert_to_object_id), 
     return version[0]
 
 async def new_version_validator(
-    new_version: Version, repo: Repo = Depends(find_one_repo)
+    new_version: VersionIn, repo: Repo = Depends(find_one_repo)
 ) -> ValidVersion:
     return ValidVersion(version=new_version, repo=repo)
 
+async def update_version_validator(
+    updated_version: VersionIn, version_id: ObjectId = Depends(convert_to_object_id), repo: Repo = Depends(find_one_repo)
+) -> ValidVersion:
+    updated_version = Version(**updated_version.dict(), id=version_id)
+    return ValidVersion(version=updated_version, repo=repo)
 
 async def new_group_validator(
     new_group: Group, repo: Repo = Depends(find_one_repo)

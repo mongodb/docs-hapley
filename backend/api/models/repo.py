@@ -1,4 +1,5 @@
 from beanie import Document
+from bson import ObjectId
 from pydantic import BaseModel, Field, validator
 
 from .group import Group
@@ -60,10 +61,16 @@ async def reorder_repo_version(
     await repo.update({"$set": {"branches": repo.versions}})
     return repo
 
+def get_version_index(repo: Repo, version_id: ObjectId) -> int:
+    return repo.versions.index(next(filter(lambda v: v.id == version_id, repo.versions)))
+
 async def update_repo_version(repo: Repo, version: Version) -> Version:
-    await repo.update({"branches.id": version.id}, {"$set": {"branches.$": version}})
+    version_index: int = get_version_index(repo, version.id)
+    repo.versions[version_index] = version
+    await repo.update({"$set": {"branches": repo.versions}})
     return version
 
-async def delete_repo_version(repo: Repo, version: Version) -> Repo:
-    await repo.update({"branches.id": version.id}, {"$pull": {"branches": version}})
-    return repo
+async def delete_repo_version(repo: Repo, version_id: ObjectId) -> None:
+    version_index: int = get_version_index(repo, version_id)
+    repo.versions.pop(version_index)
+    await repo.update({"$set": {"branches": repo.versions}})
