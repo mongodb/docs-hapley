@@ -52,9 +52,7 @@ class ValidGroup(BaseModel):
                 set(new_group.included_branches) & set(flattened_existing_branches)
             )
             if len(previously_used_versions) > 0:
-                err_msg = (
-                    f'Versions {", ".join(previously_used_versions)} {"are" if len(previously_used_versions) > 1 else "is"} already used in another group.'
-                )
+                err_msg = f'Versions {", ".join(previously_used_versions)} {"are" if len(previously_used_versions) > 1 else "is"} already used in another group.'
                 errors.append(err_msg)
         if len(errors) > 0:
             raise ValidationError(

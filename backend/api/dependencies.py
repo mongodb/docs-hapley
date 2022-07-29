@@ -1,4 +1,3 @@
-
 from bson import ObjectId, errors
 from fastapi import Depends, Request
 
@@ -11,7 +10,6 @@ from api.exceptions import (
     ValidationError,
     VersionNotFound,
 )
-
 
 from .models.entitlement import Entitlement, PersonalRepos
 from .models.group import Group
@@ -88,6 +86,7 @@ async def update_version_validator(
 ) -> ValidVersion:
     updated_version = Version(**updated_version.dict(), id=version_id)
     return ValidVersion(version=updated_version, repo=repo)
+
 
 async def new_group_validator(
     new_group: Group, repo: Repo = Depends(find_one_repo)

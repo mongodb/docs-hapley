@@ -61,6 +61,7 @@ async def reorder_repo_version(
     await repo.update({"$set": {"branches": repo.versions}})
     return repo
 
+
 def get_version_index(repo: Repo, version_id: ObjectId) -> int:
     return repo.versions.index(
         next(filter(lambda v: v.id == version_id, repo.versions))
